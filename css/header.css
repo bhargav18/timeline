@@ -1,0 +1,72 @@
+/* 
+    Document   : header
+    Created on : Mar 18, 2014, 1:07:48 AM
+    Author     : bhargav
+    Description:
+        Purpose of the stylesheet follows.
+*/
+* {
+    margin: 0px;
+    padding: 0px;
+    outline: 0px none;
+}
+body {
+    font-size: 12px;
+    line-height: 22px;
+    font-family: arial,sans-serif;
+    color: #828282;
+}
+#options {
+
+    display: inline-block;
+}
+#navigation {
+    height: 52px;
+    padding-top: 4px;
+    font-family: 'Ubuntu',sans-serif;
+    font-weight: 700;
+    background: url('/images/navigation.png') repeat-x scroll 0px 0px transparent;
+    box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.1);
+    margin: auto;
+    text-align: center;
+}
+nav{
+    display: block;
+}
+#navigation a.nav-btn {
+    display: none;
+}
+a {
+    color: #0252AA;
+    text-decoration: none;
+    cursor: pointer;
+}
+#navigation ul {
+    list-style: none outside none;
+}
+#navigation ul li {
+    float: left;
+    padding-right: 2px;
+    line-height: 52px;
+    background: url('/images/nav-border.png') no-repeat scroll right 0px transparent;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+#navigation ul li.first a {
+    padding-left: 38px;
+}
+#navigation ul li a:hover, #navigation ul li.active a {
+    text-decoration: none;
+    color: #2B9208;
+}
+#navigation ul li a {
+    display: block;
+    padding: 0px 32px 0px 28px;
+    color: #878787;
+}
+a {
+    color: #0252AA;
+    text-decoration: none;
+    cursor: pointer;
+}
+
