@@ -20,6 +20,7 @@ class users {
     public $access_level = 0;
     public $phone = "0000000000";
     public $email = "";
+    public $uid= 0;
     public $db;
     public $isLoggedin = 0;
 
@@ -50,7 +51,8 @@ class users {
                 $this->username = $row['username'];
                 $this->access_level = $row['access_level'];
                 $this->phone = $row['phone'];
-                $this->email->$row['email'];
+                $this->email = $row['email'];
+                $this->uid = $row['uid'];
             } else {
                 $this->isLoggedin = 0;
             }

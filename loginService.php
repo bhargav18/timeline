@@ -19,6 +19,7 @@ if(!isset($_POST['ajax'])){
             $_SESSION['phone'] = $user->phone;
             $_SESSION['email'] = $user->email;
             $_SESSION['username'] = $user->username;
+            $_SESSION['user_uid'] = $user->uid;
             header("Location: /".$_GET['return_url']);
         }else{
             echo 'User failed to login';
