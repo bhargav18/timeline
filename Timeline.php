@@ -1,14 +1,24 @@
 <?php
-session_start();
 include './tasks.php';
+include './Template.php';
+$head='<!-- Style-->
+        <style>
+            html, body {
+                height:100%;
+                padding: 0px;
+                margin: 0px;
+            }
+        </style>';
+
+$header = new Template('./header.php',array(head=>$head,current_page=>1));
+$header->out();
 
 $tasks = new tasks();
 $task_list = $tasks->getTasks_JSON($_SESSION['user_uid']);
 //print_r( $task_list);
 //echo $_SESSION['user_uid'];
 ?>
-<!DOCTYPE html>
-<html lang="en"><!--
+<!--
 
 88888888888 d8b                        888 d8b                888888   d8888b  
    888     Y8P                        888 Y8P                   88b d88P  Y88b 
@@ -22,25 +32,6 @@ $task_list = $tasks->getTasks_JSON($_SESSION['user_uid']);
                                                              d88P             
                                                            888P              
     -->
-    <head>
-        <title>Timeline</title>
-        <meta charset="utf-8">
-        <meta name="description" content="TimelineJS example">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="apple-touch-fullscreen" content="yes">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-        <!-- Style-->
-        <style>
-            html, body {
-                height:100%;
-                padding: 0px;
-                margin: 0px;
-            }
-        </style>
-        <!-- HTML5 shim, for IE6-8 support of HTML elements--><!--[if lt IE 9]>
-        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-    </head>
-    <body>
         <!-- BEGIN Timeline Embed -->
         <div id="timeline-embed"></div>
         <script type="text/javascript">
