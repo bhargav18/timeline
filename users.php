@@ -58,6 +58,15 @@ class users {
             }
         }
     }
+    
+    function getAllusers(){
+        $result = $this->db->query('select * from users');
+        $rows = array();
+        while(($row = mysqli_fetch_array($result)) != null){
+            $rows[] = $row;
+        }
+        return $rows;
+    }
 
 }
 

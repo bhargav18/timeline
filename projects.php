@@ -1,6 +1,12 @@
 <?php
 include './Template.php';
-$header = new Template('./header.php',array(current_page=>2));
+include './users.php';
+
+$extra_js = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+ <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+ <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>';
+$users = new users();
+$header = new Template('./header.php',array(current_page=>2,head=>$extra_js));
 $header->out();
 ?>
 
@@ -18,6 +24,7 @@ $header->out();
                         $("#from").datepicker({
                             defaultDate: "+1w",
                             changeMonth: true,
+                            dateFormat: "yy-mm-dd",
                             numberOfMonths: 1,
                             onClose: function(selectedDate) {
                                 $("#to").datepicker("option", "minDate", selectedDate);
@@ -26,6 +33,7 @@ $header->out();
                         $("#to").datepicker({
                             defaultDate: "+1w",
                             changeMonth: true,
+                            dateFormat: "yy-mm-dd",
                             numberOfMonths: 1,
                             onClose: function(selectedDate) {
                                 $("#from").datepicker("option", "maxDate", selectedDate);
@@ -59,7 +67,7 @@ $header->out();
                     }
                 </script>
                <h2>Create a Project</h2>
-                <form action="index.php" method="post" id="form1" onsubmit="return fun1()">
+               <form action="functions.php?action=add_project" method="post" id="form1" onsubmit="return fun1()">
                     <div>
                         <label>Project name</label>
                         <input type="text" id="project_name" name="project_name" value="">                        
@@ -75,8 +83,8 @@ $header->out();
                     <div>
                         <label>Priority</label>                        
                         <select id="priority" name="priority">
-                            <option value="Low">Low</option>
-                            <option value="High">High</option>
+                            <option value="1">Low</option>
+                            <option value="2">High</option>
                         </select>
                     </div>
                     <div>
@@ -87,12 +95,15 @@ $header->out();
                         </select>
                     </div>
                     <div>                        
-                        <label>Users</label>                        
+                        <label>Users</label>
+                        
                         <select id="uid" name="uid">
-                            <option value="user1">User 1</option>
-                            <option value="user2">User 2</option>
-                            <option value="user3">User 3</option>
-                            <option value="user4">User 4</option>
+                            <?php 
+                        $allusers = $users->getAllusers();
+                        foreach ($allusers as $user) {
+                            echo '<option value="'.$user["uid"].'">'.$user["first_name"]." ".$user["last_name"].'</option>';
+                        }
+                        ?>
                         </select>
                     </div>
                     <div>

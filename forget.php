@@ -19,16 +19,17 @@ if ($_SESSION['userLoggedin']) {
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="css/reset.css">
         <link rel="stylesheet" type="text/css" href="css/structure.css">
+        <script src="js/login.js"></script>
     </head>
 
     <body>
-        <form style="height: 180px;" class="box login" action="loginService.php?action=forget&return_url=login.php" method="post">
+        <form name="forget" style="height: 180px;" class="box login" action="loginService.php?action=forget&return_url=login.php" method="post">
             <fieldset class="boxBody">
                 <label>Email address</label>
                 <input type="text" tabindex="1" name="email" placeholder="emailaddress" required>                
             </fieldset>
             <footer>              
-                <input style="float: none; margin-left: 100px;" type="submit" class="btnLogin" value="Login" tabindex="4">
+                <input style="float: none; margin-left: 100px;" type="submit" onclick="return ValidateEmail();" class="btnLogin" value="Login" tabindex="4">
             </footer>
         </form>
     </body>

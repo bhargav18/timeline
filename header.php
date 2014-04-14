@@ -5,13 +5,7 @@ if (!$_SESSION['userLoggedin']) {
 }
 ?>
 <!DOCTYPE html>
-<!--[if IE 7 ]>    <html class="ie7 oldie"> <![endif]-->
-<!--[if IE 8 ]>    <html class="ie8 oldie"> <![endif]-->
-<!--[if IE session_start();
-if (!$_SESSION['userLoggedin']) {
-    header("Location: login.php?return_url=Timeline.php");
-}9 ]>    <html class="ie9"> <![endif]-->
-<!--[if (gt IE 9)|!(IE)]><!--> <html> <!--<![endif]-->
+<html>
 
     <head>
 
@@ -20,7 +14,7 @@ if (!$_SESSION['userLoggedin']) {
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title>Timeline</title>
+        <title><?if(isset($this)){echo $this->title;}else{echo "Timeline";}?></title>
 
         <link rel="stylesheet" type="text/css" media="screen" href="css/coolblue.css" />
 
@@ -37,7 +31,9 @@ if (!$_SESSION['userLoggedin']) {
 } ?>
     </head>
 
-    <body id="top">
+    <body id="top" <? if(isset($this)){
+    echo $this->body;
+} ?>>
 
         <!--header -->
         <div id="header-wrap"><header>

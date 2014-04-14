@@ -14,7 +14,7 @@ $header = new Template('./header.php',array(head=>$head,current_page=>1));
 $header->out();
 
 $tasks = new tasks();
-$task_list = $tasks->getTasks_JSON($_SESSION['user_uid']);
+$task_list = $tasks->getTasks($_SESSION['user_uid']);
 //print_r( $task_list);
 //echo $_SESSION['user_uid'];
 ?>

@@ -19,10 +19,11 @@ if ($_SESSION['userLoggedin']) {
         <meta charset="UTF-8" />
         <link rel="stylesheet" type="text/css" href="css/reset.css">
         <link rel="stylesheet" type="text/css" href="css/structure.css">
+        <script src="js/login.js"></script>
     </head>
 
     <body>
-        <form class="box login" action="loginService.php?return_url=login.php" method="post">
+        <form name="login" class="box login" action="loginService.php?return_url=login.php" method="post">
             <fieldset class="boxBody">
                 <label>Username</label>
                 <input type="text" tabindex="1" name="user" placeholder="Username" required>
