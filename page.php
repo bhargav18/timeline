@@ -1,5 +1,8 @@
 <?php
-include './header.php';
+include './Template.php';
+include './DBConfig.php';
+$mysql = new DBConfig();
+$db = $mysql->getDBConfig();
 ?>
 
         <!-- content-wrap -->

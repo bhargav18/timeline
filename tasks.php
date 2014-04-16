@@ -58,7 +58,7 @@ class tasks {
             $json_data.='"isDuration":false';
             $json_data.='}';
         }
-
+        
                    $json_data=$json_data.']}';
                    return $json_data;
     }
