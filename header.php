@@ -68,6 +68,7 @@ if (isset($this)) {
               };
           } ?>><a href="projects.php">Projects</a><span></span>
                             <ul>
+                                <li><a href='createProject.php'>Create Project</a></li>
                                 <li><a href='viewProjects.php'>View Projects</a></li>
                                 <li><a href='updateProject.php'>Update Projects</a></li>
                             </ul>

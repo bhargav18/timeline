@@ -45,12 +45,12 @@ $header->out();
                         <option value="completed">Completed</option>
                     </select>
 
-                    <label>Start Date</label>
-                    <input type="text" readonly="readonly" name="from" id="from" class="hasDatepicker">
-
-                    <label>End Date</label>
-                    <input type="text" readonly="readonly" name="to" id="to" class="hasDatepicker"> 
-
+                    <label>Start Date</label>                    
+                     <input type="text" class="form-control" name="from" id="from" value=''
+                               placeholder="MM/DD/YYYY" readonly="true">
+                    <label>End Date</label>                    
+                     <input type="text" class="form-control" name="to" id="to" value=''
+                               placeholder="MM/DD/YYYY" readonly="true">   
                     <label>Cost</label>
                     <input type="text" name="cost" id="cost">
                     <br/>

@@ -17,22 +17,18 @@ if ($_SESSION['userLoggedin']) {
         $project_name = $_POST['project_name'];
         $description = $_POST['description'];
         $priority = $_POST['priority'];
-        $status = $_POST['Status'];
-        $uid = $_POST['uid'];
+        $status = $_POST['Status'];        
         $date = $_POST['from'];
         $cost = $_POST['cost'];
         $end_date = $_POST['to'];
-        if ($_POST) {         
+        if ($_POST) {        
            
-            $query_project_id = "Select * from project where pid= '$project_id'";
-            $result1 = $db->query($query_project_id);
-            if (mysqli_num_rows($result1)) {
-                $message = "Invalid Projectid";
-            } else {
-                $query = "insert into project (name,description,start_date,end_date,status,priority,cost) values ('$project_name','$description','$date','$end_date','$status','$priority','$cost')";
+                $query = "insert into project (name,description,start_date,end_date,status,priority,est_cost) values ('$project_name','$description',STR_TO_DATE('$date','%m/%d/%Y'),STR_TO_DATE('$end_date','%m/%d/%Y'),'$status','$priority','$cost')";
+                error_log($query);
                 $db->query($query);
-            }
+            
         }
+        header("Location: viewProjects.php");
     }
     if ($_GET['action'] == "get_tasks") {
         $tasks = new tasks();
@@ -65,11 +61,11 @@ if ($_SESSION['userLoggedin']) {
             $password = randomPassword();
 //$password = rand(0,25);					
             //mysql_select_db("homework_462",$link);
-            $stmt = $db->prepare('insert into users(first_name,last_name,phone,role,email,employee_status) values(?,?,?,?,?,?)');
-            $stmt->bind_param('ssssss', $a, $b, $e, $f, $i, $j);
+            $stmt = $db->prepare('insert into users(first_name,last_name,phone,role,email,employee_status,address) values(?,?,?,?,?,?,?)');
+            $stmt->bind_param('ssssss', $a, $b, $e, $f, $i, $j, $c);
             $stmt->execute();
 
-            echo "Sucessfully Created Account";
+           
 
             $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -81,6 +77,8 @@ if ($_SESSION['userLoggedin']) {
             $messages .= "Email : " . $i . "<br/>";
             $messages .= "Password : " . $password;
             mail($i, "New Acoount Created", $messages, $headers);
+            
+            header("Location: allemployee.php");
         }
     }
 } else {
