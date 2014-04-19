@@ -44,7 +44,7 @@ window.location = "/logout";
         }
     }
 } else if (!isset($_POST['ajax'])) {
-    $username = mysql_real_escape_string($_POST['user']);
+    $username = $db->real_escape_string($_POST['user']);
     if ($user->isUser($username)) {
         $user->getUser($username, $_POST['password']);
         if ($user->isLoggedin) {
@@ -57,6 +57,7 @@ window.location = "/logout";
             $_SESSION['email'] = $user->email;
             $_SESSION['username'] = $user->username;
             $_SESSION['user_uid'] = $user->uid;
+            $_SESSION['access_level'] = $user->access_level;
             header("Location: " . $_GET['return_url']);
         } else {
             echo ' <script>alert("User failed to login try again"); window.location = "/logout";</script>';

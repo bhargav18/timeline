@@ -1,4 +1,6 @@
 <?php
+SESSION_START();
+if (!empty($_POST)):
 include './Template.php';
 include './DBConfig.php';
 $mysql = new DBConfig();
@@ -25,15 +27,13 @@ $header->out();
             <div class="main-content">
                 <form method="post" action="updateTStatusProc.php">
                     <?php
-		$connect = mysql_connect("$db_hostname", "$db_usrname", "$db_passwrd") or die (mysql_error()); 
-  			mysql_select_db("$db_name");
   			
   		$selectedTask = $_POST['radio'];
 
-        $query="SELECT name, Task_id, status, Priority, Description, start_date, end_date, Project_id  FROM Tasks WHERE Task_id like '$selectedTask'";
-		$result= mysql_query($query) or die (mysql_error());
-
-  		$row= mysql_fetch_row($result);
+        $query="SELECT name, uid, status, priority, description, start_date, end_date, project_uid  FROM tasks WHERE uid like '$selectedTask'";
+     	$result= $db->query($query);
+		
+  		$row= mysqli_fetch_row($result);
 	
 			 $name = $row[0];
 			 $id = $row[1];
@@ -109,17 +109,14 @@ $header->out();
                     <div id="divShowChildWindowValues">
                         <dl id="empList">
                             <?php 
-    	$query = "SELECT first_name, last_name FROM Users WHERE EXISTS 
-	    	(SELECT assignee FROM jobs WHERE Users.uid = jobs.assignee and task_id like '$selectedTask')";
-		$result= mysql_query($query) or die (mysql_error());
-		while ($row = mysql_fetch_row($result))
+    	$query = "SELECT first_name, last_name FROM users WHERE EXISTS
+	    	(SELECT user_uid FROM user_tasks WHERE users.uid = user_tasks.user_uid and task_uid like '$selectedTask')";
+     	$result= $db->query($query);
+    	while ($row = mysqli_fetch_row($result))
 		{
 	    	echo "<p>" .$row[0] . " " . $row[1]. "</p>";
 	    }
-?>  </dl></div>
-     <?php 
-		mysql_close($connect);
-?>               
+?>  </dl></div>               
                     <input type="submit" class="btn btn-info" value="Update Status" name="submit">
                 </form>
             </div>
@@ -137,9 +134,7 @@ $header->out();
 
 <!-- extra -->
 <?php
-include './footer.php';
-?>
-<?php 
+include './footer.php'; 
 else:
  		header("Location:viewTasks.php");
  		exit;

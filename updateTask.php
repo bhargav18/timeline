@@ -1,16 +1,17 @@
 <?php
+session_start();
+if (!empty($_POST) || !empty($_SESSION['tId'])):
 include './Template.php';
 include './DBConfig.php';
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
-session_start();
 $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-  <script src="//code.jquery.com/jquery-1.9.1.js"></script>
+  
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script src="ModalPopupWindow.js" type="text/javascript"></script>
   <script src="js/updateTask.js" type="text/javascript"></script>';
 
-$header = new Template("./header.php", array(head => $head, title => "Create a task"));
+$header = new Template("./header.php", array(head => $head, title => "Update Task"));
 $header->out();
 
 $id = $descErr = $sdateErr = $edateErr = $empErr = "";
@@ -24,11 +25,13 @@ if(!empty($_SESSION['uTDescErr']))
 	$descErr = $_SESSION['uTDescErr'];
 	$_SESSION['uTDescErr']="";
 }
+/* Start date
 if (!empty($_SESSION['uTSDateError']))
 {
 	$sdateErr = $_SESSION['uTSDateError'];
 	$_SESSION['uTSDateError'] = "";
 }
+*/
 if (!empty($_SESSION['uTEDateError']))
 {
 	$edateErr = $_SESSION['uTEDateError'];
@@ -53,20 +56,18 @@ if (!empty($_SESSION['uEmpError']))
 
             <div class="main-content">
                 <form method="post" action="updateTaskProcessing.php">
-                    <?php 
+<?php 
                     
-		$connect = mysql_connect("$db_hostname", "$db_usrname", "$db_passwrd") or die (mysql_error()); 
-  			mysql_select_db("$db_name");
   			
   		if ($_POST['radio'])	
   			$selectedTask = $_POST['radio'];
   		else 
 			$selectedTask = $id;
 
-        $query="SELECT name, Task_id, status, Priority, Description, start_date, end_date, Project_id 
-        		FROM Tasks WHERE Task_id like '$selectedTask'";
-		$result= mysql_query($query) or die (mysql_error());
-  		$row= mysql_fetch_row($result);
+        $query="SELECT name, uid, status, priority, description, start_date, end_date, project_uid
+        		FROM tasks WHERE uid like '$selectedTask'";
+		$result= $db->query($query);
+  		$row= mysqli_fetch_row($result);
 		$name = $row[0];
 		$id = $row[1];
 		if (!empty($_SESSION['uTSts']))
@@ -90,13 +91,14 @@ if (!empty($_SESSION['uEmpError']))
 		}
 		else
 			$desc = $row[4];
+		/* Start date
 		if (!empty($_SESSION['uTSDate']))
-		{echo "Got YOU";
+		{
 			$sDate = $_SESSION['uTSDate'];
 			$_SESSION['uTSDate'] = "";			
 			
 		}
-		else
+		else*/
 			$sDate = $row[5];
 		if (!empty($_SESSION['uTEDate']))
 		{
@@ -107,24 +109,22 @@ if (!empty($_SESSION['uEmpError']))
 			$eDate = $row[6];
 		$proj = $row[7];
 ?> 
-                    ?>
-                    <label>Task ID</label>
-                    <label>151</label>
-                    <input type="hidden" name="<?php echo $id ?>" value="151">
-                    <label>Task Name</label>
-                    <label><?php echo $name ?></label>
+                    
+                    <label>Task ID: <?php echo $id ?></label>
+                    
+                    <input type="hidden" name="taskId" value="<?php echo $id ?>">
+                    <label>Task Name: <?php echo $name ?></label>                    
                     <!-- Description -->
 
                     <label for="exampleInputEmail1">Description</label>
                     <textarea name="descr" cols="50" rows="10"><?php echo $desc; ?></textarea>
                     <span class="err"><?php echo $descErr; ?></span>
-                    <label>Project</label>
-                    <label><?php echo $proj ?></label>
+                    <label>Project: <?php echo $proj ?></label>                    
                     <!-- dates -->
 
                     <label for="exampleInputEmail1">Start Date</label>
                     <input readonly="true" value="<?php echo date("m/d/Y", strtotime($sDate)); ?>" id="from" name="startdate" class="form-control hasDatepicker">
-                    <span class="error"><?php echo $sdateErr;?></span>
+                    <!--  Start date <span class="error"><?php //echo $sdateErr;?></span>-->
                     <label for="exampleInputEmail1">End Date</label>
                     <input type="text" readonly="true" value="<?php echo date("m/d/Y", strtotime($eDate)); ?>" id="to" name="enddate" class="form-control hasDatepicker">
                     <span class="err"><?php echo $edateErr;?></span>
@@ -174,11 +174,10 @@ if (!empty($_SESSION['uEmpError']))
 	    }
 	    else
 	    {
-	    $query = "SELECT first_name, last_name FROM Users WHERE EXISTS 
-	    	(SELECT assignee FROM jobs WHERE Users.uid = jobs.assignee and task_id like '$selectedTask')";
-		$result= mysql_query($query) or die (mysql_error());
+	    $query = "SELECT first_name, last_name FROM users WHERE EXISTS	(SELECT user_uid FROM user_tasks WHERE users.uid = user_tasks.user_uid and task_uid like '$selectedTask')";
+		$result= $db->query($query);
 		$i=0;
-		while ($row = mysql_fetch_row($result))
+		while ($row = mysqli_fetch_row($result))
 		{
 			echo "<input type='hidden' name='empName[]' id='n". $i ."' value = '" .$row[0] . " " . $row[1]. "'/>";
 	    	echo "<p>" .$row[0] . " " . $row[1]. "</p>";
@@ -187,11 +186,10 @@ if (!empty($_SESSION['uEmpError']))
 	    }
 ?>   
 
-                            <input type="hidden" value="qwer sadsdf" id="n0" name="empName[]"><p>qwer sadsdf</p><input type="hidden" value="Ddnsmfg jdfbhv." id="n1" name="empName[]"><p>Ddnsmfg jdfbhv.</p>	</dl></div>
+                 </dl></div>
                     <input type="submit" class="btn btn-info" value="Update Task" name="update">
                     <input type="submit" class="btn btn-info" value="Delete Task" name="delete">
                 <?php 		
-		mysql_close($connect);
 else:
  		header("Location:viewTasks.php");
  		exit;

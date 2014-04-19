@@ -1,9 +1,15 @@
 <?php
-SESSION_START();
+    include './Template.php';
+    include './DBConfig.php';
+    $mysql = new DBConfig();
+    $db = $mysql->getDBConfig();
+    
+    $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">';
+SESSION_START(); //////////
+    $header = new Template("./header.php", array(head => $head, title => "Update Project"));
+    $header->out();
 if (!empty($_POST) || !empty($_SESSION['pId']))
 {
-include('header.php');
-
 $id = $descErr = $edateErr ="";
 
 if( !empty($_SESSION['pId']))
@@ -30,24 +36,7 @@ if (!empty($_SESSION['uPEDateError']))
   
 <!--<script src="jquery.js"></script> -->
 <script>
- $(function() {
-    $( "#from" ).datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 1,
-      onClose: function( selectedDate ) {
-        $( "#to" ).datepicker( "option", "minDate", selectedDate );
-      }
-    });
-    $( "#to" ).datepicker({
-      defaultDate: "+1w",
-      changeMonth: true,
-      numberOfMonths: 1,
-      onClose: function( selectedDate ) {
-        $( "#from" ).datepicker( "option", "maxDate", selectedDate );
-      }
-    });
-  });
+
 </script>
 
 	<title>Update Project</title>
@@ -73,8 +62,8 @@ if (!empty($_SESSION['uPEDateError']))
   		else 
 			$selectedProj = $id;
 			
-        $query="SELECT name, project_id, status, Priority, Description, start_date, end_date 
-        		FROM Projects WHERE project_id like '$selectedProj'";
+        $query="SELECT name, project_id, status, priority, description, start_date, end_date
+        		FROM project WHERE uid like '$selectedProj'";
 		$result= mysql_query($query) or die (mysql_error());
   		$row= mysql_fetch_row($result);
 		$name = $row[0];
@@ -177,3 +166,6 @@ else
 
 </body>
 </html>
+<?php
+    include './footer.php';
+    ?>

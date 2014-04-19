@@ -3,6 +3,9 @@ include './Template.php';
 include './DBConfig.php';
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
+$head="";
+$header = new Template("./header.php", array(head => $head, title => "Title"));
+$header->out();
 ?>
 
         <!-- content-wrap -->

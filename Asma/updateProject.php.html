@@ -1,0 +1,149 @@
+	<!DOCTYPE html>
+	<html>
+	<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<!-- Bootstrap -->
+	<link href="css/bootstrap.css" rel="stylesheet" media="screen">
+	</head>
+	<body>
+	
+	<div class = "navbar navbar-default navbar-static-top"> <!-- to change navbar color >> bootstrap.css goto .navbar-default { ....color: ...}-->
+	
+	<div class ="container"> <!-- to change contanier color >> bootstrap.css goto .jumbotron { ....color: ...}-->
+	
+	<a class = "navbar-brand"> Tracker System </a>
+	
+	<button class = "navbar-toggle" data-toggle = "collapse" data-target = ".navHeaderCollapse">
+	<span class ="icon-bar"></span>
+	<span class ="icon-bar"></span>
+	<span class ="icon-bar"></span>
+	
+	</button>
+	
+	<div class ="collapse navbar-collapse navHeaderCollapse">
+	
+	
+	
+	<ul class = "nav navbar-nav navbar-center">
+	<!-- What is this -->	
+	<!-- Home going to be replaced by track (cus sign in then home means sign out with out making btn $SESSION ['sign-in']=false)
+	-->
+	
+	</ul>	
+	</div>
+	
+	</div>	
+	
+	</div>
+	
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/bootstrap.js"></script>
+	</body>
+	</html>	
+	<html>
+	<head>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	
+	<!--<script src="jquery.js"></script> -->
+	<script>
+	$(function() {
+	$( "#from" ).datepicker({
+	defaultDate: "+1w",
+	changeMonth: true,
+	numberOfMonths: 1,
+	onClose: function( selectedDate ) {
+	$( "#to" ).datepicker( "option", "minDate", selectedDate );
+	}
+	});
+	$( "#to" ).datepicker({
+	defaultDate: "+1w",
+	changeMonth: true,
+	numberOfMonths: 1,
+	onClose: function( selectedDate ) {
+	$( "#from" ).datepicker( "option", "maxDate", selectedDate );
+	}
+	});
+	});
+	</script>
+	
+	<title>Update Project</title>
+	</head>
+	
+	<body>
+	<div class="container">
+	<h3>
+	<font color="#0283bd" />
+	<br></br>
+	Update Project
+	</h3>
+	<form action= "updateProjProc.php" method= "post">
+	<div id="main">
+	<table class="table" style="width: 300px">
+	
+	
+	
+	<tr>
+	<td><label>Project ID</label></td>
+	<td><label></label></td>
+	<input type='hidden' value='' name='projId'/>
+	</tr>
+	
+	<tr>
+	<td><label>Project Name</label></td>
+	<td><label></label></td>
+	</tr>
+	
+	<!-- Description -->
+	<tr>
+	<td><label for='exampleInputEmail1'>Description</label></td>
+	<td><textarea rows='10' cols='50' name='descr' ></textarea></td>
+	<td><span class='err'></span></td>
+	</tr>
+	
+	<!-- dates -->
+	<tr>
+	<div>
+	<td><label for="exampleInputEmail1">Start Date</label></td>
+	<td><input class="form-control" name="startdate" value='01/01/1970' readonly="true"></input></td>
+	</div>
+	</tr>
+	
+	<tr>
+	<div>
+	<td><label for="exampleInputEmail1">End Date</label></td>
+	<td><input type="text" class="form-control" name="enddate" id="to" value='01/01/1970' readonly="true"></input></td>
+	<td><span class="err"></span></td>
+	</div>
+	</tr>
+	
+	<!-- Status -->
+	<tr>
+	<td><label for='exampleInputEmail1'>Status</label></td>
+	<td><select class='form-control' name='status' style='width: 165px'>
+	<option value='Open' selected>Open</option>
+	<option value='In Progress' >In Progress</option>
+	<option value='Completed' >Completed</option>
+	<option value='Closed' >Closed</option>
+	</select></td>
+	</tr>
+	
+	<!-- Priority -->
+	<tr>
+	<td><label for='exampleInputEmail1'>Priority</label></td>	
+	<td><select class='form-control' name='priority' style='width: 165px'>
+	<option value='High' >High</option>
+	<option value='Mid' >Mid</option>
+	<option value='Low' >Low</option>
+	</select></td>
+	</tr>
+	
+	<tr>
+	<td><input type='submit' name='update' value= 'Update Project' class='btn btn-info'></td>
+	<td><input type='submit' name='delete' value= 'Delete Project' class='btn btn-info'></td>
+	</tr>
+	</table>
+	</form></div>
+	
