@@ -17,16 +17,15 @@ if ($_SESSION['userLoggedin']) {
         $project_name = $_POST['project_name'];
         $description = $_POST['description'];
         $priority = $_POST['priority'];
-        $status = $_POST['Status'];        
+        $status = $_POST['Status'];
         $date = $_POST['from'];
         $cost = $_POST['cost'];
         $end_date = $_POST['to'];
-        if ($_POST) {        
-           
-                $query = "insert into project (name,description,start_date,end_date,status,priority,est_cost) values ('$project_name','$description',STR_TO_DATE('$date','%m/%d/%Y'),STR_TO_DATE('$end_date','%m/%d/%Y'),'$status','$priority','$cost')";
-                error_log($query);
-                $db->query($query);
-            
+        if ($_POST) {
+
+            $query = "insert into project (name,description,start_date,end_date,status,priority,est_cost) values ('$project_name','$description',STR_TO_DATE('$date','%m/%d/%Y'),STR_TO_DATE('$end_date','%m/%d/%Y'),'$status','$priority','$cost')";
+            error_log($query);
+            $db->query($query);
         }
         header("Location: viewProjects.php");
     }
@@ -39,10 +38,10 @@ if ($_SESSION['userLoggedin']) {
     if ($_GET['action'] == "get_projects") {
         $result = $db->query('select * from project');
         while ($row = mysqli_fetch_array($result)) {
-            $rows[] =$row;
-        }   
-        
-                $json_data='{
+            $rows[] = $row;
+        }
+
+        $json_data = '{
                         "events":[
 {
             "title": "",          
@@ -51,23 +50,22 @@ if ($_SESSION['userLoggedin']) {
             "end":""
 }                        
 ';
-        foreach ($rows as $row) {            
+        foreach ($rows as $row) {
             $json_data.=',{';
             $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
-            $json_data.='"start":"'.$date->format("Y-m-d").'",';
+            $json_data.='"start":"' . $date->format("Y-m-d") . '",';
             $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
-            $json_data.='"end":"'.$date->format("Y-m-d").'",';
-            $json_data.='"title":"'.$row['name'].'",';
+            $json_data.='"end":"' . $date->format("Y-m-d") . '",';
+            $json_data.='"title":"' . $row['name'] . '",';
             $json_data.='"description":"'
-                    . '<br/>Project status:'.$row['status'].''
-                    . '<br/><a href=\"/Timeline.php?project='.$row['uid'].'\">Tasks</a>  ",';
+                    . '<br/>Project status:' . $row['status'] . ''
+                    . '<br/><a href=\"/Timeline.php?project=' . $row['uid'] . '\">Tasks</a>  ",';
             $json_data.='"isDuration":false';
             $json_data.='}';
         }
-        
-                   $json_data=$json_data.']}';
-                   echo $json_data;
-        
+
+        $json_data = $json_data . ']}';
+        echo $json_data;
     }
     if ($_GET['action'] == "create_account") {
 
@@ -98,7 +96,7 @@ if ($_SESSION['userLoggedin']) {
             $stmt->bind_param('ssssss', $a, $b, $e, $f, $i, $j, $c);
             $stmt->execute();
 
-           
+
 
             $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
@@ -110,8 +108,22 @@ if ($_SESSION['userLoggedin']) {
             $messages .= "Email : " . $i . "<br/>";
             $messages .= "Password : " . $password;
             mail($i, "New Acoount Created", $messages, $headers);
-            
+
             header("Location: allemployee.php");
+        }
+    }
+    if ($_GET['action'] == "update_profile") {
+        if ($_POST["submit"]) {
+            $a = $_POST["firstName"];
+            $b = $_POST["lastName"];
+            $c = $_POST["email"];
+            $d = $_POST["password"];
+            $e = $_POST["phone"];
+            $f = $_POST["address"];
+            //echo $a." ".$b." ".$c." ".$d." ".$e." ".$f;
+            $result = $db->query('UPDATE users SET first_name=' . $a . ', last_name=' . $b . ', password=' . $d . ', email=' . $c . ', phone=' . $e . '  WHERE uid=' . $_SESSION['user_uid']);
+            error_log('UPDATE users SET first_name="' . $a . '", last_name="' . $b . '", email="' . $c . '", phone=' . $e . '  WHERE uid=' . $_SESSION['user_uid']);
+            header("Location: /");
         }
     }
 } else {

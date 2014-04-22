@@ -58,6 +58,7 @@ window.location = "/logout";
             $_SESSION['username'] = $user->username;
             $_SESSION['user_uid'] = $user->uid;
             $_SESSION['access_level'] = $user->access_level;
+            $_SESSION['address'] = $user->address;
             header("Location: " . $_GET['return_url']);
         } else {
             echo ' <script>alert("User failed to login try again"); window.location = "/logout";</script>';

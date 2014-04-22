@@ -23,6 +23,7 @@ class users {
     public $uid= 0;
     public $db;
     public $isLoggedin = 0;
+    public $address="";
 
     function __construct() {
         // echo $user;
@@ -53,6 +54,7 @@ class users {
                 $this->phone = $row['phone'];
                 $this->email = $row['email'];
                 $this->uid = $row['uid'];
+                $this->address = $row['address'];
             } else {
                 $this->isLoggedin = 0;
             }
