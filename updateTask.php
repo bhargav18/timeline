@@ -1,5 +1,4 @@
 <?php
-session_start();
 if (!empty($_POST) || !empty($_SESSION['tId'])):
 include './Template.php';
 include './DBConfig.php';
@@ -11,7 +10,7 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
   <script src="ModalPopupWindow.js" type="text/javascript"></script>
   <script src="js/updateTask.js" type="text/javascript"></script>';
 
-$header = new Template("./header.php", array(head => $head, title => "Update Task"));
+$header = new Template("./header.php", array("current_page"=>3,"head" => $head, "title" => "Update Task"));
 $header->out();
 
 $id = $descErr = $sdateErr = $edateErr = $empErr = "";

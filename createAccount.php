@@ -4,7 +4,7 @@ include './DBConfig.php';
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
 $head = '<script src="/js/createAccount.js"></script>';
-$header = new Template("./header.php", array(head => $head, title => "Create Account"));
+$header = new Template("./header.php", array("current_page"=>5,"head" => $head, "title" => "Create Account"));
 $header->out();
 ?>
 

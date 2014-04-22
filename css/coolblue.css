@@ -366,11 +366,11 @@ header {
     width: 978px;
     margin: 0 auto;
     padding: 0 0 24px 0;
-    background: url(../images/content-bg.png) repeat-y left top;
+    /*background: url(../images/content-bg.png) repeat-y left top;*/
 }
 #main {
 	float: left;
-    margin: 40px 0 0 0;
+    margin: 40px 0 0 200px;
     padding: 0;
 	width: 725px;
 }

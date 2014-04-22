@@ -36,6 +36,39 @@ if ($_SESSION['userLoggedin']) {
         echo $task_list;
         return $task_list;
     }
+    if ($_GET['action'] == "get_projects") {
+        $result = $db->query('select * from project');
+        while ($row = mysqli_fetch_array($result)) {
+            $rows[] =$row;
+        }   
+        
+                $json_data='{
+                        "events":[
+{
+            "title": "",          
+            "start": "",
+            "isDuration":false,
+            "end":""
+}                        
+';
+        foreach ($rows as $row) {            
+            $json_data.=',{';
+            $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
+            $json_data.='"start":"'.$date->format("Y-m-d").'",';
+            $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
+            $json_data.='"end":"'.$date->format("Y-m-d").'",';
+            $json_data.='"title":"'.$row['name'].'",';
+            $json_data.='"description":"'
+                    . '<br/>Project status:'.$row['status'].''
+                    . '<br/><a href=\"/Timeline.php?project='.$row['uid'].'\">Tasks</a>  ",';
+            $json_data.='"isDuration":false';
+            $json_data.='}';
+        }
+        
+                   $json_data=$json_data.']}';
+                   echo $json_data;
+        
+    }
     if ($_GET['action'] == "create_account") {
 
         if ($_POST["submit"]) {

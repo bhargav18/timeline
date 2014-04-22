@@ -9,7 +9,7 @@
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script src="/js/updateProject.js"></script>
 ';
-    $header = new Template("./header.php", array(head => $head, title => "Update Project"));
+    $header = new Template("./header.php", array("current_page"=>2,"head" => $head, "title" => "Update Project"));
     $header->out();
 if (!empty($_POST) || !empty($_SESSION['pId']))
 {
@@ -139,7 +139,7 @@ if (!empty($_SESSION['uPEDateError']))
 
   </form>   		
 <?php 		
-		mysql_close($connect);
+		
 }
 else
 {

@@ -8,7 +8,7 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script src="ModalPopupWindow.js" type="text/javascript"></script>';
 
-$header = new Template("./header.php", array(head => $head, title => "View Tasks"));
+$header = new Template("./header.php", array("current_page"=>3,"head" => $head, "title" => "View Tasks"));
 $header->out();
 $nextForm = "";
 if ($_SESSION['access_level'] == 2)
@@ -31,7 +31,7 @@ else
                     <table class="table">
                         <tbody>
                             <?php
-                            if ($_SESSION[username] === "Manager") {
+                            if ($_SESSION['access_level'] == 2) {
                                 $query = "SELECT uid, name FROM tasks";
                             } else {
                                 $query = "SELECT uid, name FROM tasks WHERE EXISTS 
@@ -61,7 +61,6 @@ else
         </div>
 
         <!-- sidebar -->
-<?php include './sidebar.php'; ?>
         <!-- content -->
     </div>
 

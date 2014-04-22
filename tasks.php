@@ -28,12 +28,18 @@ class tasks {
     
     function getTasks_JSON($user_uid,$project_uid){
         $rows = array();
+        $others = array();
         if($_SESSION['access_level'] ==2){
-        $result = $this->db->query('select * from tasks where project_uid='.$_POST['project_uid']);
+        $result = $this->db->query('select t1.*,t2.last_name from tasks t1, users t2 where t1.project_uid='.$_POST['project_uid'].' and t1.assignee=t2.uid');
         }else{
-            $result = $this->db->query('select * from tasks where uid in (select task_uid from user_tasks where user_uid='.$user_uid.')');
+            $result = $this->db->query('select t1.*,t2.last_name,t2.uid as user_uid,t3.status as project_st from tasks t1, project t3, users t2 where t1.uid in (select task_uid from user_tasks where user_uid='.$user_uid.') and t1.project_uid=t3.uid and t2.uid='.$user_uid);
+            
         }
         while ($row = mysqli_fetch_array($result)) {
+            $other_people = $this->db->query('select t1.* from users t1, user_tasks t2 where t2.task_uid='.$row["uid"].' and t1.uid = t2.user_uid');
+            while ($row2 = mysqli_fetch_array($other_people)){
+                $others[] = $row2;
+            }
             $rows[] =$row;
         }        
         
@@ -54,7 +60,9 @@ class tasks {
             $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
             $json_data.='"end":"'.$date->format("Y-m-d").'",';
             $json_data.='"title":"'.$row['name'].'",';
-            $json_data.='"description":"",';
+            
+            $json_data.='"description":"'.$row['last_name'].''
+                    . '<br/>Task status:'.$row['status'].'",';
             $json_data.='"isDuration":false';
             $json_data.='}';
         }

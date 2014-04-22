@@ -1,7 +1,12 @@
 <?php
 session_start();
+error_reporting(E_ERROR | E_PARSE);
+$return_url = "/";
 if (!$_SESSION['userLoggedin']) {
-    header("Location: login.php?return_url=Timeline.php");
+    if (isset($this)) {                
+                $return_url = $this->return;                
+            }
+    header("Location: login.php?return_url=".$return_url);
 }
 ?>
 <!DOCTYPE html>
@@ -14,11 +19,15 @@ if (!$_SESSION['userLoggedin']) {
         <meta name="description" content="">
         <meta name="author" content="">
 
-        <title><?php if (isset($this)) {
-    echo $this->title;
-} else {
-    echo "Timeline";
-} ?></title>
+        <title><?php
+            if (isset($this)) {
+                if(isset($this->title)){
+                echo $this->title;
+                }
+            } else {
+                echo "Timeline";
+            }
+            ?></title>
 
         <link rel="stylesheet" type="text/css" media="screen" href="css/coolblue.css" />
         <link rel="stylesheet" type="text/css" media="screen" href="css/droppy.css" />        
@@ -32,18 +41,18 @@ if (!$_SESSION['userLoggedin']) {
         <script src="js/scrollToTop.js"></script>
         <script src="js/jquery.droppy.js"></script>
 
-<?php
-if (isset($this)) {
-    echo $this->head;
-}
-?>
+        <?php
+        if (isset($this)) {
+            echo $this->head;
+        }
+        ?>
     </head>
 
     <body id="top" <?php
-          if (isset($this)) {
-              echo $this->body;
-          }
-?>>
+    if (isset($this)) {        
+        echo $this->body;        
+    }
+    ?>>
         <script>
             $(function() {
                 $('.navi').droppy();
@@ -55,50 +64,64 @@ if (isset($this)) {
 
                 <nav>
                     <ul class="navi">
-                        <li <?php if (isset($this)) {
-              if ($this->current_page == 1) {
-                  echo 'id="current"';
-              };
-          } ?>><a href="Timeline.php">Timeline</a><span></span>
+                        <li <?php
+                        if (isset($this)) {                            
+                                if ($this->current_page == 1) {
+                                    echo 'id="current"';
+                                }                            
+                        }
+                        ?>><a href="Timeline.php">Timeline</a><span></span>
 
                         </li>
-                        <li <?php if (isset($this)) {
-              if ($this->current_page == 2) {
-                  echo 'id="current"';
-              };
-          } ?>><a href="projects.php">Projects</a><span></span>
+                        <?php if($_SESSION['access_level'] == 2){ ?>
+                        <li <?php
+                        if (isset($this)) {                            
+                                if ($this->current_page == 2) {
+                                    echo 'id="current"';                            
+                            }
+                        }
+                        ?>><a href="#">Projects</a><span></span>
                             <ul>
                                 <li><a href='createProject.php'>Create Project</a></li>
                                 <li><a href='viewProjects.php'>View Projects</a></li>
                                 <li><a href='updateProject.php'>Update Projects</a></li>
                             </ul>
                         </li>
-                        <li <?php if (isset($this)) {
-              if ($this->current_page == 3) {
-                  echo 'id="current"';
-              };
-          } ?>><a href="#">Tasks</a><span></span>
+                        <?php }?>
+                        <li <?php
+                        if (isset($this)) {                            
+                                if ($this->current_page == 3) {
+                                    echo 'id="current"';                            
+                            }
+                        }
+                        ?>><a href="#">Tasks</a><span></span>
                             <ul>
-                                <li><a href='createTask.php'>Create Task</a></li>
+                                <?php if($_SESSION['access_level'] == 2){ ?><li><a href='createTask.php'>Create Task</a></li><?php } ?>
                                 <li><a href='viewTasks.php'>View tasks</a></li>
                                 <li><a href='updateTask.php'>Update tasks</a></li>
                             </ul>
                         </li>
-                        <li <?php if (isset($this)) {
-              if ($this->current_page == 4) {
-                  echo 'id="current"';
-              };
-          } ?>><a href="">Profile</a><span></span></li>
-                        <li <?php if (isset($this)) {
-              if ($this->current_page == 5) {
-                  echo 'id="current"';
-              };
-          } ?>><a href="#">Manage Employee</a><span></span>
+                        <li <?php
+                        if (isset($this)) {                            
+                                if ($this->current_page == 4) {
+                                    echo 'id="current"';                            
+                            }
+                        }
+                        ?>><a href="">Profile</a><span></span></li>
+                        <?php if($_SESSION['access_level'] == 2){ ?>
+                        <li  <?php
+                        if (isset($this)) {                            
+                                if ($this->current_page == 5) {
+                                    echo 'id="current"';
+                                }                            
+                        }
+                        ?>><a href="#">Manage Employee</a><span></span>
                             <ul>
                                 <li><a href='createAccount.php'>Create Account</a></li>
                                 <li><a href=''>Manage Employee</a></li>
                             </ul>
-                        </li>                        
+                        </li> 
+                        <?php } ?>
                     </ul>
                 </nav>
 

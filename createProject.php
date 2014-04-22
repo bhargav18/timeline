@@ -8,7 +8,7 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
  <script src="/js/createProject.js"></script>';
 
-$header = new Template("./header.php", array(head => $head, title => "Title"));
+$header = new Template("./header.php", array("current_page"=>2,"head" => $head, "title" => "Create Project"));
 $header->out();
 ?>
 
@@ -64,7 +64,7 @@ $header->out();
         </div>
 
         <!-- sidebar -->
-        <?php include './sidebar.php'; ?>
+    
         <!-- content -->
     </div>
 
