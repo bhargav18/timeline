@@ -8,12 +8,14 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
   
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script src="ModalPopupWindow.js" type="text/javascript"></script>
-  <script src="js/createTask.js" type="text/javascript"></script>';
+    <script src="js/updateTask1.js" type="text/javascript"></script>
+  
+  ';
 
-$header = new Template("./header.php", array("current_page"=>3,"head" => $head, "title" => "Create a task"));
+$header = new Template("./header.php", array('head' => $head, 'title' => "Create a task"));
 $header->out();
 
-$nameErr = $descErr = $projErr = $sdateErr = $edateErr = $empErr = $tName = $tDesc = $tProjId = $tSDate = $tEDate = $tSts = $tPrio = "";
+$nameErr = $descErr = $sdateErr = $edateErr = $empErr = $tName = $tDesc = $tProjId = $tSDate = $tEDate = $tSts = $tPrio = "";
 //Getting Error Messages
 if (!empty($_SESSION['nameError'])) {
     $nameErr = $_SESSION['nameError'];
@@ -22,10 +24,6 @@ if (!empty($_SESSION['nameError'])) {
 if (!empty($_SESSION['tDescError'])) {
     $descErr = $_SESSION['tDescError'];
     $_SESSION['tDescError'] = "";
-}
-if (!empty($_SESSION['tProjError'])) {
-    $projErr = $_SESSION['tProjError'];
-    $_SESSION['tProjError'] = "";
 }
 if (!empty($_SESSION['tSDateError'])) {
     $sdateErr = $_SESSION['tSDateError'];
@@ -70,7 +68,6 @@ if (!empty($_SESSION['tPrio'])) {
     $_SESSION['tPrio'] = "";
 }
 //Save Emp old value NEED
-
 ?>
 
 <!-- content-wrap -->
@@ -110,7 +107,7 @@ if (!empty($_SESSION['tPrio'])) {
                         <select class='form-control' name='proj_id' style='width: 165px'>
                             <option></option>
                             <?php
-                            $sql = "SELECT uid, name FROM project";
+                            $sql = "SELECT uid, name FROM project WHERE deleted='N'";
 
                             $result = $db->query($sql);
 
@@ -123,7 +120,6 @@ if (!empty($_SESSION['tPrio'])) {
                             }
                             ?>       
                         </select>
-                        <span class="err"><?php echo isset($projErr) ? $projErr : ""; ?></span>
                     </div>
                     
 
@@ -140,14 +136,14 @@ if (!empty($_SESSION['tPrio'])) {
 
                     <div>
                         <label for="exampleInputEmail1">End Date</label>
-                        <input type="text" class="form-control" name="enddate" id="to" value='<?php echo $tEDate; ?>'
+                        <input class="form-control" name="enddate" id="to" value='<?php echo $tEDate; ?>'
                                placeholder="MM/DD/YYYY" readonly="true">
                         <span class="err"><?php echo $edateErr; ?></span>
                     </div>
                     
 
 
-                    <!-- Status - may be deleted -->
+                    <!-- Status -->
 
                     <div class='form-group'>
                         <label for='exampleInputEmail1'>Status</label>	
@@ -219,7 +215,7 @@ if (!empty($_SESSION['tPrio'])) {
         </div>
 
         <!-- sidebar -->
-        
+        <? include './sidebar.php'; ?>
         <!-- content -->
     </div>
 

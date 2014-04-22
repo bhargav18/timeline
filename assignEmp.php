@@ -39,6 +39,9 @@ $db = $mysql->getDBConfig();
       	<option  value='all'>All</option>
 		<option value='programmer'>Programmer</option>
 		<option value='developer'>Developer</option>
+        <option value='analyst' >Analyst</option>
+        <option value='reporter' >Reporter</option>
+        <option value='designer'>Designer</option>
   		<option value='tester'>Tester</option>
     </select>
 	</form>

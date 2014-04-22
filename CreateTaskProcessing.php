@@ -8,60 +8,64 @@
 	if(!empty($_POST))
  	{
  	$error = 0;
+ 	$holdName = $holdDesc = $holdSD = $holdED = $holdEmp = $holdEmpNames = "";
     if(empty($_POST['taskname'])){
     	$_SESSION['nameError'] = "Task name is required"; $error = 1;}
     else if (!preg_match("/^[-a-zA-Z0-9 ]*$/",$_POST['taskname'])){
-     	$_SESSION['nameError'] = "Only letters and white space allowed"; $error = 1;}
+     	$_SESSION['nameError'] = "Only letters and white space allowed"; $error = 1;
+     	$holdName = $_POST['taskname'];
+    }
      else
      {
      	$_SESSION['nameError']="";
+     	$holdName = $_POST['taskname'];
      }
     if(empty($_POST['descr'])){
     	$_SESSION['tDescError'] = "Task description is required"; $error = 1;}
     else if (!preg_match("/^[\n-()*,'.a-zA-Z0-9 ]*$/",$_POST['descr']))
     {
      	$_SESSION['tDescError'] = "Only letters and white space allowed"; $error = 1;
+     	$holdDesc = $_POST['descr'];
     }
      else
      {
      	$_SESSION['tDescError']="";
+     	$holdDesc = $_POST['descr'];
      }
-    if (empty($_POST["proj_id"]))
-    	{$_SESSION['tProjError'] = "Project is required"; $error = 1;}
-    else
-    {
-  		$_SESSION['tProjError'] = "";
-    }
     if (empty($_POST['startdate'])){
-     	$_SESSION['sDateError'] = "Start Date is required"; $error = 1;}
+     	$_SESSION['tSDateError'] = "Start Date is required"; $error = 1;}
     else
     {
     	$_SESSION['tSDateError'] = "";
+    	$holdSD = $_POST['startdate'];
     }
     if (empty($_POST['enddate'])){
      	$_SESSION['tEDateError'] = "End Date is required"; $error = 1;}
     else
     {
     	$_SESSION['tEDateError'] = "";
+    	$holdED = $_POST['enddate'];
     }
     if (empty($_POST['emp'])){
     	$_SESSION['empError'] = "Please assign task to employees"; $error = 1;}
     else
     {
        	$_SESSION['empError'] = "";
+       	$holdEmp = $_POST['emp'];
+       	$holdEmpNames = $_POST['empName'];
     }
 
     	if ($error == 1)
     	{
     		$_SESSION['tName'] = $_POST['taskname'];
-    		$_SESSION['tDesc']= $_POST['descr'];
-    		$_SESSION['tProjId'] = $_POST['proj_id'];
-    		$_SESSION['tSDate']= $_POST['startdate'];
-    		$_SESSION['tEDate']= $_POST['enddate'];
+    		$_SESSION['tDesc']= $holdDesc;
+    		$_SESSION['tProjId'] = !empty($_POST['proj_id'])?$_POST['proj_id']:"";
+    		$_SESSION['tSDate']= $holdSD;
+    		$_SESSION['tEDate']= $holdED;
     		$_SESSION['tSts'] = $_POST['status'];
     		$_SESSION['tPrio'] = $_POST['priority'];
-    		$_SESSION['uEmpId'] = $_POST['emp'];
-    		$_SESSION['uEmpName']= $_POST['empName'];
+    		$_SESSION['uEmpId'] = $holdEmp;
+    		$_SESSION['uEmpName']= $holdEmpNames;
     		header("Location:createTask.php");
     		exit;
     	}
@@ -105,7 +109,6 @@
 		}
 		header("Location:viewTasks.php");
 		exit;
-		
  	}
  	else
  	{

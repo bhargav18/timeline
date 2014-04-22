@@ -1,5 +1,6 @@
 <?php
-if (!empty($_POST) || !empty($_SESSION['tId'])):
+session_start();
+if ((!empty($_POST)&&!empty($_POST['radio'])) || !empty($_SESSION['tId'])):
 include './Template.php';
 include './DBConfig.php';
 $mysql = new DBConfig();
@@ -8,9 +9,12 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
   
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script src="ModalPopupWindow.js" type="text/javascript"></script>
-  <script src="js/updateTask.js" type="text/javascript"></script>';
+    <script src="js/updateProject.js"> type="text/javascript"> </script>
+  
+  <script src="js/updateTask.js" type="text/javascript"></script>
+  ';
 
-$header = new Template("./header.php", array("current_page"=>3,"head" => $head, "title" => "Update Task"));
+$header = new Template("./header.php", array(head => $head, title => "Update Task"));
 $header->out();
 
 $id = $descErr = $sdateErr = $edateErr = $empErr = "";
@@ -119,16 +123,16 @@ if (!empty($_SESSION['uEmpError']))
                     <textarea name="descr" cols="50" rows="10"><?php echo $desc; ?></textarea>
                     <span class="err"><?php echo $descErr; ?></span>
                     <label>Project: <?php echo $proj ?></label>                    
+                    
                     <!-- dates -->
-
                     <label for="exampleInputEmail1">Start Date</label>
-                    <input readonly="true" value="<?php echo date("m/d/Y", strtotime($sDate)); ?>" id="from" name="startdate" class="form-control hasDatepicker">
-                    <!--  Start date <span class="error"><?php //echo $sdateErr;?></span>-->
+                    <input readonly="true" value="<?php echo date("m/d/Y", strtotime($sDate)); ?>" id="from" name="startdate">
+                    <!--  Start date <span class="error"--><?php //echo $sdateErr;?><!--  /span>-->
                     <label for="exampleInputEmail1">End Date</label>
-                    <input type="text" readonly="true" value="<?php echo date("m/d/Y", strtotime($eDate)); ?>" id="to" name="enddate" class="form-control hasDatepicker">
+                    <input  readonly="true" value="<?php echo date("m/d/Y", strtotime($eDate)); ?>" id="to" name="enddate" >
                     <span class="err"><?php echo $edateErr;?></span>
+                    
                     <!-- Status -->
-
                     <label for="exampleInputEmail1">Status</label>
                     <select style="width: 165px" name="status" class="form-control">
                         <option value="Open" <?php echo($sts === "Open")?"selected":""; ?>>Open</option>
@@ -136,8 +140,8 @@ if (!empty($_SESSION['uEmpError']))
                         <option value="Completed" <?php echo ($sts === "Completed")?"selected":""; ?>>Completed</option>
                         <option selected="" value="Closed" <?php echo ($sts === "Closed")?"selected":""; ?>>Closed</option>
                     </select>
+                    
                     <!-- Priority -->
-
                     <label for="exampleInputEmail1">Priority</label>	
                     <select style="width: 165px" name="priority" class="form-control">
                         <option selected="" value="High" <?php echo ($prio === "High")?"selected":""; ?>>High</option>
@@ -173,7 +177,8 @@ if (!empty($_SESSION['uEmpError']))
 	    }
 	    else
 	    {
-	    $query = "SELECT first_name, last_name FROM users WHERE EXISTS	(SELECT user_uid FROM user_tasks WHERE users.uid = user_tasks.user_uid and task_uid like '$selectedTask')";
+	    $query = "SELECT first_name, last_name FROM users WHERE EXISTS	
+	    	(SELECT user_uid FROM user_tasks WHERE users.uid = user_tasks.user_uid and task_uid like '$selectedTask')";
 		$result= $db->query($query);
 		$i=0;
 		while ($row = mysqli_fetch_row($result))

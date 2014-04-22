@@ -1,4 +1,7 @@
 <?php
+session_start();
+if ((!empty($_POST)&&!empty($_POST['radio'])) || !empty($_SESSION['pId']))
+{
     include './Template.php';
     include './DBConfig.php';
     $mysql = new DBConfig();
@@ -7,12 +10,11 @@
     $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
   
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  <script src="/js/updateProject.js"></script>
+  <script src="js/updateProject.js"> type="text/javascript"> </script>
 ';
-    $header = new Template("./header.php", array("current_page"=>2,"head" => $head, "title" => "Update Project"));
+    $header = new Template("./header.php", array(head => $head, title => "Update Project"));
     $header->out();
-if (!empty($_POST) || !empty($_SESSION['pId']))
-{
+    
 $id = $descErr = $edateErr ="";
 
 if( !empty($_SESSION['pId']))
@@ -106,7 +108,7 @@ if (!empty($_SESSION['uPEDateError']))
 
 	<div>
 	  <label for="exampleInputEmail1">End Date</label>
-      <input type="text" class="form-control" name="enddate" id="to" value='<?php echo date("m/d/Y", strtotime($eDate)); ?>' readonly="true"></input>
+      <input class="form-control" name="enddate" id="to" value='<?php echo date("m/d/Y", strtotime($eDate)); ?>' readonly="true"></input>
       <span class="err"><?php echo $edateErr;?></span>
      </div>
 
@@ -139,7 +141,6 @@ if (!empty($_SESSION['uPEDateError']))
 
   </form>   		
 <?php 		
-		
 }
 else
 {

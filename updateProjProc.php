@@ -10,13 +10,14 @@
 	if ($_POST['update']) 
  	{
  		$error = 0;
+ 		$holdDesc = $holdED = "";
     if(empty($_POST['descr'])){
     	$_SESSION['uPDescErr'] = "Project description is required"; $error=1;}
     else if (!preg_match("/^[\n-()*,'.a-zA-Z0-9 ]*$/",$_POST['descr'])){
      	$_SESSION['uPDescErr'] = "Only letters and white space allowed"; $error=1;}
      else
      {
-     	$_SESSION['uPDesc']= $_POST['descr'];
+     	$holdDesc= $_POST['descr'];
      	$_SESSION['uPDescErr']="";
      }
     if (empty($_POST['enddate'])){
@@ -25,7 +26,7 @@
     {	 $_SESSION['uPEDateError'] = "End Date can not be same or before the start date"; $error = 1;}
     else
     {
-    	$_SESSION['uPEDate']= $_POST['enddate'];
+    	$holdED = $_POST['enddate'];
     	$_SESSION['uPEDateError'] = "";
     }
 
@@ -34,6 +35,8 @@
     	$_SESSION['pId'] = $_POST[projId];
     	$_SESSION['uPSts'] = $_POST['status'];
     	$_SESSION['uPPrio'] = $_POST['priority'];
+    	$_SESSION['uPDesc']= $holdDesc;
+    	$_SESSION['uPEDate']= $holdED;
    		header("Location:updateProject.php");
    		exit;
    	}
@@ -72,12 +75,35 @@
 	elseif ($_POST['delete']) 
 	{
 		//Delete the project
-		$query5 = "UPDATE project SET `delete`='yes' WHERE uid like '".$_POST['projId']."'";
+		$query5 = "UPDATE project SET `deleted`='Y' WHERE uid like '".$_POST['projId']."'";
                 error_log( "UPDATE project SET `delete`='yes' WHERE uid like '".$_POST['projId']."'");
 			$db->query($query5);
-		$query5 = "UPDATE tasks SET delete='yes' WHERE project_uid like '".$_POST['projId']."'";
+		$query5 = "UPDATE tasks SET deleted='Y' WHERE project_uid like '".$_POST['projId']."'";
 			$db->query($query5);
-		//delete emp
+			
+		//delete emp and notify them
+		$query5 = "UPDATE user_tasks INNER JOIN tasks 
+				ON user_tasks.task_uid = tasks.uid and tasks.project_uid like '".$_POST['projId']."'
+				SET user_tasks.deleted='Y'";
+			$db->query($query5);
+		$query5 = "SELECT users.email FROM users
+				LEFT JOIN user_tasks ON users.uid = user_tasks.user_uid
+				LEFT JOIN tasks ON tasks.uid = user_tasks.task_uid
+				WHERE tasks.project_uid =  '2' '".$_POST['projId']."')";
+		$result= $db->query($query5);
+		while ($row = mysqli_fetch_row($result))
+		{
+			$to = $row[0];
+	        $subject = 'Task Update';
+	        $message = 'Project "'.$_POST['projId'].'" and all related tasks has been deleted';
+	                    
+	        $headers = 'From: test@example.com' . "\r\n" .
+	                    'Reply-To: webmaster@example.com' . "\r\n" .
+	                    'X-Mailer: PHP/' . phpversion();
+	
+	        mail($to, $subject, $message, $headers);
+		}
+			
 		header("Location:viewProjects.php");
  		exit;
 	}
