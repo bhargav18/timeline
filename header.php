@@ -83,8 +83,7 @@ if (!$_SESSION['userLoggedin']) {
                         ?>><a href="#">Projects</a><span></span>
                             <ul>
                                 <li><a href='createProject.php'>Create Project</a></li>
-                                <li><a href='viewProjects.php'>View Projects</a></li>
-                                <li><a href='updateProject.php'>Update Projects</a></li>
+                                <li><a href='viewProjects.php'>View Projects</a></li>                                
                             </ul>
                         </li>
                         <?php }?>
@@ -97,8 +96,7 @@ if (!$_SESSION['userLoggedin']) {
                         ?>><a href="#">Tasks</a><span></span>
                             <ul>
                                 <?php if($_SESSION['access_level'] == 2){ ?><li><a href='createTask.php'>Create Task</a></li><?php } ?>
-                                <li><a href='viewTasks.php'>View tasks</a></li>
-                                <li><a href='updateTask.php'>Update tasks</a></li>
+                                <li><a href='viewTasks.php'>View tasks</a></li>                                
                             </ul>
                         </li>
                         <li <?php
