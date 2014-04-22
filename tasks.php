@@ -30,7 +30,7 @@ class tasks {
         $rows = array();
         $others = array();
         if($_SESSION['access_level'] ==2){
-        $result = $this->db->query('select t1.* from tasks t1, project t2 where t1.uid in (select task_uid from user_tasks) and t1.project_uid='.$_GET['project'].' and t1.deleted="N"');
+        $result = $this->db->query('select t1.* from tasks t1, project t2 where t1.uid in (select task_uid from user_tasks) and t1.project_uid='.$project_uid.' and t1.deleted="N"');
         }else{
             $result = $this->db->query('select t1.*,t2.last_name,t2.uid as user_uid,t3.status as project_st from tasks t1, project t3, users t2 where t1.uid in (select task_uid from user_tasks where user_uid='.$user_uid.') and t1.project_uid=t3.uid and t1.deleted="N" and t2.uid='.$user_uid);
             
