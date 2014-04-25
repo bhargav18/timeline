@@ -11,3 +11,6 @@ if($result){
 }
 ?>
 
+<script>console.log("sdfs");</script>
+
+

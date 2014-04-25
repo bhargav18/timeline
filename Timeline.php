@@ -1,7 +1,13 @@
 <?php
+session_start();
+if ($_SESSION['access_level'] == 2) {
+    if (!isset($_GET['project'])) {
+        header("Location: /Timeline_project.php");
+    }
+}
 include './tasks.php';
 include './Template.php';
-$head='<script src="/api/timeline-api.js?bundle=true" type="text/javascript"></script>
+$head = '<script src="/api/timeline-api.js?bundle=true" type="text/javascript"></script>
 
         <link rel="stylesheet" href="/css/styles.css" type="text/css" /> <!-- load your css after Timelines -->
         <script src="js/timeline.js" type="text/javascript"></script>
@@ -16,20 +22,55 @@ bottom:5px !important;
 }
         </style>';
 
-$header = new Template('./header.php',array("current_page"=>1,"head"=>$head,"current_page=>1","body"=>'onload="onLoad();" onresize="onResize();"'));
+$header = new Template('./header.php', array("current_page" => 1, "head" => $head, "current_page=>1", "body" => 'onload="onLoad();" onresize="onResize();"'));
 $header->out();
-if($_SESSION['access_level'] == 2){
-    if(!isset($_GET['project'])){
-        header("Location: /Timeline_project.php");
-    }
-}
-
 ?>
-        <div id="body">
-            <div id="tl" class="timeline-default" style="float: left;width: 100%;position: absolute;left: 0px;top: 70px;margin-bottom:80px;">
-            </div>
-        </div>
-<input type="hidden" id="project_uid" value="<?php if($_SESSION['access_level'] ==2){if(isset($_GET['project'])){echo $_GET['project'];}else{header('Location: Timeline_project.php');}}else{echo 1;}?>"/>
-<script>$("#tl").height($(document).height()-70);</script>
+<script>
+    Timeline.DefaultEventSource.Event.prototype.fillTime = function(elmt,
+            labeller) {
+        if (this._instant) {
+            if (this.isImprecise()) {
+
+                elmt.appendChild(elmt.ownerDocument.createTextNode(this.getProperty("start")));
+                elmt.appendChild(elmt.ownerDocument.createElement("br"));
+
+                elmt.appendChild(elmt.ownerDocument.createTextNode(this.getProperty("end")));
+            } else {
+
+                elmt.appendChild(elmt.ownerDocument.createTextNode(this.getProperty("start")));
+            }
+        } else {
+            if (this.isImprecise()) {
+                elmt.appendChild(elmt.ownerDocument.createTextNode(
+                        this.getProperty("start") + " ~ " +
+                        this.getProperty("latestStart")));
+                elmt.appendChild(elmt.ownerDocument.createElement("br"));
+                elmt.appendChild(elmt.ownerDocument.createTextNode(
+                        this.getProperty("earliestEnd") + " ~ " +
+                        this.getProperty("end")));
+            } else {
+
+                elmt.appendChild(elmt.ownerDocument.createTextNode(this.getProperty("start")));
+                elmt.appendChild(elmt.ownerDocument.createElement("br"));
+
+                elmt.appendChild(elmt.ownerDocument.createTextNode(this.getProperty("end")));
+            }
+        }
+    };
+</script>
+<div id="body">
+    <div id="tl" class="timeline-default" style="float: left;width: 100%;position: absolute;left: 0px;top: 70px;margin-bottom:80px;">
+    </div>
+</div>
+<input type="hidden" id="project_uid" value="<?php if ($_SESSION['access_level'] == 2) {
+    if (isset($_GET['project'])) {
+        echo $_GET['project'];
+    } else {
+        
+    }
+} else {
+    echo 1;
+} ?>"/>
+<script>$("#tl").height($(document).height() - 70);</script>
 </body>
 </html>
