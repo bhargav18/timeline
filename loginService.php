@@ -38,7 +38,7 @@ Thank you,
             echo ' 
 <script>
 alert("There is no such user associated with this email address");
-window.location = "/logout";
+window.location = "/logout.php";
 </script>
                     ';
         }
