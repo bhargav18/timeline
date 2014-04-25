@@ -42,7 +42,7 @@ class tasks {
             }
             $rows[] = $row;
         }
-if(count($row) == 0){return 0;}
+if(count($rows) == 0){return 0;}
 
         $json_data = '{
                         "events":[
