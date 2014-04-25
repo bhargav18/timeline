@@ -18,6 +18,11 @@ bottom:5px !important;
 
 $header = new Template('./header.php',array("current_page"=>1,"head"=>$head,"current_page=>1","body"=>'onload="onLoad();" onresize="onResize();"'));
 $header->out();
+if($_SESSION['access_level'] == 2){
+    if(!isset($_GET['project'])){
+        header("Location: /Timeline_project.php");
+    }
+}
 
 ?>
         <div id="body">
