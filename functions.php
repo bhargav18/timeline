@@ -144,6 +144,12 @@ if ($_SESSION['userLoggedin']) {
             header("Location: /");
         }
     }
+    if ($_GET['action'] == "reply_task") {
+        $stmt = $db->prepare('insert into replies(`user_uid`,`task_uid`,`text`,`time`) values(?,?,?,?)');
+        $stmt->bind_param('ddss',$_SESSION['user_uid'],$_POST['taskid'],$_POST['text'],date('Y-m-d H:i:s'));
+        $stmt->execute();
+        
+    }
 } else {
     echo 'Error';
 }

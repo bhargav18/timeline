@@ -74,3 +74,16 @@ function onResize() {
         }, 500);
     }
 }
+
+function reply_this(taskid){
+    if($('#reply_box').val() == ''){
+        alert("Please enter your reply.");
+        return false;
+    }    
+    $.ajax({
+        url:'functions.php?action=reply_task',
+        type:'post',
+        data:"taskid="+taskid+"&text="+$('#reply_box').val(),
+        success:function(response){$('#reply_box').val("");}
+    });
+    }

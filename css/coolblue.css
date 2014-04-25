@@ -885,7 +885,7 @@ aside .post-meta ul li a:hover { color: #CC3300; }
 /* Post Bottom */
 .post-bottom-section {
     position: relative;
-    margin: 10px 0 20px 0;
+    margin: 10px 0 20px -114px;
     padding: 0 0 20px 0;
     width: 726px;
     overflow: hidden;
