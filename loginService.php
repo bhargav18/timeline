@@ -61,10 +61,10 @@ window.location = "/logout.php";
             $_SESSION['address'] = $user->address;
             header("Location: " . $_GET['return_url']);
         } else {
-            echo ' <script>alert("User failed to login try again"); window.location = "/logout";</script>';
+            echo ' <script>alert("Invalid username and password."); window.location = "/logout.php";</script>';
         }
     } else {
-        echo ' <script>alert("There is no such user found, please enter valid username"); window.location = "/logout";</script>';
+        echo ' <script>alert("invalid username and password."); window.location = "/logout.php";</script>';
     }
 } else {
     
