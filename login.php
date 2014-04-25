@@ -30,8 +30,7 @@ if ($_SESSION['userLoggedin']) {
                 <label><a href="forget.php" class="rLink" tabindex="5">Forget your password?</a>Password</label>
                 <input type="password" placeholder="Password" name="password" tabindex="2" required>
             </fieldset>
-            <footer>
-                <label><input type="checkbox" name="keeploggedin" tabindex="3">Keep me logged in</label>
+            <footer>                
                 <input type="submit" class="btnLogin" value="Login" tabindex="4">
             </footer>
         </form>

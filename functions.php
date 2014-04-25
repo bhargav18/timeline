@@ -31,12 +31,13 @@ if ($_SESSION['userLoggedin']) {
     }
     if ($_GET['action'] == "get_tasks") {
         $tasks = new tasks();
-        $task_list = $tasks->getTasks_JSON($_SESSION['user_uid'], 1);
+        $task_list = $tasks->getTasks_JSON($_SESSION['user_uid'], $_POST['project_uid']);
         echo $task_list;
         return $task_list;
     }
     if ($_GET['action'] == "get_projects") {
         $result = $db->query('select * from project');
+        $none_results = $db->query('select * from tasks where project_uid=0');
         while ($row = mysqli_fetch_array($result)) {
             $rows[] = $row;
         }
@@ -63,7 +64,19 @@ if ($_SESSION['userLoggedin']) {
             $json_data.='"isDuration":false';
             $json_data.='}';
         }
-
+         while ($row = mysqli_fetch_array($none_results)) {
+            $json_data.=',{';
+            $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
+            $json_data.='"start":"'.$date->format("Y-m-d").'",';
+            $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
+            $json_data.='"end":"'.$date->format("Y-m-d").'",';
+            $json_data.='"title":"'.$row['name'].'",';
+            
+            $json_data.='"description":"'.$row['last_name'].''
+                    . '<br/>Task status:'.$row['status'].'",';
+            $json_data.='"isDuration":false';
+            $json_data.='}';
+        }
         $json_data = $json_data . ']}';
         echo $json_data;
     }
@@ -93,7 +106,7 @@ if ($_SESSION['userLoggedin']) {
 //$password = rand(0,25);					
             //mysql_select_db("homework_462",$link);
             $stmt = $db->prepare('insert into users(first_name,last_name,phone,role,email,employee_status,address) values(?,?,?,?,?,?,?)');
-            $stmt->bind_param('ssssss', $a, $b, $e, $f, $i, $j, $c);
+            $stmt->bind_param('sssssss', $a, $b, $e, $f, $i, $j, $c);
             $stmt->execute();
 
 
