@@ -34,17 +34,17 @@ class tasks {
         } else {
             $result = $this->db->query('select t1.*,t2.last_name,t2.uid as user_uid,t3.status as project_st from tasks t1, project t3, users t2 where t1.uid in (select task_uid from user_tasks where user_uid=' . $user_uid . ') and t1.project_uid=t3.uid and t1.deleted="N" and t2.uid=' . $user_uid);
         }
-        if ($result) {
-            while ($row = mysqli_fetch_array($result)) {
-                $other_people = $this->db->query('select t1.* from users t1, user_tasks t2 where t2.task_uid=' . $row["uid"] . ' and t1.uid = t2.user_uid');
-                while ($row2 = mysqli_fetch_array($other_people)) {
-                    $others[] = $row2;
-                }
-                $rows[] = $row;
+
+        while ($row = mysqli_fetch_array($result)) {
+            $other_people = $this->db->query('select t1.* from users t1, user_tasks t2 where t2.task_uid=' . $row["uid"] . ' and t1.uid = t2.user_uid');
+            while ($row2 = mysqli_fetch_array($other_people)) {
+                $others[] = $row2;
             }
+            $rows[] = $row;
+        }
+if(count($row) == 0){return 0;}
 
-
-            $json_data = '{
+        $json_data = '{
                         "events":[
 {
             "title": "",          
@@ -53,25 +53,22 @@ class tasks {
             "end":""
 }                        
 ';
-            foreach ($rows as $row) {
-                $json_data.=',{';
-                $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
-                $json_data.='"start":"' . $date->format("Y-m-d") . '",';
-                $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
-                $json_data.='"end":"' . $date->format("Y-m-d") . '",';
-                $json_data.='"title":"' . $row['name'] . '",';
+        foreach ($rows as $row) {
+            $json_data.=',{';
+            $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
+            $json_data.='"start":"' . $date->format("Y-m-d") . '",';
+            $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
+            $json_data.='"end":"' . $date->format("Y-m-d") . '",';
+            $json_data.='"title":"' . $row['name'] . '",';
 
-                $json_data.='"description":"' . $row['last_name'] . ''
-                        . '<br/>Task status:' . $row['status'] . '",';
-                $json_data.='"isDuration":false';
-                $json_data.='}';
-            }
-
-            $json_data = $json_data . ']}';
-            return $json_data;
-        }else{
-            return 0;
+            $json_data.='"description":"' . $row['last_name'] . ''
+                    . '<br/>Task status:' . $row['status'] . '",';
+            $json_data.='"isDuration":false';
+            $json_data.='}';
         }
+
+        $json_data = $json_data . ']}';
+        return $json_data;
     }
 
 }

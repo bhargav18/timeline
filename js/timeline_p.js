@@ -35,11 +35,15 @@ function onLoad() {
         url:"/functions.php?action=get_projects",
         type:"POST",
         data:"",
-        success:function (response){            
+        success:function (response){
+            if(response !==0){
             var json_data = jQuery.parseJSON(response);
             //alert(json_data);
             tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
             eventSource.loadJSON(json_data, ".")
+            } else {
+                alert("There is no Project.");
+            }
         }
     });
 //    tl.loadJSON("test2.js?" + (new Date().getTime()), function(json, url) {

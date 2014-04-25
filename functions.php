@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 error_reporting(E_ERROR | E_PARSE);
 include_once './DBConfig.php';
@@ -51,34 +52,38 @@ if ($_SESSION['userLoggedin']) {
             "end":""
 }                        
 ';
-        foreach ($rows as $row) {
-            $json_data.=',{';
-            $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
-            $json_data.='"start":"' . $date->format("Y-m-d") . '",';
-            $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
-            $json_data.='"end":"' . $date->format("Y-m-d") . '",';
-            $json_data.='"title":"' . $row['name'] . '",';
-            $json_data.='"description":"'
-                    . '<br/>Project status:' . $row['status'] . ''
-                    . '<br/><a href=\"/Timeline.php?project=' . $row['uid'] . '\">Tasks</a>  ",';
-            $json_data.='"isDuration":false';
-            $json_data.='}';
+        if (count($rows) == 0) {
+            echo 0;
+        } else {
+            foreach ($rows as $row) {
+                $json_data.=',{';
+                $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
+                $json_data.='"start":"' . $date->format("Y-m-d") . '",';
+                $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
+                $json_data.='"end":"' . $date->format("Y-m-d") . '",';
+                $json_data.='"title":"' . $row['name'] . '",';
+                $json_data.='"description":"'
+                        . '<br/>Project status:' . $row['status'] . ''
+                        . '<br/><a href=\"/Timeline.php?project=' . $row['uid'] . '\">Tasks</a>  ",';
+                $json_data.='"isDuration":false';
+                $json_data.='}';
+            }
+            while ($row = mysqli_fetch_array($none_results)) {
+                $json_data.=',{';
+                $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
+                $json_data.='"start":"' . $date->format("Y-m-d") . '",';
+                $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
+                $json_data.='"end":"' . $date->format("Y-m-d") . '",';
+                $json_data.='"title":"' . $row['name'] . '",';
+
+                $json_data.='"description":"' . $row['last_name'] . ''
+                        . '<br/>Task status:' . $row['status'] . '",';
+                $json_data.='"isDuration":false';
+                $json_data.='}';
+            }
+            $json_data = $json_data . ']}';
+            echo $json_data;
         }
-         while ($row = mysqli_fetch_array($none_results)) {
-            $json_data.=',{';
-            $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
-            $json_data.='"start":"'.$date->format("Y-m-d").'",';
-            $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
-            $json_data.='"end":"'.$date->format("Y-m-d").'",';
-            $json_data.='"title":"'.$row['name'].'",';
-            
-            $json_data.='"description":"'.$row['last_name'].''
-                    . '<br/>Task status:'.$row['status'].'",';
-            $json_data.='"isDuration":false';
-            $json_data.='}';
-        }
-        $json_data = $json_data . ']}';
-        echo $json_data;
     }
     if ($_GET['action'] == "create_account") {
 
