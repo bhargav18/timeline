@@ -48,7 +48,7 @@ window.location = "/logout.php";
     if ($user->isUser($username)) {
         $user->getUser($username, $_POST['password']);
         if ($user->isLoggedin) {
-            echo 'User logged in successfully';
+            //echo 'User logged in successfully';
             $_SESSION['userLoggedin'] = $user->isLoggedin;
             $_SESSION['first_name'] = $user->first_name;
             $_SESSION['last_name'] = $user->last_name;
