@@ -11,7 +11,7 @@ $db = $mysql->getDBConfig();
  */
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'forget') {
-        $result = $db->query('select * from users where email="' . $_POST['email'] . '"');
+        $result = $db->query('select * from users where email="' . $_POST['email'] . '" and username="'.$_POST['username'].'"');
         if (($row = mysqli_fetch_array($result)) != null) {
             $new_pass = md5(time());
             $to = $row['email'];
@@ -32,12 +32,12 @@ Thank you,
             $db->query('update users set password="' . $new_pass . '" where email="' . $row['email'] . '"');
             echo '<script>
                     alert("Your password is reset and sent to your email address.\n Please use that password to change your password");
-                    window.location = "/logout";
+                    window.location = "/logout.php";
                   </script>';
         } else {
             echo ' 
 <script>
-alert("There is no such user associated with this email address");
+alert("invalid username or password.");
 window.location = "/logout.php";
 </script>
                     ';

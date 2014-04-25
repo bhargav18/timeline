@@ -23,10 +23,12 @@ if ($_SESSION['userLoggedin']) {
     </head>
 
     <body>
-        <form name="forget" style="height: 180px;" class="box login" action="loginService.php?action=forget&return_url=login.php" method="post">
+        <form name="forget" style="height: 260px;" class="box login" action="loginService.php?action=forget&return_url=login.php" method="post">
             <fieldset class="boxBody">
                 <label>Email address</label>
-                <input type="text" tabindex="1" name="email" placeholder="emailaddress" required>                
+                <input type="text" tabindex="1" name="email" placeholder="Email address" required>                
+                <label>Username</label>
+                <input type="text" tabindex="1" name="username" placeholder="Username" required>                
             </fieldset>
             <footer>              
                 <input style="float: none;" type="submit" onclick="return ValidateEmail();" class="btnLogin" value="Login" tabindex="4">
