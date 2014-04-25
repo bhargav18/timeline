@@ -13,13 +13,11 @@ if (isset($_GET['action'])) {
     if ($_GET['action'] == 'forget') {
         $result = $db->query('select * from users where email="' . $_POST['email'] . '" and username="'.$_POST['username'].'"');
         if (($row = mysqli_fetch_array($result)) != null) {
-            $new_pass = md5(time());
+            $new_pass = randomPassword();
             $to = $row['email'];
             $subject = 'Password Reset';
             $message = 'Your password is reset to ' . $new_pass . '
                     
-
-Please use this password to reset your password in profiles.
 
 Thank you,
 
@@ -69,4 +67,13 @@ window.location = "/logout.php";
 } else {
     
 }
+            function randomPassword() {
+                //DebugBreak();
+                $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789!@#$%^&*()-_=+{}[]:;?/.,";
+                for ($i = 0; $i < 8; $i++) {
+                    $n = rand(0, strlen($alphabet) - 1);
+                    $pass .= $alphabet[$n];
+                }
+                return $pass;
+            }
 ?>
