@@ -31,7 +31,7 @@ if ($_SESSION['userLoggedin']) {
                 <input type="text" tabindex="1" name="username" placeholder="Username" required>                
             </fieldset>
             <footer>              
-                <input style="float: none;" type="submit" onclick="return ValidateEmail();" class="btnLogin" value="Login" tabindex="4">
+                <input style="float: none;padding-left: 90px;" type="submit" onclick="return ValidateEmail();" class="btnLogin" value="Submit" tabindex="4">
             </footer>
         </form>
     </body>

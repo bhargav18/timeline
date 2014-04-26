@@ -35,7 +35,7 @@ Thank you,
         } else {
             echo ' 
 <script>
-alert("invalid username or password.");
+alert("invalid username or email address.");
 window.location = "/logout.php";
 </script>
                     ';
