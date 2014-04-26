@@ -13,10 +13,10 @@ SESSION_START();
 		   mysql_select_db($database);
 */
 
-$Hold1 = $Hold2 = $Hold3 = $Hold4 = $Hold5 = $Hold6 = $Hold7 = $Hold8 = $Hold9 = $Hold10 = $Hold11 = $Hold12 = $Hold13 = "";
-function test_input($data)   // to test Email input!!
+$holdFName = $holdLName = $holdCity = $holdCountry = $holdState = $holdZipcode = $holdPhone = 
+$holdEmail = $holdAdd1 = $holdAdd2 = "";
+function test_input($data)   // to test input!!
 {
-   $data = trim($data);
    $data = stripslashes($data);
    $data = htmlspecialchars($data);
    return $data;
@@ -31,192 +31,136 @@ if (!empty($_POST))
     if(empty($_POST['fname'])){
     	$_SESSION['Errfname'] = "First name is required"; 
 		$error = 1;}	     
-     //$fname = test_input($_POST['fname']);
-     // check if name only contains letters and no whitespace
-     elseif (!preg_match("/^[a-zA-Z]*$/",test_input($_POST['fname'])))
+     elseif (!preg_match("/^[a-zA-Z ]*$/",test_input($_POST['fname'])))
        {
        $_SESSION['Errfname'] = "Only letters and no whitespace allowed"; 
        $error = 1;
        }
      else {
-		$hold1 = $_POST['fname'];
+		$holdFName = $_POST['fname'];
 		$_SESSION['Errfname'] = "";
 		}
 	
     if(empty($_POST['lname'])){
     	$_SESSION['Errlname'] = "Last name is required";
 		$error = 1;}		
-     //$lname = test_input($_POST['lname']);
-     // check if name only contains letters and no whitespace
-     elseif (!preg_match("/^[a-zA-Z]*$/",test_input($_POST['lname'])))
+     elseif (!preg_match("/^[a-zA-Z ]*$/",test_input($_POST['lname'])))
        {
        $_SESSION['Errlname'] = "Only letters and no whitespace allowed";
        $error = 1; 
        }
 	else {
-		$hold2 = $_POST['lname'];
+		$holdLName = $_POST['lname'];
 		$_SESSION['Errlname'] = "";
 		}
 	
 if (empty($_POST['email']))
      {$_SESSION['Erremail'] = "Email is required";
 	  $error = 1;}     
-     //$email = test_input($_POST['email']);
-     // check if e-mail address syntax is valid
-     elseif (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",test_input($_POST['email'])))
+     elseif (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",test_input(trim($_POST['email']))))
        {
        	$_SESSION['Erremail'] = "Invalid email format";
      	$error = 1;	   
        }
      else {
-	   $Hold3 = $_POST['email'];
+	   $holdEmail = $_POST['email'];
        $_SESSION['Erremail'] = "";	   
        }  
      
     if(empty($_POST['phone'])){
     	$_SESSION['Errphone'] = "Phone is required"; 
 		$error = 1;} 
-		//$phone = test_input($_POST['phone']);
-		// check if only numbers and no whitespaces
-	elseif (!preg_match("/^[0-9]*$/",test_input($_POST['phone'])))
-	 {
-     	$_SESSION['Errphone'] = "Please check phone number. Only numbers are allowed"; 
-		$error = 1;
-	}
 	else {
-		$Hold4 = $_POST['phone'];
+		$holdPhone = test_input($_POST['phone']);
 		$_SESSION['Errphone'] = "";
 		}
-	/*
-    if(empty($_POST['password'])){
-    	$_SESSION['Errpassword'] = "Password is required"; 
-		$error = 1;}
-		
-	    $password = test_input($_POST['password']);
-     // check if Password have a least minimal length of 8 characters and contains numeric characters
-    if (!preg_match("/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,30}$/",$password))
-       {
-       $_SESSION['Errpassword'] = "Password should have a least minimal length of 8 characters and contains alphanumeric characters"; 
-	   $error = 1;
-       }
-	else {
-		$Hold5 = $_POST['password'];
-		$_SESSION['Errpassword'] = "";
-		}	
-	*/
     if(empty($_POST['address1'])){
     	$_SESSION['Erraddress1'] = "Address 1 is required"; 
 		$error = 1;}
-		//$address1 = test_input($_POST['address1']);
-     // check if the address format is valid
-    elseif (!preg_match('/^[a-z0-9 .\-]+$/i',test_input($_POST['address1'])))
-       {
-       $_SESSION['Erraddress1'] = "Address is wrong"; 
-	   $error = 1;}
 	else {
-		$Hold6 = $_POST['address1'];
+		$holdAdd1 = test_input($_POST['address1']);
 		$_SESSION['Erraddress1'] = "";
 		}
-/* Need some work
-	if(empty($_Post['address2']))
+	if(!empty($_POST['address2']))
 	{
-		$_SESSION['Eaddress2'] = $_POST['address2'];
-		$_SESSION['Erraddress2'] = "";
+		$holdAdd2 = test_input($_POST['address2']);
 	}		
-	*/	
 	if(empty($_POST['city'])){
     	$_SESSION['Errcity'] = "City name is required";
 		$error = 1;}
-		//$city = test_input($_POST['city']);
-     // check if the city is valid
     elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['city'])))
        {
-       $_SESSION['Errcity'] = "City name is wrong"; 
+       $_SESSION['Errcity'] = "Only letters and whitespace are allowed"; 
 	   $error = 1;}	
 	else 
 	    {
-		$Hold7 = $_POST['city'];
+		$holdCity = $_POST['city'];
 		$_SESSION['Errcity'] = "";
 		}	
 		
     if(empty($_POST['zipcode'])){
     	$_SESSION['Errzipcode'] = "Zip code is required"; 
 		$error = 1;}
-		
-		//$zipcode = test_input($_POST['zipcode']);
-     // check if the address format is valid
-    elseif (!preg_match ('/^[0-9]{5}$/', test_input($_POST['zipcode'])))
-       {
-       $_SESSION['Errzipcode'] = "Zip code is wrong"; 
-	   $error = 1;}
 	else {
-		$Hold8 = $_POST['zipcode'];
+		$holdZipcode = test_input($_POST['zipcode']);
 		$_SESSION['Errzipcode'] = "";
 		}
 		
 	if(empty($_POST['state'])){
     	$_SESSION['Errstate'] = "State is required"; 
 		$error = 1;}
-		
-		//$state = test_input($_POST['state']);
-     // check if the state is valid
     elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['state'])))
        {
-       $_SESSION['Errstate'] = "State is wrong"; 
+       $_SESSION['Errstate'] = "Only letters and whitespace are allowed"; 
 	   $error = 1;}
 	else {
-		$Hold9 = $_POST['state'];
+		$holdState = $_POST['state'];
 		$_SESSION['Errstate'] = "";
 		}	
 		
 	if(empty($_POST['country'])){
     	$_SESSION['Errcountry'] = "Country name is required";
 		$error = 1;}	
-		
-		//$country = test_input($_POST['country']);
-     // check if the country is valid
     elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['country'])))
        {
-       $_SESSION['Errcountry'] = "Country name is wrong"; 
+       $_SESSION['Errcountry'] = "Only letters and whitespace are allowed"; 
 	   $error = 1;}
 	else 
 	    {
-		$Hold10 = $_POST['country'];
+		$holdCountry = $_POST['country'];
 		$_SESSION['Errcountry'] = "";
 		}
 	
 	if(	$error == 1)
 	{
 		$_SESSION['Eid']= $_POST['userid'];
-		$_SESSION['Efname']= $Hold1;
-		$_SESSION['Elname']= $Hold2;
-		$_SESSION['Eemail']= $Hold3;
-		$_SESSION['Ephone']= $Hold4;
-		$_SESSION['Epassword']= $Hold5;
+		$_SESSION['Efname']= $holdFName;
+		$_SESSION['Elname']= $holdLName;
+		$_SESSION['Eemail']= $holdEmail;
+		$_SESSION['Ephone']= $holdPhone;
 		$_SESSION['Erole'] = $_POST['userrole'];
 		$_SESSION['Estatus'] = $_POST['userstatus'];
-		$_SESSION['Eaddress1']= $Hold6;
-		$_SESSION['Eaddress2']= $_POST['address2'];
-		$_SESSION['Ecity']= $Hold7;
-		$_SESSION['Ezipcode']= $Hold8;
-		$_SESSION['Estate']= $Hold9;
-		$_SESSION['Ecountry']= $Hold10;
+		$_SESSION['Eaddress1']= $holdAdd1;
+		$_SESSION['Eaddress2']= $holdAdd2;
+		$_SESSION['Ecity']= $holdCit;
+		$_SESSION['Ezipcode']= $holdZipcode;
+		$_SESSION['Estate']= $holdState;
+		$_SESSION['Ecountry']= $holdCountry;
 		header("Location:manageUser.php");
 		exit;
 	}
 		$uid = $_POST['userid'];
-		$fname = $_POST['fname'];
-        $lname = $_POST['lname'];
-        $email = $_POST['email'];
-        //$password = $_POST['password'];
-        $address1 = $_POST['address1'];
-		$address2 = $_POST['address2'];
-		$city = $_POST['city'];
-		$zipcode = $_POST['zipcode'];
-		$state = $_POST['state'];
-		$country = $_POST['country'];
+		$fname = $holdFName;
+        $lname = $holdLName;
+        $email = $holdEmail;
+        $address1 = $holdAdd1;
+		$address2 = $holdAdd2;
+		$city = $holdCity;
+		$zipcode = $holdZipcode;
+		$state = $holdState;
+		$country = $holdCountry;
         $role = $_POST['userrole'];
-        $phone = $_POST['phone'];
+        $phone = $holdPhone;
         $status = $_POST['userstatus'];
 		
  		$query = "SELECT *
@@ -227,8 +171,7 @@ if (empty($_POST['email']))
 
     	$row= mysqli_fetch_row($result);
   		
-           $t=$row[0];
-        $query1 = $query2 = $query3 = $query4 = $query5 = $query6 = $query7 = $query8 = $query9 = $query10 = $query11 = $query12 = $query13 = "";
+        $t=$row[0];
 		if (!($email == $row[1]))
 		{
 			$query1 = "UPDATE users SET email='$email' where uid like '$uid'";

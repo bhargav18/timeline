@@ -14,8 +14,10 @@ SESSION_START();
 			$db->query($query);
 		}
 		
-		header("Location:viewTasks.php");
- 		exit;
+		$msg = 'Tasks status has been updated';
+        echo '<script type="text/javascript">alert("' . $msg . '");</script>';
+        echo "<script>setTimeout(\"location.href = 'viewTasks.php';\",1500);</script>";
+		exit;
  	}
  	else
  	{

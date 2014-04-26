@@ -44,20 +44,18 @@ $header->out();
 			 $eDate = $row[6];
 			 $proj = $row[7];
 ?>                        
-                    <label>Name</label>
-                    <label><?php echo $name ?></label>
-                    <label>Task ID</label>
-                    <label><?php echo $id ?></label>
+                    <label>Task ID:   <?php echo $id ?></label>
                     <input type="hidden" name="taskId" value="<?php echo $id ?>">
+                    
+                    <label>Name:   <?php echo $name ?></label>
+                    
+                    <label>Project:   <?php echo $proj ?></label>
+                    
                     <!-- Description -->
-
-                    <label for="exampleInputEmail1">Description</label>
+                    <label for="exampleInputEmail1">Description:</label>
                     <p><?php echo $desc; ?></p>
-                    <label>Project</label>
-                    <p><?php echo $proj ?></p>
 
                     <!-- dates -->
-
                     <label for="exampleInputEmail1">Start Date</label>
                     <p><?php echo date("m/d/Y", strtotime($sDate)); ?></p>
                     <label for="exampleInputEmail1">End Date</label>
@@ -97,27 +95,30 @@ $header->out();
                     <select disabled="" style="width: 165px" name="status" class="form-control">
                         <option value="<?php echo $sts ?>"><?php echo $sts ?></option>
                     </select>
-                    <label>You can not update task status</label>
 <?php 
 		}
 ?>
                     <!-- Priority -->
 
-                    <label for="exampleInputEmail1">Priority</label>	
-                    <p><?php echo $prio; ?></p>
-                    <label for="exampleInputEmail1">Assignees</label>
-                    <div id="divShowChildWindowValues">
-                        <dl id="empList">
-                            <?php 
-    	$query = "SELECT first_name, last_name FROM users WHERE EXISTS
+                    <label for="exampleInputEmail1">Priority:   <?php echo $prio; ?></label>	
+                    <label>Assignees</label>
+                    <table>
+<?php 
+//<div id="divShowChildWindowValues">
+ //   <dl id="empList">
+    	$query = "SELECT first_name, last_name, email FROM users WHERE EXISTS
 	    	(SELECT user_uid FROM user_tasks WHERE users.uid = user_tasks.user_uid and task_uid like '$selectedTask')";
      	$result= $db->query($query);
     	while ($row = mysqli_fetch_row($result))
 		{
-	    	echo "<p>" .$row[0] . " " . $row[1]. "</p>";
+	    	echo "<tr><td>" .$row[0] . " " . $row[1]. "</td><td>" . $row[2]. "</td><tr>";
 	    }
-?>  </dl></div>               
-                    <input type="submit" class="btn btn-info" value="Update Status" name="submit">
+//  </dl></div> 
+?>
+				</table>              
+                    <input type="submit" value="Update Status" name="submit" 
+                    	<?php echo ($sts === "Completed" || $sts === "Closed")? "disabled":""?>>
+                    <a href="viewTasks.php"><input type="button" value="Cancel" /></a>
                 </form>
             </div>
 

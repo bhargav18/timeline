@@ -221,6 +221,8 @@ if (!empty($_POST))
 		else
         echo "Update data successfully\n";
 		*/
+        header("Location:updateProfile.php");
+		exit;
 	}
 		
 	else

@@ -38,7 +38,7 @@ if ($_SESSION['userLoggedin']) {
     }
     if ($_GET['action'] == "get_projects") {
         $result = $db->query('select * from project');
-        $none_results = $db->query('select * from tasks where project_uid=0');
+        $none_results = $db->query('select * from tasks where ISNULL(`project_uid`)');
         while ($row = mysqli_fetch_array($result)) {
             $rows[] = $row;
         }

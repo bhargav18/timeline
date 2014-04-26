@@ -1,7 +1,4 @@
 <?php
-session_start();
-if ((!empty($_POST)&&!empty($_POST['radio'])) || !empty($_SESSION['pId']))
-{
     include './Template.php';
     include './DBConfig.php';
     $mysql = new DBConfig();
@@ -10,13 +7,15 @@ if ((!empty($_POST)&&!empty($_POST['radio'])) || !empty($_SESSION['pId']))
     $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
   
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  <script src="js/updateProject.js"> type="text/javascript"> </script>
+  <script src="/js/updateProject.js"></script>
 ';
-    $header = new Template("./header.php", array(head => $head, title => "Update Project"));
+    $header = new Template("./header.php", array("current_page"=>2,"head" => $head, "title" => "Update Project"));
     $header->out();
-    
+if (!empty($_POST) || !empty($_SESSION['pId']))
+{
 $id = $descErr = $edateErr ="";
 
+//Get error messages if any
 if( !empty($_SESSION['pId']))
 {
 	$id = $_SESSION['pId'];
@@ -31,6 +30,10 @@ if (!empty($_SESSION['uPEDateError']))
 {
 	$edateErr = $_SESSION['uPEDateError'];
 	$_SESSION['uPEDateError'] = "";
+}
+if (!empty($_SESSION['costErr'])) {
+    $costErr = $_SESSION['costErr'];
+    $_SESSION['costErr'] = "";
 }
 ?>
   <div id="content-wrap">
@@ -51,7 +54,7 @@ if (!empty($_SESSION['uPEDateError']))
   		else 
 			$selectedProj = $id;
 			
-        $query="SELECT name, uid, status, priority, description, start_date, end_date
+        $query="SELECT name, uid, status, priority, description, start_date, end_date, cost
         		FROM project WHERE uid like '$selectedProj'";
 		$result= $db->query($query);
   		$row= mysqli_fetch_row($result);
@@ -80,6 +83,13 @@ if (!empty($_SESSION['uPEDateError']))
 		}
 		else
 			$eDate = $row[6];
+		if (!empty($_SESSION['uPEDate']))
+		{
+			$pCost = $_SESSION['uPEDate'];
+			$_SESSION['uPEDate'] = "";
+		}
+		else
+			$pCost = $row[7];
 ?> 
 
 
@@ -108,7 +118,7 @@ if (!empty($_SESSION['uPEDateError']))
 
 	<div>
 	  <label for="exampleInputEmail1">End Date</label>
-      <input class="form-control" name="enddate" id="to" value='<?php echo date("m/d/Y", strtotime($eDate)); ?>' readonly="true"></input>
+      <input type="text" class="form-control" name="enddate" id="to" value='<?php echo date("m/d/Y", strtotime($eDate)); ?>' readonly="true"></input>
       <span class="err"><?php echo $edateErr;?></span>
      </div>
 
@@ -132,6 +142,13 @@ if (!empty($_SESSION['uPEDateError']))
 		<option value='Mid' <?php echo ($prio === "Mid")?"selected":""; ?>>Mid</option>
   		<option value='Low' <?php echo ($prio === "Low")?"selected":""; ?>>Low</option>
   </select>
+  
+                    <!-- Cost -->
+                        <label >Project Budget</label>
+                        <input type='text' class='form-control' name='cost' 
+                               value='<?php echo $pCost; ?>' placeholder='Enter project budget'  required/>
+                        <span class="error"><?php echo isset($costErr) ? $costErr : ""; ?></span>                    
+
 
 <br/>
 
@@ -141,6 +158,7 @@ if (!empty($_SESSION['uPEDateError']))
 
   </form>   		
 <?php 		
+		
 }
 else
 {

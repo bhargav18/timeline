@@ -23,12 +23,21 @@
     if (empty($_POST['enddate'])){
      	$_SESSION['uPEDateError'] = "End Date is required"; $error = 1;}
     else if (strtotime($_POST['enddate']) <= strtotime($_POST['startdate']))
-    {	 $_SESSION['uPEDateError'] = "End Date can not be same or before the start date"; $error = 1;}
+    {	 $_SESSION['uPEDateError'] = "End date can not be same or before the start date"; $error = 1;}
     else
     {
     	$holdED = $_POST['enddate'];
     	$_SESSION['uPEDateError'] = "";
     }
+ 	if (empty($_POST['cost']))
+	{	$_SESSION['pCostErr'] = "Project budget is required"; $error = 1;}
+	elseif (!preg_match("/^[0-9]*$/",$_POST['cost']))
+	{	$_SESSION['pCostErr'] = "Please enter numbers only"; $error = 1;}
+	else
+	{
+		$_SESSION['pCostErr'] = "";
+		$holdCost = $_POST['cost'];
+	}
 
     if ($error == 1)
     {
@@ -37,12 +46,13 @@
     	$_SESSION['uPPrio'] = $_POST['priority'];
     	$_SESSION['uPDesc']= $holdDesc;
     	$_SESSION['uPEDate']= $holdED;
+    	$_SESSION['cost'] = $holdCost;
    		header("Location:updateProject.php");
    		exit;
    	}
     else	
     {
-     	$sql= "SELECT status, priority, description FROM project WHERE uid like '".$_POST['projId']."'";
+     	$sql= "SELECT status, priority, description, cost FROM project WHERE uid like '".$_POST['projId']."'";
      	$result= $db->query($sql);
   		$row= mysqli_fetch_row($result);
      				$t = $row[0];
@@ -67,8 +77,15 @@
 					WHERE uid like '".$_POST['projId']."'";
 			$db->query($query5);
 		}
-		header("Location:viewProjects.php");
- 		exit;
+    	if (!($_POST['cost'] == $row[3]))
+		{
+			$query1 = "UPDATE project SET status='".$_POST['cost']."' WHERE uid like '".$_POST['projId']."'";
+                        $db->query($query1);
+		}
+		$msg = 'The project has been updated';
+        echo '<script type="text/javascript">alert("' . $msg . '");</script>';
+        echo "<script>setTimeout(\"location.href = 'viewProjects.php';\",1500);</script>";
+		exit;
     }
 	}
 	//Do we need to delete projects? or move tem to another table
@@ -103,9 +120,10 @@
 	
 	        mail($to, $subject, $message, $headers);
 		}
-			
-		header("Location:viewProjects.php");
- 		exit;
+		$msg = 'The project has been deleted';
+        echo '<script type="text/javascript">alert("' . $msg . '");</script>';
+        echo "<script>setTimeout(\"location.href = 'viewProjects.php';\",1500);</script>";
+		exit;
 	}
 	}
  	else

@@ -4,16 +4,7 @@ include './DBConfig.php';
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
 
-$head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
-  
-  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  <script src="ModalPopupWindow.js" type="text/javascript"></script>
-    <script src="js/updateTask1.js" type="text/javascript"></script>
-  
-  ';
-
-$header = new Template("./header.php", array('head' => $head, 'title' => "Create a task"));
-$header->out();
+session_start();
 
 $nameErr = $descErr = $sdateErr = $edateErr = $empErr = $tName = $tDesc = $tProjId = $tSDate = $tEDate = $tSts = $tPrio = "";
 //Getting Error Messages
@@ -68,6 +59,16 @@ if (!empty($_SESSION['tPrio'])) {
     $_SESSION['tPrio'] = "";
 }
 //Save Emp old value NEED
+$head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+  
+  <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+  <script src="ModalPopupWindow.js" type="text/javascript"></script>
+    <script src="js/updateTask3.js" type="text/javascript"></script>
+  
+  ';
+
+$header = new Template("./header.php", array('head' => $head, 'title' => "Create a task"));
+$header->out();
 ?>
 
 <!-- content-wrap -->
@@ -80,7 +81,7 @@ if (!empty($_SESSION['tPrio'])) {
         <div id="main">
 
             <div class="main-content">
-                <form method='post' action='CreateTaskProcessing.php' id='mainForm'>
+                <form method='post' action='createTaskProcessing.php' id='mainForm'>
 
                     <div class="form-group">
                         <label for='exampleInputEmail1'>Task Name</label>

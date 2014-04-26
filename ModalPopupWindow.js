@@ -122,13 +122,13 @@ function ModalPopupWindow() {
         var divOverlay = document.getElementById("bailwal_div_overlay");
         var iframe = document.getElementById("bailwal_overlay_frame");
         var tdOverLay = document.getElementById("bailwal_td_overlay");
-        tdOverLay.style.height = divFrameParent.offsetHeight - 20 + "px";
-        tdOverLay.style.width = divFrameParent.offsetWidth - 2 + "px";
+        //tdOverLay.style.height = divFrameParent.offsetHeight - 20 + "px";
+        //tdOverLay.style.width = divFrameParent.offsetWidth - 2 + "px";
         document.getElementById("bailwal_span_loading").style.display = "";
         document.getElementById("bailwal_div_message").style.display = "none";
-        //iframe.src = url;
-        iframe.style.height = divFrameParent.offsetHeight - 60 + "px";
-        iframe.style.width = divFrameParent.offsetWidth - 2 + "px";
+        iframe.src = url;
+        iframe.style.height = divFrameParent.offsetHeight - 90 + "px";
+        iframe.style.width = divFrameParent.offsetWidth - 35 + "px";
         setTimeout("bailwal_modalPopupWindow.LoadUrl('" + url + "')", 1);
         if (onCloseCallBack != null && onCloseCallBack != '') {
             onPopUpCloseCallBack = onCloseCallBack;

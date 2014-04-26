@@ -11,13 +11,19 @@
  	{
  		$error = 0;
  		$holdDesc = $holdSD = $holdED = $holdEmpNames = "";
+ 		
+ 	function test_input($data)   // to test input
+	{
+	   $data = stripslashes($data);
+	   $data = htmlspecialchars($data);
+	   return $data;
+	}
+	
     if(empty($_POST['descr'])){
     	$_SESSION['uTDescErr'] = "Task description is required"; $error=1;}
-    else if (!preg_match("/^[\n-()*,'.a-zA-Z0-9 ]*$/",$_POST['descr'])){
-     	$_SESSION['uTDescErr'] = "Only letters and white space allowed"; $error=1;}
      else
      {
-     	$holdDesc= $_POST['descr'];
+     	$holdDesc= test_input($_POST['descr']);
      	$_SESSION['uTDescErr']="";
      }
      /* Start date
@@ -55,7 +61,7 @@
     	$_SESSION['uTEDate']= $holdED;
     	$_SESSION['uEmpName']= $holdEmpNames;
     	$_SESSION['uEmpId']= (empty($_POST['emp'])?"":$_POST['emp']);
-   		header("Location:UpdateTask.php");
+   		header("Location:updateTask.php");
    		exit;
    	}
     	
@@ -76,7 +82,7 @@
 		}
 		if (!($_POST['descr'] == $row[2]))
 		{
-			$query3 = "UPDATE tasks SET description='".$_POST['descr']."' WHERE uid like '".$_POST['taskId']."'";
+			$query3 = "UPDATE tasks SET description='".$holdDesc."' WHERE uid like '".$_POST['taskId']."'";
 			$db->query($query3);
 		}
 		/* Start date
@@ -92,29 +98,32 @@
 			$query5 = "UPDATE tasks SET end_date = STR_TO_DATE('".$_POST['enddate']."','%m/%d/%Y') WHERE uid like '".$_POST['taskId']."'";
 			$db->query($query5);
 		}
-	 	if (!empty($_POST['emp']))
+	 	
+		//Employee adding and notifications
+	 	$sql4 = "SELECT user_uid FROM user_tasks WHERE task_uid like '".$_POST['taskId']."'";
+	 	$result = $db->query($sql4);
+	 	$oldEmp = array();
+	 	$currentEmpArr = array(); 
+	 	$i=0;
+		while ($row= mysqli_fetch_row($result))
+		{
+			$currentEmpArr[$i] = $row[0];
+			$i++;
+		}
+		
+		if (!empty($_POST['emp']))
 	 	{
 	 		$updatedEmpArr = array();
 	 		$updatedEmpArr = $_POST['emp'];
-	 		$sql4 = "SELECT user_uid FROM user_tasks WHERE task_uid like '".$_POST['taskId']."'";
-	 		$result = $db->query($sql4);
-	 		$oldEmp = array();
-	 		$newEmpArr =  array();
-	 		$removedArr = array();
-	 		$currentEmpArr = array(); 
-	 		$i=0;
-			while ($row= mysqli_fetch_row($result))
-			{
-				$currentEmpArr[$i] = $row[0];
-				$i++;
-			}
+			$newEmpArr =  array();
+			$removedArr = array();
 			$oldEmp = array_intersect($currentEmpArr, $updatedEmpArr);
 			$newEmpArr = array_diff($updatedEmpArr, $oldEmp);
 			$removedArr = array_diff($currentEmpArr, $oldEmp);
 			
 	 		//Notify removed employees
 	 		foreach ($removedArr as $emp)
-	 		{	echo "<br>Dele ".$emp;
+	 		{	
 	 			$sql3 ="SELECT email FROM users WHERE uid like '$emp'";
 				$result = $db->query($sql3);
 				$row= mysqli_fetch_row($result);
@@ -141,7 +150,7 @@
 			
 			//Notify new employee
 	 		foreach ($newEmpArr as $emp)
-	 		{	echo "<br>New ".$emp;
+	 		{	
 	 			$sql3 ="SELECT email FROM users WHERE uid like '$emp'";
 				$result = $db->query($sql3);
 				$row= mysqli_fetch_row($result);
@@ -155,44 +164,29 @@
 	
 	            mail($to, $subject, $message, $headers);
 			}
-	 	
-	 		//Notify current employee
-	 		foreach ($oldEmp as $emp)
-	 		{	echo "<br>Old  ".$emp;
-	 			$sql3 ="SELECT email FROM users WHERE uid like '$emp'";
-				$result = $db->query($sql3);
-				$row= mysqli_fetch_row($result);
-				$to = $row[0];
-	            $subject = 'Task Update';
-	            $message = 'Task '.$_POST['taskId'].' has been updated';
-	                    
-	            $headers = 'From: test@example.com' . "\r\n" .
-	                    'Reply-To: webmaster@example.com' . "\r\n" .
-	                    'X-Mailer: PHP/' . phpversion();
-	
-	            mail($to, $subject, $message, $headers);
-			}
-			/*
-			$sql3 ="SELECT email FROM users WHERE EXISTS
-	    			(SELECT user_uid FROM user_tasks WHERE users.uid = user_tasks.user_uid and task_uid like '$selectedTask')";
-			$result = $db->query($sql3);
-			while ($row= mysqli_fetch_row($result))
-			{
-				$to = $row[0];
-	            $subject = 'Task Update';
-	            $message = 'Task '.$selectedTask.' has been updated';
-	                    
-	            $headers = 'From: test@example.com' . "\r\n" .
-	                    'Reply-To: webmaster@example.com' . "\r\n" .
-	                    'X-Mailer: PHP/' . phpversion();
-	
-	            mail($to, $subject, $message, $headers);
-			}*/
 	 	}
+		else
+			$oldEmp = $currentEmpArr;	
+	 	//Notify current employee
+	 	foreach ($oldEmp as $emp)
+	 	{	
+	 		$sql3 ="SELECT email FROM users WHERE uid like '$emp'";
+			$result = $db->query($sql3);
+			$row= mysqli_fetch_row($result);
+			$to = $row[0];
+            $subject = 'Task Update';
+            $message = 'Task '.$_POST['taskId'].' has been updated';
+                    
+            $headers = 'From: test@example.com' . "\r\n" .
+                    'Reply-To: webmaster@example.com' . "\r\n" .
+                    'X-Mailer: PHP/' . phpversion();
+            mail($to, $subject, $message, $headers);
+		}
 			
-	    
-		//header("Location:viewTasks.php");
- 		//exit;
+		$msg = 'The task has been updated';
+        echo '<script type="text/javascript">alert("' . $msg . '");</script>';
+        echo "<script>setTimeout(\"location.href = 'viewTasks.php';\",1500);</script>";
+		exit;
 	}
 	elseif ($_POST['delete']) 
 	{
@@ -200,8 +194,10 @@
 			$db->query($query1);
 		$query2 = "DELETE FROM user_tasks WHERE task_uid like '".$_POST['taskId']."'";
 			$db->query($query2);
-		header("Location:viewTasks.php");
- 		exit;
+		$msg = 'The task has been deleted';
+        echo '<script type="text/javascript">alert("' . $msg . '");</script>';
+        echo "<script>setTimeout(\"location.href = 'viewTasks.php';\",1500);</script>";
+		exit;
 	}
  	}
  	else

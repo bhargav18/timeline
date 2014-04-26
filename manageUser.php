@@ -256,13 +256,8 @@ else
   <option value="Inactive" <?php echo ($status === "Inactive")?"selected":"";?>>Inactive</option>
 </select>
 
-
-
-
-
-
 <input name="update" type="submit" value="Update User">
-
+<a href="viewUsers.php"><input type="button" value="Cancel" /></a>
 </form>
 
                     </div>
@@ -283,7 +278,7 @@ else
 include './footer.php';
 }else 
 {
-	header("Location:viewUser.php");
+	header("Location:viewUsers.php");
 	exit;
 }
 ?>

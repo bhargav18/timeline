@@ -13,7 +13,6 @@ include './Template.php';
 $header = new Template("./header.php", array('head' => $head, 'title' => "View Tasks"));
 $header->out();
 $nextForm = "";
-$_SESSION['access_level'] = 2;
 if ($_SESSION['access_level'] == 2)
     $nextForm = "updateTask.php";
 else
