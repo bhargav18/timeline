@@ -56,7 +56,7 @@ function onLoad() {
                 tl = Timeline.create(document.getElementById("tl"), bandInfos, Timeline.HORIZONTAL);
                 eventSource.loadJSON(json_data, ".");
             } else {
-                alert("There is no tasks assigned to you.");
+                alert(custom_msg);
             }
         }
     });

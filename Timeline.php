@@ -7,7 +7,13 @@ if ($_SESSION['access_level'] == 2) {
 }
 include './tasks.php';
 include './Template.php';
-$head = '<script src="/api/timeline-api.js?bundle=true" type="text/javascript"></script>
+$custom_msg="";
+if($_SESSION['access_level'] == 2){
+    $custom_msg="<script>var custom_msg='There is no task for this project.'</script>";
+}else{
+    $custom_msg="<script>var custom_msg='There is no task assigned to you.'</script>";
+}
+$head = $custom_msg.'<script src="/api/timeline-api.js?bundle=true" type="text/javascript"></script>
 
         <link rel="stylesheet" href="/css/styles.css" type="text/css" /> <!-- load your css after Timelines -->
         <script src="js/timeline.js" type="text/javascript"></script>

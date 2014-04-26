@@ -62,7 +62,7 @@ if(count($rows) == 0){return 0;}
             $json_data.='"title":"' . $row['name'] . '",';
             $json_data.='"description":"' . $row['last_name'] . ''
                     . '<br/>Task status: ' . $row['status']
-                    . '<br/><span>reply to this task:</span><br/><textarea id=\"reply_box\" style=\"height:40px;width:300px;\"></textarea><input type=\"button\" value=\"Reply\" onclick=\"reply_this('.$row[uid].')\"/>' . '",';
+                    . '<br/><span>Comment to this task:</span><br/><textarea id=\"reply_box\" style=\"height:40px;width:300px;\"></textarea><input type=\"button\" value=\"Reply\" onclick=\"reply_this('.$row[uid].')\"/>' . '",';
             $json_data.='"isDuration":false';
             $json_data.='}';
         }
