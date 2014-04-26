@@ -69,17 +69,17 @@ if ($_SESSION['userLoggedin']) {
                 $json_data.='}';
             }
             while ($row = mysqli_fetch_array($none_results)) {
-                $json_data.=',{';
-                $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
-                $json_data.='"start":"' . $date->format("Y-m-d") . '",';
-                $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
-                $json_data.='"end":"' . $date->format("Y-m-d") . '",';
-                $json_data.='"title":"' . $row['name'] . '",';
-
-                $json_data.='"description":"' . $row['last_name'] . ''
-                        . '<br/>Task status:' . $row['status'] . '",';
-                $json_data.='"isDuration":false';
-                $json_data.='}';
+                 $json_data.=',{';
+            $date = DateTime::createFromFormat("Y-m-d", $row["start_date"]);
+            $json_data.='"start":"' . $date->format("Y-m-d") . '",';
+            $date = DateTime::createFromFormat("Y-m-d", $row["end_date"]);
+            $json_data.='"end":"' . $date->format("Y-m-d") . '",';
+            $json_data.='"title":"' . $row['name'] . '",';
+            $json_data.='"description":"' . $row['last_name'] . ''
+                    . '<br/>Task status: ' . $row['status']
+                    . '<br/><span>Comment to this task:</span><br/><textarea id=\"reply_box\" style=\"height:40px;width:300px;\"></textarea><input type=\"button\" value=\"Comment\" onclick=\"reply_this('.$row[uid].')\"/>' . '",';
+            $json_data.='"isDuration":false';
+            $json_data.='}';
             }
             $json_data = $json_data . ']}';
             echo $json_data;
