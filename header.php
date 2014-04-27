@@ -105,7 +105,8 @@ if (!$_SESSION['userLoggedin']) {
                                     echo 'id="current"';                            
                             }
                         }
-                        ?>><a href="">Profile</a><span></span></li>
+                        ?>><a href="updateProfile.php">Profile</a><span></span>                        
+                        </li>
                         <?php if($_SESSION['access_level'] == 2){ ?>
                         <li  <?php
                         if (isset($this)) {                            
@@ -113,10 +114,10 @@ if (!$_SESSION['userLoggedin']) {
                                     echo 'id="current"';
                                 }                            
                         }
-                        ?>><a href="#">Manage Employee</a><span></span>
+                        ?>><a href="#">Employees</a><span></span>
                             <ul>
                                 <li><a href='createAccount.php'>Create Account</a></li>
-                                <li><a href=''>Manage Employee</a></li>
+                                <li><a href='viewUsers.php'>View Employee</a></li>
                             </ul>
                         </li> 
                         <?php } ?>

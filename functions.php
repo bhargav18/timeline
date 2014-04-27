@@ -150,6 +150,57 @@ if ($_SESSION['userLoggedin']) {
         $stmt->execute();
         
     }
+    if($_GET['action'] == "download_this"){
+       
+$count = 0;
+
+$sqlquery = "select * from tasks" ;
+$result = $db->query($sqlquery);
+$count = mysqli_num_fields($result);
+
+for ($i = 0; $i < $count; $i++) {
+    $header .= mysqli_fetch_field_direct($result, $i)->name."\t";
+}
+
+while($row = mysqli_fetch_row($result))  {
+  $line = '';
+  foreach($row as $value)       {
+    if(!isset($value) || $value == "")  {
+      $value = "\t";
+    }   else  {
+
+      $value = str_replace('"', '""', $value);
+      $value = '"' . $value . '"' . "\t";
+    }
+    $line .= $value;
+  }
+  $data .= trim($line)."\n";
+}
+  $data = str_replace("\r", "", $data);
+
+
+if ($data == "") {
+  $data = "\nno matching records found\n";
+}
+
+$count = mysqli_num_fields($result);
+
+
+
+    header("Pragma: public");
+    header("Expires: 0");
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Content-Type: application/force-download");
+    header("Content-Type: application/octet-stream");
+    header("Content-Type: application/vnd.oasis.opendocument.spreadsheet");
+    header("Content-Disposition: attachment;filename=Tasks.xls");
+    header("Content-Transfer-Encoding: binary ");
+
+//echo $header."\n".$data;
+echo $header."\n".$data."\n";
+        
+        
+    }    
 } else {
     echo 'Error';
 }
