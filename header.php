@@ -119,7 +119,15 @@ if (!$_SESSION['userLoggedin']) {
                                 <li><a href='createAccount.php'>Create Account</a></li>
                                 <li><a href='viewUsers.php'>View Employee</a></li>
                             </ul>
-                        </li> 
+                        </li>
+                        <li <?php
+                        if (isset($this)) {                            
+                                if ($this->current_page == 6) {
+                                    echo 'id="current"';                            
+                            }
+                        }
+                        ?>><a href="#">Comments</a><span></span>                        
+                        </li>
                         <?php } ?>
                     </ul>
                 </nav>
