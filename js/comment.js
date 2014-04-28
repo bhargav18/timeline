@@ -10,7 +10,7 @@ function get_comments(){
         type:'post',
         data:'task_uid='+$('#tasks_list').val(),
         success:function(response){ 
-        if(response === "\n0"){
+        if(response === "\n0" || response === "0" ){
              $('div.post-bottom-section').html("<h2>There is no comment for this task</h2>");
         }else{            
             $('div.post-bottom-section').html(response);
