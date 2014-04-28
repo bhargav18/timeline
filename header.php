@@ -71,7 +71,11 @@ if (!$_SESSION['userLoggedin']) {
                                 }                            
                         }
                         ?>><a href="Timeline.php">Timeline</a><span></span>
-
+                            <?php if(!$this->comment_deactive){ ?>
+                            <ul>                                
+                                <li><a href='functions.php?action=download_tasks<?php if($_SESSION['access_level'] == 2){echo '&project='.$this->project;}?>'>Dowland</a></li>                                
+                            </ul>
+                            <?php }?>
                         </li>
                         <?php if($_SESSION['access_level'] == 2){ ?>
                         <li <?php
@@ -120,15 +124,18 @@ if (!$_SESSION['userLoggedin']) {
                                 <li><a href='viewUsers.php'>View Employee</a></li>
                             </ul>
                         </li>
+                        <?php } ?>
+                        <?php if(!$this->comment_deactive){?>
                         <li <?php
                         if (isset($this)) {                            
                                 if ($this->current_page == 6) {
                                     echo 'id="current"';                            
                             }
                         }
-                        ?>><a href="#">Comments</a><span></span>                        
+                        ?>><a href="comments.php<?php if($_SESSION['access_level'] == 2){echo '?project='.$this->project;}?>">Comments</a><span></span>                        
                         </li>
-                        <?php } ?>
+                        <?php }?>
+                        
                     </ul>
                 </nav>
 

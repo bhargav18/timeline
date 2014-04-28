@@ -41,6 +41,21 @@ if($_SESSION['access_level'] == 2){
 
 
                 </div>
+                        <div class="primary">
+
+                            <form id="commentform" method="post" action="functions.php?action=submit_comment" style="margin-left: -80px;">               
+                                <input type="hidden" id="taskid" name="taskid" value=""/>
+                    <div>
+						<label for="message">Your Message <span>*</span></label>
+						<textarea tabindex="4" cols="18" rows="10" name="text" id="message"></textarea>
+					</div>
+                    <div class="no-border">
+					    <input type="submit" tabindex="5" value="Submit Comment" class="button">
+					</div>
+
+               </form>
+
+            </div>
                         
                     </div>
 
@@ -48,7 +63,7 @@ if($_SESSION['access_level'] == 2){
                 </div>
 
                 <!-- sidebar -->
-<? include './sidebar.php'; ?>
+
                 <!-- content -->
             </div>
 

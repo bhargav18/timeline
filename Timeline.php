@@ -8,6 +8,7 @@ if ($_SESSION['access_level'] == 2) {
 include './tasks.php';
 include './Template.php';
 $custom_msg="";
+$comment = TRUE;
 if($_SESSION['access_level'] == 2){
     $custom_msg="<script>var custom_msg='There is no task for this project.'</script>";
 }else{
@@ -15,7 +16,7 @@ if($_SESSION['access_level'] == 2){
 }
 $head = $custom_msg.'<script src="/api/timeline-api.js?bundle=true" type="text/javascript"></script>
 
-        <link rel="stylesheet" href="/css/styles.css" type="text/css" /> <!-- load your css after Timelines -->
+        <link rel="stylesheet" href="/css/styles.css" tycommentpe="text/css" /> <!-- load your css after Timelines -->
         <script src="js/timeline.js" type="text/javascript"></script>
 
      <style type="text/css">
@@ -27,8 +28,12 @@ $head = $custom_msg.'<script src="/api/timeline-api.js?bundle=true" type="text/j
 bottom:5px !important;            
 }
         </style>';
+$project="";
+if($_SESSION['access_level'] == 2){
+$project = $_GET['project'];    
+}
 
-$header = new Template('./header.php', array("current_page" => 1, "head" => $head, "current_page=>1", "body" => 'onload="onLoad();" onresize="onResize();"'));
+$header = new Template('./header.php', array( "project"=>$project,"current_page" => 1, "head" => $head, "current_page=>1", "body" => 'onload="onLoad();" onresize="onResize();"'));
 $header->out();
 ?>
 <script>

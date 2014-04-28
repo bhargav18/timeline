@@ -150,11 +150,15 @@ if ($_SESSION['userLoggedin']) {
         $stmt->execute();
         
     }
-    if($_GET['action'] == "download_this"){
+    if($_GET['action'] == "download_tasks"){
        
 $count = 0;
+if($_SESSION['access_level'] == 2){
+    $sqlquery = "select * from tasks where project_uid=".$_GET['project'] ;
+}else{
+    $sqlquery = "select * from tasks where uid in(select task_uid from user_tasks where user_uid=".$_SESSION['user_uid'].")" ;
+}
 
-$sqlquery = "select * from tasks" ;
 $result = $db->query($sqlquery);
 $count = mysqli_num_fields($result);
 
@@ -200,7 +204,40 @@ $count = mysqli_num_fields($result);
 echo $header."\n".$data."\n";
         
         
-    }    
+    }
+    if($_GET['action'] == "get_comments"){
+        $result = $db->query('select t1.*,t2.first_name from replies t1, users t2  where t1.user_uid=t2.uid and task_uid='.$_POST['task_uid']);
+        if(mysqli_num_rows($result) != 0){
+            echo '                    <div class="primary">
+                        <ol class="commentlist">';
+        while(($reply = mysqli_fetch_array($result)) != NULL){
+            echo '          <li class="depth-1"> 
+                                <div class="comment-info">                                    
+                                    <cite>
+                                        <a href="#">'.$reply['first_name'].'</a> Says: <br>
+                                        <span class="comment-data">'.$reply['time'].'</span>
+                                    </cite>
+                                </div>
+                                <div class="comment-text">
+                                    <p>'.$reply['text'].'</p>                                    
+                                </div>
+                            </li>
+                            ';
+        }
+        echo '           </ol>
+                        <!-- /primary -->
+                    </div>';
+        }else{
+            echo '0';
+        }
+    }
+        if ($_GET['action'] == "submit_comment") {
+        $stmt = $db->prepare('insert into replies(`user_uid`,`task_uid`,`text`,`time`) values(?,?,?,?)');
+        $stmt->bind_param('ddss',$_SESSION['user_uid'],$_POST['taskid'],$_POST['text'],date('Y-m-d H:i:s'));
+        $stmt->execute();
+        header('Location:'.$_SERVER['HTTP_REFERER']);        
+    }
+    
 } else {
     echo 'Error';
 }
