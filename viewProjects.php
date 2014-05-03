@@ -8,7 +8,7 @@ session_start();
     $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">    
     <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>';
     
-    $header = new Template("./header.php", array(head => $head, title => "View Projects"));
+    $header = new Template("./header.php", array('head' => $head, 'title' => "View Projects",'return'=>"viewProjects.php",'current_page'=>2));
     $header->out();
   		
 ?>

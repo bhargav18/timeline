@@ -4,7 +4,7 @@ include './DBConfig.php';
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
 $head='<script src="js/comment.js"></script>';
-$header = new Template("./header.php", array(head => $head, title => "Title"));
+$header = new Template("./header.php", array('head' => $head, 'title' => "Title"));
 $header->out();
 if($_SESSION['access_level'] == 2){
     $tasks = $db->query('select * from tasks where project_uid='.$_GET['project'].'');

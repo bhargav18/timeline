@@ -4,16 +4,26 @@ SESSION_START();
     $mysql = new DBConfig();
     $db = $mysql->getDBConfig();
 
-$Hold1 = $Hold2 = $Hold3 = $Hold4 = $Hold5 = $Hold6 = $Hold7 = $Hold8 = $Hold9 = $Hold10 = $Hold11 = $Hold12 = $Hold13 = "";
-function test_input($data)   // to test Email input!!
+$uid = $email = $password = $address1 = $address2 = $city = $zipcode = $state = $country = $phone = "";
+
+        
+function test_input($data)   // to test input!!
 {
-   $data = trim($data);
    $data = stripslashes($data);
    $data = htmlspecialchars($data);
    return $data;
 }
 
-if (!empty($_POST))
+function isEmpty($data)   // to test input!!
+{
+    if (empty(trim($data)))
+        return true;
+    else
+        return false;
+}
+    
+
+if (!empty($_POST)){
 	
 	if ($_POST['update']) 
 	{
@@ -22,131 +32,114 @@ if (!empty($_POST))
 	if (empty($_POST['email']))
      {$_SESSION['Erremail'] = "Email is required";
 	  $error = 1;}     
-     // check if e-mail address syntax is valid
      elseif (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",test_input($_POST['email'])))
        {
        	$_SESSION['Erremail'] = "Invalid email format";
      	$error = 1;	   
        }
      else {
-	   $Hold3 = $_POST['email'];
+	   $email = $_POST['email'];
        $_SESSION['Erremail'] = "";	   
        }  
      
-    if(empty($_POST['phone'])){
+    if(isEmpty($_POST['phone'])){
     	$_SESSION['Errphone'] = "Phone is required"; 
 		$error = 1;} 
-		//$phone = test_input($_POST['phone']);
-		// check if only numbers and no whitespaces
-	elseif (!preg_match("/^[0-9]*$/",test_input($_POST['phone'])))
-	 {
-     	$_SESSION['Errphone'] = "Please check phone number. Only numbers are allowed"; 
-		$error = 1;
-	}
 	else {
-		$Hold4 = $_POST['phone'];
+		$phone = test_input($_POST['phone']);
 		$_SESSION['Errphone'] = "";
 		}
 		
-    if(empty($_POST['password'])){
+    if(isEmpty($_POST['password'])){
     	$_SESSION['Errpassword'] = "Password is required"; 
 		$error = 1;}
- // check if Password have a least minimal length of 8 characters and contains numeric characters
+ // check if Password have a minimal length of 8 characters and contains numeric characters
     elseif (!preg_match("/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,30}$/",$_POST['password']))
        {
-       $_SESSION['Errpassword'] = "Password should have a least minimal length of 8 characters and contains alphanumeric characters"; 
+       $_SESSION['Errpassword'] = "Password should have a minimal length of 8 characters and contains alphanumeric characters"; 
 	   $error = 1;
        }
 	else {
-		$Hold5 = $_POST['password'];
+		$password = $_POST['password'];
 		$_SESSION['Errpassword'] = "";
 		}	
-    if(empty($_POST['address1'])){
+    if(isEmpty($_POST['address1'])){
     	$_SESSION['Erraddress1'] = "Address 1 is required"; 
 		$error = 1;}
-    elseif (!preg_match('/^[a-z0-9 .\-]+$/i',test_input($_POST['address1'])))
-       {
-       $_SESSION['Erraddress1'] = "Address is wrong"; 
-	   $error = 1;}
 	else {
-		$Hold6 = $_POST['address1'];
+		$address1 = test_input($_POST['address1']);
 		$_SESSION['Erraddress1'] = "";
 		}
-/* Need some work
-	if(empty($_Post['address2']))
+	if(!isEmpty($_POST['address2']))
 	{
-		$_SESSION['Eaddress2'] = $_POST['address2'];
+		$address2 = $_POST['address2'];
 		$_SESSION['Erraddress2'] = "";
 	}		
-	*/	
-	if(empty($_POST['city'])){
+	if(isEmpty($_POST['city'])){
     	$_SESSION['Errcity'] = "City name is required";
 		$error = 1;}
     elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['city'])))
        {
-       $_SESSION['Errcity'] = "City name is wrong"; 
+       $_SESSION['Errcity'] = "Only letters and white space are allowed";
+		$city = $_POST['city'];
 	   $error = 1;}	
 	else 
 	    {
-		$Hold7 = $_POST['city'];
+		$city = $_POST['city'];
 		$_SESSION['Errcity'] = "";
 		}	
 		
-    if(empty($_POST['zipcode'])){
+    if(isEmpty($_POST['zipcode'])){
     	$_SESSION['Errzipcode'] = "Zip code is required"; 
 		$error = 1;}
-// check if the address format is valid
-    elseif (!preg_match ('/^[0-9]{5}$/', test_input($_POST['zipcode'])))
-       {
-       $_SESSION['Errzipcode'] = "Zip code is wrong"; 
-	   $error = 1;}
 	else {
-		$Hold8 = $_POST['zipcode'];
+		$zipcode = test_input($_POST['zipcode']);
 		$_SESSION['Errzipcode'] = "";
 		}
 		
-	if(empty($_POST['state'])){
+	if(isEmpty($_POST['state'])){
     	$_SESSION['Errstate'] = "State is required"; 
 		$error = 1;}
-     // check if the state is valid
     elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['state'])))
        {
-       $_SESSION['Errstate'] = "State is wrong"; 
+       $_SESSION['Errstate'] = "Only letters and white space are allowed"; 
 	   $error = 1;}
 	else {
-		$Hold9 = $_POST['state'];
+		$state = $_POST['state'];
 		$_SESSION['Errstate'] = "";
 		}	
 		
-	if(empty($_POST['country'])){
+	if(isEmpty($_POST['country'])){
     	$_SESSION['Errcountry'] = "Country name is required";
 		$error = 1;}	
      // check if the country is valid
     elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['country'])))
        {
-       $_SESSION['Errcountry'] = "Country name is wrong"; 
+       $_SESSION['Errcountry'] = "Only letters and white space are allowed";
+		$country = $_POST['country'];
 	   $error = 1;}
 	else 
 	    {
-		$Hold10 = $_POST['country'];
+		$country = $_POST['country'];
 		$_SESSION['Errcountry'] = "";
 		}
 	
 	if(	$error == 1)
 	{
-		$_SESSION['Eemail']= $Hold3;
-		$_SESSION['Ephone']= $Hold4;
-		$_SESSION['Epassword']= $Hold5;
-		$_SESSION['Eaddress1']= $Hold6;
-		$_SESSION['Eaddress2']= $_POST['address2'];
-		$_SESSION['Ecity']= $Hold7;
-		$_SESSION['Ezipcode']= $Hold8;
-		$_SESSION['Estate']= $Hold9;
-		$_SESSION['Ecountry']= $Hold10;
+		$_SESSION['Eemail']= $email;
+		$_SESSION['Ephone']= $phone;
+		$_SESSION['Epassword']= $password;
+		$_SESSION['Eaddress1']= $address1;
+		$_SESSION['Eaddress2']= $address2;
+		$_SESSION['Ecity']= $city;
+		$_SESSION['Ezipcode']= $zipcode;
+		$_SESSION['Estate']= $state;
+		$_SESSION['Ecountry']= $country;
 		header("Location:updateProfile.php");
 		exit;
 	}
 		$uid = $_POST['userid'];
+	/*
         $email = $_POST['email'];
         $password = $_POST['password'];
         $address1 = $_POST['address1'];
@@ -156,7 +149,8 @@ if (!empty($_POST))
 		$state = $_POST['state'];
 		$country = $_POST['country'];
         $phone = $_POST['phone'];
-		
+		*/
+        $updated = 0;
  		$query = "SELECT *
          FROM users
          INNER JOIN address
@@ -166,19 +160,29 @@ if (!empty($_POST))
     	$row= mysqli_fetch_row($result);
   		
            $t=$row[0];
-        $query1 = $query2 = $query3 = $query4 = $query5 = $query6 = $query7 = $query8 = $query9 = $query10 = $query11 = $query12 = $query13 = "";
-		if (!($email == $row[1]))
+           
+		if ($email != $row[1] || $password != $row[11] || $phone == $row[12])
 		{
-			$query1 = "UPDATE users SET email='$email' where uid like '$uid'";
-			$db->query($query1);
+			$stmt = $db->prepare("UPDATE users SET email = ?, password = ?, phone = ? WHERE uid like '$uid'"); 
+			$stmt->bind_param('sss', $email, $password, $phone);
+			$stmt->execute();
+			$updated = 1;
 		}
-     	if (!($address1 == $row[5]))
+     	if ($address1 != $row[5] || $address2 != $row[6] || $city != $row[7] || $zipcode != $row[8] || $state != $row[9] 
+     			|| $country != $row[10] )
 		{
-			$query5 = "UPDATE address SET address1='$address1' where user_uid like '$uid'";
-			$db->query($query5);
+			$stmt = $db->prepare("UPDATE address SET address1 = ?, address2 = ?, city = ?, zipcode = ?, state = ? WHERE user_uid like '$uid'"); 
+			$stmt->bind_param('sssss', $address1, $address2, $city, $zipcode, $state);
+			$stmt->execute();
+			$updated = 1;
+			
 		}
+		/*
 		if (!($address2 == $row[6]))
 		{
+		$stmt = $db->prepare("UPDATE user SET status = ?, priority = ?, description = ?, cost = ?, end_date = ? WHERE user_uid like '".$_POST['projId']."'"); 
+		$stmt->bind_param('sssss', $_POST['status'], $_POST['priority'], $holdDesc, $holdCost, $holdED);
+		$stmt->execute();
 			$query6 = "UPDATE address SET address2='$address2' where user_uid like '$uid'";
 			$db->query($query6);
 		}
@@ -189,6 +193,9 @@ if (!empty($_POST))
 		}
 		if (!($zipcode == $row[8]))
 		{
+		$stmt = $db->prepare("UPDATE user SET status = ?, priority = ?, description = ?, cost = ?, end_date = ? WHERE uid like '".$_POST['projId']."'"); 
+		$stmt->bind_param('sssss', $_POST['status'], $_POST['priority'], $holdDesc, $holdCost, $holdED);
+		$stmt->execute();
 			$query8 = "UPDATE address SET zipcode='$zipcode' where address.user_uid like '$uid'";
 			$db->query($query8);
 		}
@@ -204,24 +211,28 @@ if (!empty($_POST))
 		}
 		if (!($password == $row[11]))
 		{
+		$stmt = $db->prepare("UPDATE user SET status = ?, priority = ?, description = ?, cost = ?, end_date = ? WHERE uid like '".$_POST['projId']."'"); 
+		$stmt->bind_param('sssss', $_POST['status'], $_POST['priority'], $holdDesc, $holdCost, $holdED);
+		$stmt->execute();
 			$query11 = "UPDATE users SET users.password='$password' where user.uid like '$uid'";
 			$db->query($query11);
 		}
 		if (!($phone == $row[12]))
 		{
-			$query12 = "UPDATE user SET phone='$phone' where uid like '$uid'";
+		$stmt = $db->prepare("UPDATE user SET status = ?, priority = ?, description = ?, cost = ?, end_date = ? WHERE uid like '".$_POST['projId']."'"); 
+		$stmt->bind_param('sssss', $_POST['status'], $_POST['priority'], $holdDesc, $holdCost, $holdED);
+		$stmt->execute();
+			$query12 = "UPDATE user SET c='$phone' where uid like '$uid'";
 			$db->query($query12);
 		}
-		
-		/*
-		if(!($query1) || !($query2) || !($query3) || !($query4) || !($query5) || !($query6) || !($query7) || !($query8) || !($query9) || !($query10) || !($query11) || !($query12) || !($query13) )
-		{
-		die('Could not update data: ' . mysql_error());
-        }
-		else
-        echo "Update data successfully\n";
 		*/
-        header("Location:updateProfile.php");
+        
+    if ($updated == 1) {
+		$msg = 'Your profile has been updated';
+        echo '<script type="text/javascript">alert("' . $msg . '");</script>';
+    }
+	}
+        echo "<script>setTimeout(\"location.href = 'updateProfile.php';\",500);</script>";
 		exit;
 	}
 		

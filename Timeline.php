@@ -32,8 +32,11 @@ $project="";
 if($_SESSION['access_level'] == 2){
 $project = $_GET['project'];    
 }
-
-$header = new Template('./header.php', array( "project"=>$project,"current_page" => 1, "head" => $head, "current_page=>1", "body" => 'onload="onLoad();" onresize="onResize();"'));
+$comments = 0;
+if(isset($_GET['project'])){
+    $comments = 1;
+}
+$header = new Template('./header.php', array("comment_deactive"=>$comments,"project"=>$project,"current_page" => 1, "head" => $head, "current_page=>1", "body" => 'onload="onLoad();" onresize="onResize();"'));
 $header->out();
 ?>
 <script>

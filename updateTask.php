@@ -14,7 +14,7 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
   <script src="js/updateTask.js" type="text/javascript"></script>
   ';
 
-$header = new Template("./header.php", array(head => $head, title => "Update Task"));
+$header = new Template("./header.php", array('head' => $head, 'title' => "Update Task",'return'=>"updateTask.php",'current_page'=>3));
 $header->out();
 
 $id = $descErr = $sdateErr = $edateErr = $empErr = "";
@@ -102,14 +102,17 @@ if (!empty($_SESSION['uEmpError']))
 			
 		}
 		else*/
-			$sDate = $row[5];
+		$date = DateTime::createFromFormat('Y-m-d', $row[5]);
+    	$sDate = $date->format('m/d/Y');
 		if (!empty($_SESSION['uTEDate']))
 		{
 			$eDate = $_SESSION['uTEDate'];
 			$_SESSION['uTEDate'] = "";
 		}
-		else
-			$eDate = $row[6];
+		else{
+		$date = DateTime::createFromFormat('Y-m-d', $row[6]);
+    	$eDate = $date->format('m/d/Y');
+		}
 		$proj = $row[7];
 ?> 
                     
@@ -119,37 +122,54 @@ if (!empty($_SESSION['uEmpError']))
                     <label>Task Name: <?php echo $name ?></label>                    
                     <!-- Description -->
 
-                    <label for="exampleInputEmail1">Description</label>
+                    <label >Description</label>
                     <textarea name="descr" cols="50" rows="10"><?php echo $desc; ?></textarea>
                     <span class="err"><?php echo $descErr; ?></span>
-                    <label>Project: <?php echo $proj ?></label>                    
+                    
+                    <label>Project: <?php echo empty($proj)?"None":$proj ?></label> 
+                    <?php 
+                    if (!empty($proj)){
+                    $query="SELECT end_date FROM project WHERE uid like '$proj'";
+					$result= $db->query($query);
+  					$row= mysqli_fetch_row($result);
+  					$date = DateTime::createFromFormat('Y-m-d', $row[0]);
+    				$projED = $date->format('m/d/Y');
+                    echo '<input type="hidden" name="projED" value="'.$projED.'">';
+                    } 
+                    ?>                  
                     
                     <!-- dates -->
-                    <label for="exampleInputEmail1">Start Date</label>
-                    <input readonly="true" value="<?php echo date("m/d/Y", strtotime($sDate)); ?>"  name="startdate">
+                    <label >Start Date</label>
+                    <input readonly="true" value="<?php echo $sDate; ?>"  name="startdate">
                     <!--  Start date <span class="error"--><?php //echo $sdateErr;?><!--  /span>--> <!--id="from"-->
-                    <label for="exampleInputEmail1">End Date</label>
-                    <input  readonly="true" value="<?php echo date("m/d/Y", strtotime($eDate)); ?>" id="to" name="enddate" >
+                    <label >End Date</label>
+                    <input  readonly="true" value="<?php echo $eDate; ?>" id="to" name="enddate" >
                     <span class="err"><?php echo $edateErr;?></span>
                     
                     <!-- Status -->
-                    <label for="exampleInputEmail1">Status</label>
-                    <select style="width: 165px" name="status" class="form-control">
+                    <label >Status</label>
+                    <select style="width: 165px" name="status" >
                         <option value="Open" <?php echo($sts === "Open")?"selected":""; ?>>Open</option>
                         <option value="In Progress" <?php echo ($sts === "In Progress")?"selected":""; ?>>In Progress</option>
                         <option value="Completed" <?php echo ($sts === "Completed")?"selected":""; ?>>Completed</option>
-                        <option selected="" value="Closed" <?php echo ($sts === "Closed")?"selected":""; ?>>Closed</option>
+                        <?php 
+                        if ($sts === "Completed")
+                        	echo '<option value="Completetion Approved">Completetion Approved</option>';
+                        elseif ($sts === "Completetion Approved")
+                        	echo '<option value="Completetion Approved" selected >Completetion Approved</option>';
+                        	?>
+                        <option value="Closed" <?php echo ($sts === "Closed")?"selected":""; ?>>Closed</option>
                     </select>
                     
                     <!-- Priority -->
-                    <label for="exampleInputEmail1">Priority</label>	
-                    <select style="width: 165px" name="priority" class="form-control">
+                    <label >Priority</label>	
+                    <select style="width: 165px" name="priority" >
                         <option selected="" value="High" <?php echo ($prio === "High")?"selected":""; ?>>High</option>
                         <option value="Mid" <?php echo ($prio === "Mid")?"selected":""; ?>>Mid</option>
                         <option value="Low" <?php echo ($prio === "Low")?"selected":""; ?>>Low</option>
                     </select>
 
-                    <label for="exampleInputEmail1">Assignees</label>
+                    <label >Assignees</label>
                     <input type="button" value="Edit Assignees" onclick="ShowNewPage()" class="btn btn-info">
                     <div id="divShowChildWindowValues">
                         <dl id="empList">
@@ -191,7 +211,9 @@ if (!empty($_SESSION['uEmpError']))
 
                  </dl></div>
                     <input type="submit" class="btn btn-info" value="Update Task" name="update">
-                    <input type="submit" class="btn btn-info" value="Delete Task" name="delete">
+                    <input type="submit" class="btn btn-info" value="Delete Task" name="delete" 
+                    		onclick='return confirm("You are about to delete the task. Do you want to continue?");'>
+                    </br>
 					<a href="viewTasks.php"><input type="button" value="Cancel" /></a>
                 </form>
             </div>

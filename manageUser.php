@@ -8,7 +8,7 @@ include './DBConfig.php';
 $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = $Err6 = $Err7 = $Err8 = $Err9 = $Err10 = $Err11 = "";
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
-$head='<script src="js/manageUser.js"> type="text/javascript"> </script>
+$head='<script src="js/manageUser1.js"> type="text/javascript"> </script>
 ';
 $header = new Template("./header.php", array(head => $head, title => "Title"));
 $header->out();
@@ -41,6 +41,9 @@ if(!empty($_SESSION['Errzipcode'])){
 if(!empty($_SESSION['Errstate'])){
 	$Err9 = $_SESSION['Errstate'];
 	$_SESSION['Errstate']="";}
+    if(!empty($_SESSION['Errcountry'])){
+        $Err10 = $_SESSION['Errcountry'];
+        $_SESSION['Errstate']="";}
 if(!empty($_SESSION['Errphone'])){
 	$Err6 = $_SESSION['Errphone'];
     $_SESSION['Errphone']="";	
@@ -177,7 +180,7 @@ else
 	$_SESSION['Estatus']="";
 }
 else	
-    $status = $row['status'];
+    $status = $row['employee_status'];
 
 ?>
 
@@ -249,13 +252,14 @@ else
 <span class="error"><?php echo $Err6; ?></span>
 
 
-
 <label>Status</label>
-<select name="userstatus" id="userstatus"  <?php echo ($status == "Inactive")? 'onchange="myFunction(this.selectedIndex);"':"";?>>
+<select name="userstatus" id="userstatus"  
+		onchange="if(this.selectedIndex==0) {if(confirm('Do you want to activate the account?')){myFunction(this.selectedIndex);}
+			else { this.selectedIndex=1; }}else{$('input').prop('disabled',true);$('select').prop('disabled',true);}">
   <option value="Active" <?php echo ($status === "Active")?"selected":"";?>>Active</option>
   <option value="Inactive" <?php echo ($status === "Inactive")?"selected":"";?>>Inactive</option>
 </select>
-
+<br></br>
 <input name="update" type="submit" value="Update User">
 <a href="viewUsers.php"><input type="button" value="Cancel" /></a>
 </form>

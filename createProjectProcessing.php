@@ -15,18 +15,28 @@
 	   $data = htmlspecialchars($data);
 	   return $data;
 	}
-    if(empty($_POST['projname'])){
-    	$_SESSION['nameErr'] = "Project name is required"; $error = 1;}
+	
+ 	function isEmpty($data)   // to test input!!
+   {
+      if (empty(trim($data)))
+          return true;
+      else
+          return false;
+   }
+   
+    if(isEmpty($_POST['projname'])){
+    	$_SESSION['pNameErr'] = "Project name is required"; $error = 1;}
     else if (!preg_match("/^[-a-zA-Z0-9 ]*$/",$_POST['projname'])){
-     	$_SESSION['nameErr'] = "Only letters and white space allowed"; $error = 1;
+     	$_SESSION['pNameErr'] = "Only letters and white space allowed"; $error = 1;
      	$holdName = $_POST['projname'];
     }
      else
      {
-     	$_SESSION['nameErr']="";
+     	$_SESSION['pNameErr']="";
      	$holdName = $_POST['projname'];
      }
-    if(empty($_POST['descr'])){
+     
+    if(isEmpty($_POST['descr'])){
     	$_SESSION['pDescErr'] = "Project description is required"; $error = 1;}
      else
      {
@@ -53,8 +63,10 @@
     }
 	if (empty($_POST['cost']))
 	{	$_SESSION['pCostErr'] = "Project budget is required"; $error = 1;}
-	elseif (!preg_match("/^[0-9]*$/",$_POST['cost']))
-	{	$_SESSION['pCostErr'] = "Please enter numbers only"; $error = 1;}
+	elseif (!preg_match("/^[,.0-9]*$/",$_POST['cost']))
+	{	$_SESSION['pCostErr'] = "Please enter a valid cost"; 
+		$holdCost = $_POST['cost'];
+		$error = 1;}
 	else
 	{
 		$_SESSION['pCostErr'] = "";
@@ -87,7 +99,7 @@
                 $stmt = $db->prepare('insert into project( name,cost, description, start_date, end_date, est_end_date, status, priority)'
                         . 'VALUES (?,?,?,STR_TO_DATE(?,"%m/%d/%Y"),STR_TO_DATE(?,"%m/%d/%Y"),STR_TO_DATE(?,"%m/%d/%Y"),?,?)');
                
-                $stmt->bind_param('sdssssss',$_POST['projname'],$_POST['cost'],$holdDesc,$_POST['startdate'],$_POST['enddate'],$_POST['enddate'],$sts,$_POST['priority']);
+                $stmt->bind_param('ssssssss',$_POST['projname'],$holdCost,$holdDesc,$_POST['startdate'],$_POST['enddate'],$_POST['enddate'],$sts,$_POST['priority']);
                 $stmt->execute();
 
 		$msg = 'A new project has been created';

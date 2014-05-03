@@ -10,7 +10,7 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
 //  <script src="ModalPopupWindow.js" type="text/javascript"></script>'
 include './Template.php';
 
-$header = new Template("./header.php", array('head' => $head, 'title' => "View Tasks"));
+$header = new Template("./header.php", array('head' => $head, 'title' => "View Tasks",'return'=>"viewTasks.php",'current_page'=>3));
 $header->out();
 $nextForm = "";
 if ($_SESSION['access_level'] == 2)

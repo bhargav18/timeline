@@ -67,7 +67,7 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
   
   ';
 
-$header = new Template("./header.php", array('head' => $head, 'title' => "Create a task"));
+$header = new Template("./header.php", array('head' => $head, 'title' => "Create a task",'return'=>"createTask.php",'current_page'=>"3"));
 $header->out();
 ?>
 
@@ -83,92 +83,90 @@ $header->out();
             <div class="main-content">
                 <form method='post' action='createTaskProcessing.php' id='mainForm'>
 
-                    <div class="form-group">
                         <label for='exampleInputEmail1'>Task Name</label>
                         <input type='text' class='form-control' name='taskname' id='exampleInputEmail1' 
                                value='<?php echo isset($tName) ? $tName : ""; ?>' placeholder='Enter task name'  required/>
                         <span class="err"><?php echo isset($nameErr) ? $nameErr : ""; ?></span>
-                    </div>
                     
 
 
                     <!-- Description -->
 
-                    <div class='form-group'>
-                        <label for='exampleInputEmail1'>Task Description</label>
+                        <label>Task Description</label>
                         <textarea rows='10' cols='50' name='descr' ><?php echo isset($tDesc) ? $tDesc : ""; ?></textarea>
-                        <span class="err"><?php echo $descErr; ?></span>
-                    </div>
-                    
+                        <span class="err"><?php echo $descErr; ?></span>                    
 
                     <!-- Linking task to a project -->
 
-                    <div class='form-group'>
-                        <label for='exampleInputEmail1'>Project</label>	
-                        <select class='form-control' name='proj_id' style='width: 165px'>
+                        <label>Project</label>	
+                        <select name='proj_id' style='width: 165px'>
                             <option></option>
                             <?php
                             $sql = "SELECT uid, name FROM project WHERE deleted='N'";
 
                             $result = $db->query($sql);
-
+                            if (mysqli_num_rows($result) > 0) {
                             while ($row = mysqli_fetch_row($result)) {
-
                                 $id = $row[0];
-                                $name = $row[1];                                
+                                $name = $row[1]; 
+                                             
                                 echo ($tProjId == $id)? "<option selected value=".$id." >" . $name . "</option>":"<option value=".$id." >" . $name . "</option>";
-                                
-                            }
-                            ?>       
-                        </select>
-                    </div>
-                    
+    							
+                            }}
+                            ?>      
+                        </select>   
+                        <?php $sql = "SELECT uid, start_date, end_date, deleted FROM project WHERE deleted='N'";
+
+                            $result = $db->query($sql);
+                            if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_row($result)) {
+                                $id = $row[0];
+                                $date = DateTime::createFromFormat('Y-m-d', $row[1]);
+    							$sd = $date->format('m/d/Y');
+    							$date = DateTime::createFromFormat('Y-m-d', $row[2]);
+    							$ed = $date->format('m/d/Y');                               
+    							
+                                echo "<input type='hidden' name='s$id' value='$sd'/>";
+                                echo "<input type='hidden' name='e$id' value='$ed'/>";                                
+                            }}
+                            ?>                 
 
                     <!-- Set dates -->
 
-                    <div>
-                        <label for="exampleInputEmail1">Start Date</label>
-                        <input  class="form-control" name="startdate" id="from" value='<?php if ($tSDate) echo $tSDate; ?>'
-                                placeholder="MM/DD/YYYY" readonly="true">
-                        <span class="error"><?php echo $sdateErr; ?></span>
-                    </div>
                     
+                        <label>Start Date</label>
+                        <input  name="startdate" id="from" value='<?php if ($tSDate) echo $tSDate; ?>'
+                                placeholder="MM/DD/YYYY" readonly="true">
+                        <span class="error"><?php echo $sdateErr; ?></span>                    
 
-
-                    <div>
-                        <label for="exampleInputEmail1">End Date</label>
-                        <input class="form-control" name="enddate" id="to" value='<?php echo $tEDate; ?>'
+                        <label>End Date</label>
+                        <input name="enddate" id="to" value='<?php echo $tEDate; ?>'
                                placeholder="MM/DD/YYYY" readonly="true">
                         <span class="err"><?php echo $edateErr; ?></span>
-                    </div>
                     
 
 
                     <!-- Status -->
 
-                    <div class='form-group'>
                         <label for='exampleInputEmail1'>Status</label>	
                         <select class='form-control' name='status' id='sts' style='width: 165px'>
                             <option <?php echo ($tSts === "Default") ? "selected" : ""; ?> value='Default'>Default</option>
                             <option <?php echo ($tSts === "Closed") ? "selected" : ""; ?> value='Closed'>Closed</option>
 
-                        </select></div>
+                        </select>
                     
 
                     <!-- priority -->
-                    <div class='form-group'>
                         <label for='exampleInputEmail1'>Priority</label>	
                         <select class='form-control' name='priority' style='width: 165px'>
                             <option <?php echo ($tPrio === 'High') ? 'selected' : ''; ?> value='High'>High</option>
                             <option value='Mid' <?php echo ($tPrio === "Mid") ? "selected" : ""; ?>>Mid</option>
                             <option <?php echo ($tPrio === "Low") ? "selected" : ""; ?> value='Low'>Low</option>
                         </select>
-                    </div>
                     
 
                     <!-- Employees names -->
 
-                    <div class='form-group'>
                         <label for='exampleInputEmail1'>Assignees</label> 
 
                         <input type="button" class="btn btn-info" onclick="ShowNewPage()" value="Assign Employees" />
@@ -198,7 +196,6 @@ $header->out();
                                 ?>
                             </dl></span>
                         <span class="err"><?php echo $empErr; ?></span>
-                    </div>
                     
 
                     <!-- Buttons -->

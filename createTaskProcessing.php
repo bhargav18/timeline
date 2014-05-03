@@ -8,14 +8,22 @@
 	if(!empty($_POST))
  	{
  	$error = 0;
- 	$holdName = $holdDesc = $holdSD = $holdED = $holdEmp = $holdEmpNames = "";
+ 	$holdName = $holdDesc = $holdSD = $holdED = $holdEmp = $holdEmpNames = $projId = "";
  	function test_input($data)   // to test input
 	{
    		$data = stripslashes($data);
    		$data = htmlspecialchars($data);
    		return $data;
 	}
-    if(empty($_POST['taskname'])){
+	
+ 	function isEmpty($data)   
+   {
+      if (empty(trim($data)))
+          return true;
+      else
+          return false;
+   }
+    if(isEmpty($_POST['taskname'])){
     	$_SESSION['nameError'] = "Task name is required"; $error = 1;}
     else if (!preg_match("/^[-a-zA-Z0-9 ]*$/",$_POST['taskname'])){
      	$_SESSION['nameError'] = "Only letters and whitespaces are allowed"; $error = 1;
@@ -26,15 +34,26 @@
      	$_SESSION['nameError']="";
      	$holdName = $_POST['taskname'];
      }
-    if(empty($_POST['descr'])){
+    if(isEmpty($_POST['descr'])){
     	$_SESSION['tDescError'] = "Task description is required"; $error = 1;}
     else 
     {
      	$_SESSION['tDescError'] = "";
      	$holdDesc = test_input($_POST['descr']);
     }
+    if (!empty($_POST['proj_id']))
+    	$projId = $_POST['proj_id'];
+    	
     if (empty($_POST['startdate'])){
      	$_SESSION['tSDateError'] = "Start Date is required"; $error = 1;}
+    elseif (!empty($projId) && ($_POST['s'.$projId] > $_POST['startdate']))
+    {
+    	 $_SESSION['tSDateError'] = "Task cannot start before the project"; $error = 1;
+    }
+ 	elseif (!empty($projId) && ($_POST['e'.$projId] < $_POST['startdate']))
+    {
+    	 $_SESSION['tSDateError'] = "Task cannot start after the project ends"; $error = 1;
+    }
     else
     {
     	$_SESSION['tSDateError'] = "";
@@ -42,6 +61,14 @@
     }
     if (empty($_POST['enddate'])){
      	$_SESSION['tEDateError'] = "End Date is required"; $error = 1;}
+    elseif (!empty($projId) && $_POST['e'.$projId] < $_POST['enddate'])
+    {
+    	 $_SESSION['tEDateError'] = "Task cannot end after the project"; $error = 1;
+    }
+ 	elseif (!empty($projId) && ($_POST['s'.$projId] > $_POST['enddate']))
+    {
+    	 $_SESSION['tEDateError'] = "Task cannot end before the project starts"; $error = 1;
+    }
     else
     {
     	$_SESSION['tEDateError'] = "";
@@ -70,7 +97,10 @@
     		header("Location:createTask.php");
     		exit;
     	}
-	
+		$date = DateTime::createFromFormat('m/d/Y', $holdSD);
+    	$holdSD = $date->format('Y-m-d');
+    	$date = DateTime::createFromFormat('m/d/Y', $holdED);
+    	$holdED = $date->format('Y-m-d');
     	if ($_POST['status'] === "Default")
     	{
     		if (strtotime($_POST['enddate']) < strtotime($_POST['clientTime']))
@@ -84,24 +114,22 @@
 		if (!empty($_POST['proj_id']))
 		{
 	        $stmt = $db->prepare('insert into tasks( name, project_uid, description, start_date, end_date, est_end_date, status, priority)'
-	              . 'VALUES (?,?,?,STR_TO_DATE(?,"%m/%d/%Y"),STR_TO_DATE(?,"%m/%d/%Y"),STR_TO_DATE(?,"%m/%d/%Y"),?,?)');
+	              . 'VALUES (?,?,?,?,?,?,?,?)');
 	               
-	        $stmt->bind_param('sdssssss',$_POST['taskname'],$_POST['proj_id'],$holdDesc,$_POST['startdate'],$_POST['enddate'],$_POST['enddate'],$sts,$_POST['priority']);
+	        $stmt->bind_param('sdssssss',$_POST['taskname'],$_POST['proj_id'],$holdDesc,$holdSD,$holdED,$holdED,$sts,$_POST['priority']);
 		}
-		else
+		else // Individual task
 		{
 			$stmt = $db->prepare('insert into tasks( name, description, start_date, end_date, est_end_date, status, priority)'
-	              . 'VALUES (?,?,STR_TO_DATE(?,"%m/%d/%Y"),STR_TO_DATE(?,"%m/%d/%Y"),STR_TO_DATE(?,"%m/%d/%Y"),?,?)');
+	              . 'VALUES (?,?,?,?,?,?,?)');
 	               
-	        $stmt->bind_param('sssssss',$_POST['taskname'],$holdDesc,$_POST['startdate'],$_POST['enddate'],$_POST['enddate'],$sts,$_POST['priority']);
+	        $stmt->bind_param('sssssss',$_POST['taskname'],$holdDesc,$holdSD,$holdED,$holdED,$sts,$_POST['priority']);
 		}
 		$stmt->execute();
 		$holdTaskId =  mysqli_insert_id($db);                        
 		foreach ($_POST['emp'] as $emp)
 		{
                         
-//			$sql2="INSERT INTO user_tasks (task_uid, user_uid) VALUES ('$holdTaskId','$emp')";
-//			$db->query($sql2);
 			$stmt = $db->prepare('INSERT INTO user_tasks (task_uid, user_uid) VALUES (?,?)');
                         $stmt->bind_param('dd',$holdTaskId,$emp);
                         $stmt->execute();
@@ -122,7 +150,7 @@
 		$msg = 'A new task has been created';
         echo '<script type="text/javascript">alert("' . $msg . '");</script>';
         echo "<script>setTimeout(\"location.href = 'viewTasks.php';\",1500);</script>";
-		exit;		exit;
+		exit;		
  	}
  	else
  	{

@@ -16,7 +16,7 @@ bottom:5px !important;
 }
         </style>';
 
-$header = new Template('./header.php', array( "comment_deactive"=>1, "head" => $head, "current_page" => 1, "body" => 'onload="onLoad();" onresize="onResize();"'));
+$header = new Template('./header.php', array( "comment_deactive"=>0, "head" => $head, "current_page" => 1, "body" => 'onload="onLoad();" onresize="onResize();"'));
 $header->out();
 if ($_SESSION['access_level'] == 1) {
     header('Location: /Timeline.php');

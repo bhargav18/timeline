@@ -11,7 +11,7 @@ $db = $mysql->getDBConfig();
  */
 if (isset($_GET['action'])) {
     if ($_GET['action'] == 'forget') {
-        $result = $db->query('select * from users where email="' . $_POST['email'] . '" and username="'.$_POST['username'].'"');
+        $result = $db->query('select * from users where email="' . $_POST['email'] . '" and username="' . $_POST['username'] . '"');
         if (($row = mysqli_fetch_array($result)) != null) {
             $new_pass = randomPassword();
             $to = $row['email'];
@@ -57,7 +57,11 @@ window.location = "/logout.php";
             $_SESSION['user_uid'] = $user->uid;
             $_SESSION['access_level'] = $user->access_level;
             $_SESSION['address'] = $user->address;
-            header("Location: " . $_GET['return_url']);
+            if (!$_GET['return_url'] == "") {                
+                header("Location: " . $_GET['return_url']);               
+            } else {                
+                header("Location: /");
+            }
         } else {
             echo ' <script>alert("Invalid username and password."); window.location = "/logout.php";</script>';
         }
@@ -67,13 +71,15 @@ window.location = "/logout.php";
 } else {
     
 }
-            function randomPassword() {
-                //DebugBreak();
-                $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789!@#$%^&*()-_=+{}[]:;?/.,";
-                for ($i = 0; $i < 8; $i++) {
-                    $n = rand(0, strlen($alphabet) - 1);
-                    $pass .= $alphabet[$n];
-                }
-                return $pass;
-            }
+
+function randomPassword() {
+    //DebugBreak();
+    $alphabet = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ0123456789!@#$%^&*()-_=+{}[]:;?/.,";
+    for ($i = 0; $i < 8; $i++) {
+        $n = rand(0, strlen($alphabet) - 1);
+        $pass .= $alphabet[$n];
+    }
+    return $pass;
+}
+
 ?>

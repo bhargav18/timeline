@@ -8,6 +8,9 @@ if (!$_SESSION['userLoggedin']) {
             }
     header("Location: login.php?return_url=".$return_url);
 }
+if($_SESSION['access_level'] == 1){
+    $this->comment_deactive = 1;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -73,7 +76,7 @@ if (!$_SESSION['userLoggedin']) {
                         ?>><a href="Timeline.php">Timeline</a><span></span>
                             <?php if(!$this->comment_deactive){ ?>
                             <ul>                                
-                                <li><a href='functions.php?action=download_tasks<?php if($_SESSION['access_level'] == 2){echo '&project='.$this->project;}?>'>Dowland</a></li>                                
+                                <li><a href='functions.php?action=download_tasks<?php if($_SESSION['access_level'] == 2){echo '&project='.$this->project;}?>'>Download</a></li>                                
                             </ul>
                             <?php }?>
                         </li>
@@ -125,7 +128,7 @@ if (!$_SESSION['userLoggedin']) {
                             </ul>
                         </li>
                         <?php } ?>
-                        <?php if(!$this->comment_deactive){?>
+                        <?php if($this->comment_deactive){?>
                         <li <?php
                         if (isset($this)) {                            
                                 if ($this->current_page == 6) {

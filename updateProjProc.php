@@ -4,20 +4,33 @@
     $mysql = new DBConfig();
     $db = $mysql->getDBConfig();
     
+    function test_input($data)  
+	{
+	   $data = stripslashes($data);
+	   $data = htmlspecialchars($data);
+	   return $data;
+	}
+	
+ 	function isEmpty($data) 
+   {
+      if (empty(trim($data)))
+          return true;
+      else
+          return false;
+   }
+   
     //Validation
 	if(!empty($_POST))
 	{
 	if ($_POST['update']) 
  	{
  		$error = 0;
- 		$holdDesc = $holdED = "";
-    if(empty($_POST['descr'])){
+ 		$holdDesc = $holdED = $holdCost="";
+    if(isEmpty($_POST['descr'])){
     	$_SESSION['uPDescErr'] = "Project description is required"; $error=1;}
-    else if (!preg_match("/^[\n-()*,'.a-zA-Z0-9 ]*$/",$_POST['descr'])){
-     	$_SESSION['uPDescErr'] = "Only letters and white space allowed"; $error=1;}
      else
      {
-     	$holdDesc= $_POST['descr'];
+     	$holdDesc= test_input($_POST['descr']);     	
      	$_SESSION['uPDescErr']="";
      }
     if (empty($_POST['enddate'])){
@@ -29,13 +42,16 @@
     	$holdED = $_POST['enddate'];
     	$_SESSION['uPEDateError'] = "";
     }
- 	if (empty($_POST['cost']))
-	{	$_SESSION['pCostErr'] = "Project budget is required"; $error = 1;}
-	elseif (!preg_match("/^[0-9]*$/",$_POST['cost']))
-	{	$_SESSION['pCostErr'] = "Please enter numbers only"; $error = 1;}
+ 	if (isEmpty($_POST['cost']))
+	{	$_SESSION['uPCostErr'] = "Project budget is required"; $error = 1;}
+	elseif (!preg_match("/^[,.0-9]*$/",$_POST['cost']))
+	{	$_SESSION['uPCostErr'] = "Please enter a valid value"; 
+		$holdCost = $_POST['cost'];
+		$error = 1;
+	}
 	else
 	{
-		$_SESSION['pCostErr'] = "";
+		$_SESSION['uPCostErr'] = "";
 		$holdCost = $_POST['cost'];
 	}
 
@@ -46,49 +62,57 @@
     	$_SESSION['uPPrio'] = $_POST['priority'];
     	$_SESSION['uPDesc']= $holdDesc;
     	$_SESSION['uPEDate']= $holdED;
-    	$_SESSION['cost'] = $holdCost;
+    	$_SESSION['uPCost'] = $holdCost;
    		header("Location:updateProject.php");
    		exit;
    	}
     else	
     {
-     	$sql= "SELECT status, priority, description, cost FROM project WHERE uid like '".$_POST['projId']."'";
+     	$sql= "SELECT status, priority, description, cost, end_date FROM project WHERE uid like '".$_POST['projId']."'";
      	$result= $db->query($sql);
   		$row= mysqli_fetch_row($result);
      				$t = $row[0];
-		if (!($_POST['status'] == $row[0]))
+		
+     	$date = DateTime::createFromFormat('m/d/Y', $holdED);
+    	$holdED = $date->format('Y-m-d');
+     	if ($_POST['status'] != $row[0] || $_POST['priority'] != $row[1] || $holdDesc != $row[2] || $holdCost != $row[3] || $holdED != $row[4])
+     	{
+    	$stmt = $db->prepare("UPDATE project SET status = ?, priority = ?, description = ?, cost = ?, end_date = ? WHERE uid like '".$_POST['projId']."'"); 
+		$stmt->bind_param('sssss', $_POST['status'], $_POST['priority'], $holdDesc, $holdCost, $holdED);
+		$stmt->execute();
+		if ( $_POST['status'] == 'Completed' || $_POST['status'] == 'Closed')
 		{
-			$query1 = "UPDATE project SET status='".$_POST['status']."' WHERE uid like '".$_POST['projId']."'";
-                        $db->query($query1);
-		}
-		if (!($_POST['priority'] == $row[1]))
-		{
-			$query2 = "UPDATE project SET priority='".$_POST['priority']."' WHERE uid like '".$_POST['projId']."'";
-			$db->query($query2);
-		}
-		if (!($_POST['descr'] == $row[2]))
-		{
-			$query3 = "UPDATE project SET description='".$_POST['descr']."' WHERE uid like '".$_POST['projId']."'";
-			$db->query($query3);
-		}
-     	if ($_POST['enddate'])
-		{
-			$query5 = "UPDATE project SET end_date=STR_TO_DATE('".$_POST['enddate']."','%m/%d/%Y')
-					WHERE uid like '".$_POST['projId']."'";
+			$query5 = "UPDATE tasks SET status='Closed' WHERE (status='Open' OR status='In Progress') and project_uid like '".$_POST['projId']."'";
 			$db->query($query5);
-		}
-    	if (!($_POST['cost'] == $row[3]))
-		{
-			$query1 = "UPDATE project SET status='".$_POST['cost']."' WHERE uid like '".$_POST['projId']."'";
-                        $db->query($query1);
+			$query6 = "SELECT users.email, tasks.uid FROM users
+					LEFT JOIN user_tasks ON users.uid = user_tasks.user_uid
+					LEFT JOIN tasks ON tasks.uid = user_tasks.task_uid
+					WHERE tasks.project_uid = '".$_POST['projId']."'
+					AND (tasks.status='Open' OR tasks.status='In Progress')";
+			$result= $db->query($query6);
+			if (mysqli_num_rows($result) > 0) 
+			{
+			while ($row = mysqli_fetch_row($result))
+			{
+				$to = $row[0];
+		        $subject = 'Task Update';
+		        $message = 'Task "'.$row[1].'" has been closed';
+		                    
+		        $headers = 'From: test@example.com' . "\r\n" .
+		                    'Reply-To: webmaster@example.com' . "\r\n" .
+		                    'X-Mailer: PHP/' . phpversion();
+		
+		        mail($to, $subject, $message, $headers);
+			}}
 		}
 		$msg = 'The project has been updated';
         echo '<script type="text/javascript">alert("' . $msg . '");</script>';
-        echo "<script>setTimeout(\"location.href = 'viewProjects.php';\",1500);</script>";
+     }
+        echo "<script>setTimeout(\"location.href = 'viewProjects.php';\",500);</script>";
 		exit;
     }
 	}
-	//Do we need to delete projects? or move tem to another table
+	//Ddelete the project 
 	elseif ($_POST['delete']) 
 	{
 		//Delete the project
@@ -103,11 +127,13 @@
 				ON user_tasks.task_uid = tasks.uid and tasks.project_uid like '".$_POST['projId']."'
 				SET user_tasks.deleted='Y'";
 			$db->query($query5);
-		$query5 = "SELECT users.email FROM users
+		$query6 = "SELECT users.email FROM users
 				LEFT JOIN user_tasks ON users.uid = user_tasks.user_uid
 				LEFT JOIN tasks ON tasks.uid = user_tasks.task_uid
-				WHERE tasks.project_uid =  '2' '".$_POST['projId']."')";
-		$result= $db->query($query5);
+				WHERE tasks.project_uid = '".$_POST['projId']."'";
+		$result= $db->query($query6);
+		if (mysqli_num_rows($result) > 0) 
+		{
 		while ($row = mysqli_fetch_row($result))
 		{
 			$to = $row[0];
@@ -119,6 +145,7 @@
 	                    'X-Mailer: PHP/' . phpversion();
 	
 	        mail($to, $subject, $message, $headers);
+		}
 		}
 		$msg = 'The project has been deleted';
         echo '<script type="text/javascript">alert("' . $msg . '");</script>';

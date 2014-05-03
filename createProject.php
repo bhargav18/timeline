@@ -8,9 +8,9 @@ session_start();
 
 $nameErr = $descErr = $sdateErr = $edateErr = $empErr = $pName = $pDesc = $pSDate = $pEDate = $pSts = $pPrio = "";
 //Getting Error Messages
-if (!empty($_SESSION['nameErr'])) {
-    $nameErr = $_SESSION['nameErr'];
-    $_SESSION['nameErr'] = "";
+if (!empty($_SESSION['pNameErr'])) {
+    $nameErr = $_SESSION['pNameErr'];
+    $_SESSION['pNameErr'] = "";
 }
 if (!empty($_SESSION['pDescErr'])) {
     $descErr = $_SESSION['pDescErr'];
@@ -67,7 +67,7 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
   
   ';
 
-$header = new Template("./header.php", array('head' => $head, 'title' => "Create a project"));
+$header = new Template("./header.php", array('head' => $head, 'title' => "Create a project",'return'=>"createProject.php",'current_page'=>2));
 $header->out();
 ?>
 
@@ -87,7 +87,7 @@ $header->out();
                         <label >Project Name</label>
                         <input type='text' class='form-control' name='projname'  
                                value='<?php echo $pName; ?>' placeholder='Enter project name'  required/>
-                        <span class="error"><?php echo isset($nameErr) ? $nameErr : ""; ?></span>
+                        <span class="error"><?php echo $nameErr ?></span>
  
                     <!-- Description -->
                         <label >Project Description</label>

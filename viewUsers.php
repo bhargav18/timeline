@@ -7,7 +7,7 @@ session_start();
     
     $head = '';
     
-    $header = new Template("./header.php", array(head => $head, title => "View Users"));
+    $header = new Template("./header.php", array("head" => $head, "title" => "View Users","return"=>"viewUser.php","current_page"=>5));
     $header->out();
   		
 ?>

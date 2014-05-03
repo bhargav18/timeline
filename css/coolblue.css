@@ -240,6 +240,7 @@ th {
 td {
 	border-color: #E9E9E9;
 	padding: .7em 1em;
+        background: #E9EAEB;
 }
 
 /* Form */
@@ -1114,4 +1115,24 @@ ul.archive li .post-details a:hover {
 
 .main-content input[type="text"]{
     width: 300px;
+}
+
+.error{
+    color:#ff0000;
+}
+
+.bold{
+    font-weight: bold;
+}
+.btn-info{
+    width: 130px;
+    margin-left:175px
+}
+.btn-info1{
+    width: 130px;
+    margin-left:120px
+}
+.btn-info2{
+    width: 130px;
+    margin-left: 10px;
 }

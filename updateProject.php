@@ -7,7 +7,7 @@
     $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
   
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
-  <script src="/js/updateProject.js"></script>
+  <script src="js/updateProject.js"></script>
 ';
     $header = new Template("./header.php", array("current_page"=>2,"head" => $head, "title" => "Update Project"));
     $header->out();
@@ -31,9 +31,9 @@ if (!empty($_SESSION['uPEDateError']))
 	$edateErr = $_SESSION['uPEDateError'];
 	$_SESSION['uPEDateError'] = "";
 }
-if (!empty($_SESSION['costErr'])) {
-    $costErr = $_SESSION['costErr'];
-    $_SESSION['costErr'] = "";
+if (!empty($_SESSION['uPCostErr'])) {
+    $costErr = $_SESSION['uPCostErr'];
+    $_SESSION['uPCostErr'] = "";
 }
 ?>
   <div id="content-wrap">
@@ -63,15 +63,22 @@ if (!empty($_SESSION['costErr'])) {
 		if (!empty($_SESSION['uPSts']))
 		{
 			$sts = $_SESSION['uPSts'];
-			$_SESSION['uTSts'] = "";
+			$_SESSION['uPSts'] = "";
 		}
 		else
 			$sts = $row[2];
+		if (!empty($_SESSION['uPPrio']))
+		{
+			$prio = $_SESSION['uPPrio'];
+			$_SESSION['uPPrio'] = "";
+		}
+		else
+			$prio = $row[3];
 
 		if (!empty($_SESSION['uPDesc']))
 		{
 			$desc = $_SESSION['uPDesc'];
-			$_SESSION['uTDesc'] = "";
+			$_SESSION['uPDesc'] = "";
 		}
 		else
 			$desc = $row[4];
@@ -83,10 +90,10 @@ if (!empty($_SESSION['costErr'])) {
 		}
 		else
 			$eDate = $row[6];
-		if (!empty($_SESSION['uPEDate']))
+		if (!empty($_SESSION['uPCost']))
 		{
-			$pCost = $_SESSION['uPEDate'];
-			$_SESSION['uPEDate'] = "";
+			$pCost = $_SESSION['uPCost'];
+			$_SESSION['uPCost'] = "";
 		}
 		else
 			$pCost = $row[7];
@@ -118,7 +125,7 @@ if (!empty($_SESSION['costErr'])) {
 
 	<div>
 	  <label for="exampleInputEmail1">End Date</label>
-      <input type="text" class="form-control" name="enddate" id="to" value='<?php echo date("m/d/Y", strtotime($eDate)); ?>' readonly="true"></input>
+      <input class="form-control" name="enddate" id="to" value='<?php echo date("m/d/Y", strtotime($eDate)); ?>' readonly="true"></input>
       <span class="err"><?php echo $edateErr;?></span>
      </div>
 
@@ -147,13 +154,16 @@ if (!empty($_SESSION['costErr'])) {
                         <label >Project Budget</label>
                         <input type='text' class='form-control' name='cost' 
                                value='<?php echo $pCost; ?>' placeholder='Enter project budget'  required/>
-                        <span class="error"><?php echo isset($costErr) ? $costErr : ""; ?></span>                    
+                        <span class="error"><?php echo !empty($costErr) ? $costErr : ""; ?></span>                    
 
 
 <br/>
 
   <input type='submit' name='update' value= 'Update Project' class='btn btn-info'>
-  <input type='submit' name='delete' value= 'Delete Project' class='btn btn-info'>
+  <input type='submit' name='delete' value= 'Delete Project' class='btn btn-info' onclick='return confirm("You are about to delete the project. Do you want to continue?");'>
+  <br/>
+  <a href="viewProjects.php"><input type="button" value="Cancel" /></a>
+  
   
 
   </form>   		

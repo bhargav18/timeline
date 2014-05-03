@@ -23,7 +23,7 @@ if ($_SESSION['userLoggedin']) {
     </head>
 
     <body>
-        <form name="login" class="box login" action="loginService.php?return_url=login.php" method="post">
+        <form name="login" class="box login" action="loginService.php<?php echo "?return_url=".$_GET['return_url']; ?>" method="post">
             <fieldset class="boxBody">
                 <label>Username</label>
                 <input type="text" tabindex="1" name="user" placeholder="Username" required>

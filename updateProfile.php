@@ -7,7 +7,7 @@ $Err1 = $Err2 = $Err3 = $Err4 = $Err5 = $Err6 = $Err7 = $Err8 = $Err9 = $Err10 =
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
 $head='';
-$header = new Template("./header.php", array(head => $head, title => "Title"));
+$header = new Template("./header.php", array('head' => $head, 'title' => "Update Profile",'return'=>"updateProfile.php",'current_page'=>4));
 $header->out();
 
 if(!empty($_SESSION['Erremail'])){

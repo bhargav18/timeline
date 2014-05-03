@@ -3,15 +3,6 @@ SESSION_START();
     include './DBConfig.php';
     $mysql = new DBConfig();
     $db = $mysql->getDBConfig();
-   
-    /*if (!$connect) {
-	    die('Could not connect to the mySQL database');
-		}
-		if(!mysql_select_db($database)) {
-		   die('Could not connect to the database');
-		   }
-		   mysql_select_db($database);
-*/
 
 $holdFName = $holdLName = $holdCity = $holdCountry = $holdState = $holdZipcode = $holdPhone = 
 $holdEmail = $holdAdd1 = $holdAdd2 = "";
@@ -22,39 +13,49 @@ function test_input($data)   // to test input!!
    return $data;
 }
 
+function isEmpty($data)   // to test input!!
+   {
+      if (empty(trim($data)))
+          return true;
+      else
+          return false;
+   }
+    
 if (!empty($_POST))
-	
+{
 	if ($_POST['update']) 
 	{
 	$error = 0;
 	
-    if(empty($_POST['fname'])){
+    if(isEmpty($_POST['fname'])){
     	$_SESSION['Errfname'] = "First name is required"; 
-		$error = 1;}	     
-     elseif (!preg_match("/^[a-zA-Z ]*$/",test_input($_POST['fname'])))
+		$error = 1;}
+	elseif (!preg_match("/^[a-zA-Z ]*$/",test_input($_POST['fname'])))
        {
-       $_SESSION['Errfname'] = "Only letters and no whitespace allowed"; 
-       $error = 1;
+	       $_SESSION['Errfname'] = "Only letters and whitespace are allowed";
+	       $holdFName = $_POST['lname'];
+	       $error = 1;
        }
      else {
-		$holdFName = $_POST['fname'];
+         $holdFName = test_input($_POST['fname']);
 		$_SESSION['Errfname'] = "";
 		}
 	
-    if(empty($_POST['lname'])){
+    if(isEmpty($_POST['lname'])){
     	$_SESSION['Errlname'] = "Last name is required";
-		$error = 1;}		
-     elseif (!preg_match("/^[a-zA-Z ]*$/",test_input($_POST['lname'])))
+		$error = 1;}
+	elseif (!preg_match("/^[a-zA-Z ]*$/",test_input($_POST['lname'])))
        {
-       $_SESSION['Errlname'] = "Only letters and no whitespace allowed";
+       $_SESSION['Errlname'] = "Only letters and whitespace are allowed";
+           $holdLName = $_POST['lname'];
        $error = 1; 
        }
 	else {
-		$holdLName = $_POST['lname'];
+		$holdLName = test_input($_POST['lname']);
 		$_SESSION['Errlname'] = "";
 		}
 	
-if (empty($_POST['email']))
+if (isEmpty($_POST['email']))
      {$_SESSION['Erremail'] = "Email is required";
 	  $error = 1;}     
      elseif (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/",test_input(trim($_POST['email']))))
@@ -67,38 +68,44 @@ if (empty($_POST['email']))
        $_SESSION['Erremail'] = "";	   
        }  
      
-    if(empty($_POST['phone'])){
+    if(isEmpty($_POST['phone'])){
     	$_SESSION['Errphone'] = "Phone is required"; 
 		$error = 1;} 
 	else {
 		$holdPhone = test_input($_POST['phone']);
 		$_SESSION['Errphone'] = "";
 		}
-    if(empty($_POST['address1'])){
+        
+    if(isEmpty($_POST['address1'])){
     	$_SESSION['Erraddress1'] = "Address 1 is required"; 
 		$error = 1;}
 	else {
 		$holdAdd1 = test_input($_POST['address1']);
 		$_SESSION['Erraddress1'] = "";
 		}
-	if(!empty($_POST['address2']))
+        
+	if(!isEmpty($_POST['address2']))
 	{
 		$holdAdd2 = test_input($_POST['address2']);
-	}		
-	if(empty($_POST['city'])){
+	}
+        
+	if(isEmpty($_POST['city'])){
     	$_SESSION['Errcity'] = "City name is required";
-		$error = 1;}
-    elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['city'])))
+		$error = 1;
+	}
+	elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['city'])))
        {
-       $_SESSION['Errcity'] = "Only letters and whitespace are allowed"; 
-	   $error = 1;}	
+	       $_SESSION['Errcity'] = "Only letters and whitespace are allowed";
+	       $holdCity = $_POST['city'];
+		   $error = 1;
+       }	
 	else 
 	    {
-		$holdCity = $_POST['city'];
+		$holdCity = test_input($_POST['city']);
 		$_SESSION['Errcity'] = "";
 		}	
 		
-    if(empty($_POST['zipcode'])){
+    if(isEmpty($_POST['zipcode'])){
     	$_SESSION['Errzipcode'] = "Zip code is required"; 
 		$error = 1;}
 	else {
@@ -106,24 +113,27 @@ if (empty($_POST['email']))
 		$_SESSION['Errzipcode'] = "";
 		}
 		
-	if(empty($_POST['state'])){
+	if(isEmpty($_POST['state'])){
     	$_SESSION['Errstate'] = "State is required"; 
-		$error = 1;}
-    elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['state'])))
+		$error = 1;
+	}
+	elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['state'])))
        {
-       $_SESSION['Errstate'] = "Only letters and whitespace are allowed"; 
+       $_SESSION['Errstate'] = "Only letters and whitespace are allowed";
+           $holdState = $_POST['state'];
 	   $error = 1;}
 	else {
-		$holdState = $_POST['state'];
+		$holdState = test_input($_POST['state']);
 		$_SESSION['Errstate'] = "";
 		}	
 		
-	if(empty($_POST['country'])){
+	if(isEmpty($_POST['country'])){
     	$_SESSION['Errcountry'] = "Country name is required";
 		$error = 1;}	
     elseif (!preg_match ('/^[a-zA-Z\s]+$/', test_input($_POST['country'])))
        {
-       $_SESSION['Errcountry'] = "Only letters and whitespace are allowed"; 
+       $_SESSION['Errcountry'] = "Only letters and whitespace are allowed";
+           $holdCountry = $_POST['country'];
 	   $error = 1;}
 	else 
 	    {
@@ -142,7 +152,7 @@ if (empty($_POST['email']))
 		$_SESSION['Estatus'] = $_POST['userstatus'];
 		$_SESSION['Eaddress1']= $holdAdd1;
 		$_SESSION['Eaddress2']= $holdAdd2;
-		$_SESSION['Ecity']= $holdCit;
+		$_SESSION['Ecity']= $holdCity;
 		$_SESSION['Ezipcode']= $holdZipcode;
 		$_SESSION['Estate']= $holdState;
 		$_SESSION['Ecountry']= $holdCountry;
@@ -162,7 +172,7 @@ if (empty($_POST['email']))
         $role = $_POST['userrole'];
         $phone = $holdPhone;
         $status = $_POST['userstatus'];
-		
+		$updated = 0;
  		$query = "SELECT *
          FROM users
          INNER JOIN address
@@ -172,6 +182,24 @@ if (empty($_POST['email']))
     	$row= mysqli_fetch_row($result);
   		
         $t=$row[0];
+        
+	if ($email != $row[1] || $fname != $row[1] || $lname == $row[3] || $role == $row[4] || $status == $row[13] || $phone == $row[12])
+		{
+			$stmt = $db->prepare("UPDATE users SET email = ?, first_name = ?, last_name = ?, role = ?,employee_status = ?,phone = ? WHERE uid like '$uid'"); 
+			$stmt->bind_param('ssssss', $email, $fname, $lname, $role, $status, $phone);
+			$stmt->execute();
+			$updated = 1;
+		}
+     	if ($address1 != $row[5] || $address2 != $row[6] || $city != $row[7] || $zipcode != $row[8] || $state != $row[9] 
+     			|| $country != $row[10] )
+		{
+			$stmt = $db->prepare("UPDATE address SET address1 = ?, address2 = ?, city = ?, zipcode = ?, state = ? WHERE user_uid like '$uid'"); 
+			$stmt->bind_param('sssss', $address1, $address2, $city, $zipcode, $state);
+			$stmt->execute();
+			$updated = 1;
+			
+		}
+		/*
 		if (!($email == $row[1]))
 		{
 			$query1 = "UPDATE users SET email='$email' where uid like '$uid'";
@@ -179,17 +207,17 @@ if (empty($_POST['email']))
 		}
 		if (!($fname == $row[2]))
 		{
-			$query2 = "UPDATE user SET first_name='$fname' where uid like '$uid'";
+			$query2 = "UPDATE users SET first_name='$fname' where uid like '$uid'";
 			$db->query($query2);
 		}
 		if (!($lname == $row[3]))
 		{
-			$query3 = "UPDATE user SET last_name='$lname' where uid like '$uid'";
+			$query3 = "UPDATE users SET last_name='$lname' where uid like '$uid'";
 			$db->query($query3);
 		}
 		if (!($role == $row[4]))
 		{
-			$query4 = "UPDATE user SET role='$role' where uid like '$uid'";
+			$query4 = "UPDATE users SET role='$role' where uid like '$uid'";
 			$db->query($query4);
 		}
      	if (!($address1 == $row[5]))
@@ -224,22 +252,21 @@ if (empty($_POST['email']))
 		}
 		if (!($phone == $row[12]))
 		{
-			$query12 = "UPDATE user SET phone='$phone' where uid like '$uid'";
+			$query12 = "UPDATE users SET phone='$phone' where uid like '$uid'";
 			$db->query($query12);
 		}
 		if (!($status == $row[13]))
 		{
-			$query13 = "UPDATE user SET status='$status' where uid like '$uid'";
+			$query13 = "UPDATE users SET employee_status='$status' where uid like '$uid'";
 			$db->query($query13);
+		}*/
+		if ( $updated == 1){
+        $msg = ' Account has been updated';
+        echo '<script type="text/javascript">alert("' . $msg . '");</script>';
 		}
-		/*
-		if(!($query1) || !($query2) || !($query3) || !($query4) || !($query5) || !($query6) || !($query7) || !($query8) || !($query9) || !($query10) || !($query11) || !($query12) || !($query13) )
-		{
-		die('Could not update data: ' . mysql_error());
-        }
-		else
-        echo "Update data successfully\n";
-		*/
+	}
+        echo "<script>setTimeout(\"location.href = 'viewUsers.php';\",500);</script>";
+		exit;
 	}
 		
 	else
