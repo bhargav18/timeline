@@ -12,6 +12,7 @@ function get_comments(){
         success:function(response){ 
         if(response === "\n0" || response === "0" ){
              $('div.post-bottom-section').html("<h2>There is no comment for this task</h2>");
+             $('#taskid').val($('#tasks_list').val());
         }else{            
             $('div.post-bottom-section').html(response);
             $('#taskid').val($('#tasks_list').val());
