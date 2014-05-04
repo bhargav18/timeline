@@ -12,12 +12,20 @@ function test_input($data) {   // to test input
     $data = htmlspecialchars($data);
     return $data;
 }
+    function isEmpty($data)
+    {
+		$data = trim($data);
+        if (empty($data))
+            return true;
+        else
+            return false;
+    }
 
 if (!empty($_POST))
     if ($_POST['create']) {
         $error = 0;
 
-        if (empty(trim($_POST['fname']))) {
+        if (isEmpty($_POST['fname']))) {
             $_SESSION['cErrfname'] = "First name is required";
             $error = 1;
         } elseif (!preg_match("/^[a-zA-Z ]*$/", test_input($_POST['fname']))) {
@@ -29,7 +37,7 @@ if (!empty($_POST))
             $_SESSION['cErrfname'] = "";
         }
 
-        if (empty(trim($_POST['lname']))) {
+        if (isEmpty($_POST['lname']))) {
             $_SESSION['cErrlname'] = "Last name is required";
             $error = 1;
         } elseif (!preg_match("/^[a-zA-Z ]*$/", test_input($_POST['lname']))) {
@@ -41,7 +49,7 @@ if (!empty($_POST))
             $_SESSION['cErrlname'] = "";
         }
 
-        if (empty(trim($_POST['email']))) {
+        if (isEmpty($_POST['email']))) {
             $_SESSION['cErremail'] = "Email is required";
             $error = 1;
         } elseif (!preg_match("/([\w\-]+\@[\w\-]+\.[\w\-]+)/", test_input(trim($_POST['email'])))) {
@@ -52,24 +60,24 @@ if (!empty($_POST))
             $_SESSION['cErremail'] = "";
         }
 
-        if (empty(trim($_POST['phone']))) {
+        if (isEmpty($_POST['phone']))) {
             $_SESSION['cErrphone'] = "Phone is required";
             $error = 1;
         } else {
             $phone = test_input($_POST['phone']);
             $_SESSION['cErrphone'] = "";
         }
-        if (empty(trim($_POST['address1']))) {
+        if (isEmpty($_POST['address1']))) {
             $_SESSION['cErraddress1'] = "Address 1 is required";
             $error = 1;
         } else {
             $address1 = test_input($_POST['address1']);
             $_SESSION['cErraddress1'] = "";
         }
-        if (!empty(trim($_POST['address2']))) {
+        if (!isEmpty($_POST['address2']))) {
             $address2 = test_input($_POST['address2']);
         }
-        if (empty(trim($_POST['city']))) {
+        if (isEmpty($_POST['city']))) {
             $_SESSION['cErrcity'] = "City name is required";
             $error = 1;
         } elseif (!preg_match('/^[a-zA-Z\s]+$/', test_input($_POST['city']))) {
@@ -81,7 +89,7 @@ if (!empty($_POST))
             $_SESSION['cErrcity'] = "";
         }
 
-        if (empty(trim($_POST['zipcode']))) {
+        if (isEmpty($_POST['zipcode']))) {
             $_SESSION['cErrzipcode'] = "Zip code is required";
             $error = 1;
         } else {
@@ -89,7 +97,7 @@ if (!empty($_POST))
             $_SESSION['cErrzipcode'] = "";
         }
 
-        if (empty(trim($_POST['state']))) {
+        if (isEmpty($_POST['state']))) {
             $_SESSION['cErrstate'] = "State is required";
             $error = 1;
         } elseif (!preg_match('/^[a-zA-Z\s]+$/', test_input($_POST['state']))) {
@@ -100,7 +108,7 @@ if (!empty($_POST))
             $state = $_POST['state'];
             $_SESSION['cErrstate'] = "";
         }
-        if (empty(trim($_POST['country']))) {
+        if (isEmpty($_POST['country']))) {
             $_SESSION['cErrcountry'] = "Country name is required";
             $error = 1;
         } elseif (!preg_match('/^[a-zA-Z\s]+$/', test_input($_POST['country']))) {

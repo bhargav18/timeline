@@ -151,43 +151,42 @@ else
 <label>Role: <?php echo $role ?></label>
 
 <label>Email</label>
-<input name="email" type="text" value="<?=$email?>">
+<input name="email" type="text" value="<?=$email?>" maxlength = "30" required>
 <span class="error"><?php echo $Err3; ?></span>
 
 <label>Password</label>
-<input name="password" type="password" value="<?=$password?>">
+<input name="password" type="password" value="<?=$password?>" maxlength = "12" required>
 <span class="error"><?php echo $Err4; ?></span>
 
 <label>Address 1</label>
-<input name="address1" type="text" value="<?=$address1?>">
+<input name="address1" type="text" value="<?=$address1?>" maxlength = "50" required>
 <span class="error"><?php echo $Err5; ?></span>
 
 <label>Address 2</label>
-<input name="address2" type="text" value="<?=$address2?>">
-<!--<span class="error">/*<?php //echo $Err7; ?>*/</span>-->
+<input name="address2" type="text" value="<?=$address2?>" maxlength = "10">
 
 <label>City</label>
-<input name="city" type="text" value="<?=$city?>">
+<input name="city" type="text" value="<?=$city?>" maxlength = "50" required>
 <span class="error"><?php echo $Err7; ?></span>
 
 <label>Zip Code</label>
-<input name="zipcode" type="text" value="<?=$zipcode?>">
+<input name="zipcode" type="text" value="<?=$zipcode?>" maxlength = "10" required>
 <span class="error"><?php echo $Err8; ?></span>
 
 <label>State</label>
-<input name="state" type="text" value="<?=$state?>">
+<input name="state" type="text" value="<?=$state?>" maxlength = "30" required>
 <span class="error"><?php echo $Err9; ?></span>
 
 <label>Country</label>
-<input name="country" type="text" value="<?=$country?>">
+<input name="country" type="text" value="<?=$country?>" maxlength = "30" required>
 <span class="error"><?php echo $Err10; ?></span>
 
 <label>Phone</label>
-<input name="phone" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$phone?>">
+<input name="phone" type="text" maxlength = "20" value="<?=$phone?>" required>
 <span class="error"><?php echo $Err6; ?></span>
 
 <div>
-<input name="update" type="submit" value="Update My Profile">
+<input name="update" type="submit" value="Update My Profile" class='btn btn-info'>
 </div>
 </form>
 

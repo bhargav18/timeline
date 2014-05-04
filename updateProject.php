@@ -109,8 +109,8 @@ if (!empty($_SESSION['uPCostErr'])) {
 
 <!-- Description -->
  
-    <label for='exampleInputEmail1'>Description</label>
-    <textarea rows='10' cols='50' name='descr' ><?php echo $desc; ?></textarea>
+    <label>Description</label>
+    <textarea rows='10' cols='50' name='descr' maxlength = "20000" required><?php echo $desc; ?></textarea>
     <span class='err'><?php echo $descErr;$descErr =""; ?></span>
 
 
@@ -152,17 +152,17 @@ if (!empty($_SESSION['uPCostErr'])) {
   
                     <!-- Cost -->
                         <label >Project Budget</label>
-                        <input type='text' class='form-control' name='cost' 
+                        <input type='text' class='form-control' name='cost' maxlength = "15"
                                value='<?php echo $pCost; ?>' placeholder='Enter project budget'  required/>
                         <span class="error"><?php echo !empty($costErr) ? $costErr : ""; ?></span>                    
 
 
 <br/>
 
-  <input type='submit' name='update' value= 'Update Project' class='btn btn-info'>
-  <input type='submit' name='delete' value= 'Delete Project' class='btn btn-info' onclick='return confirm("You are about to delete the project. Do you want to continue?");'>
+  <input type='submit' name='update' value= 'Update Project' class='btn btn-info1'>
+  <input type='submit' name='delete' value= 'Delete Project' class='btn btn-info2' onclick='return confirm("You are about to delete the project. Do you want to continue?");'>
   <br/>
-  <a href="viewProjects.php"><input type="button" value="Cancel" /></a>
+  <a href="viewProjects.php"><input type="button" value="Cancel" class='btn btn-info'/></a>
   
   
 

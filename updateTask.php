@@ -123,7 +123,7 @@ if (!empty($_SESSION['uEmpError']))
                     <!-- Description -->
 
                     <label >Description</label>
-                    <textarea name="descr" cols="50" rows="10"><?php echo $desc; ?></textarea>
+                    <textarea name="descr" cols="50" rows="10" maxlength = "20000" required><?php echo $desc; ?></textarea>
                     <span class="err"><?php echo $descErr; ?></span>
                     
                     <label>Project: <?php echo empty($proj)?"None":$proj ?></label> 
@@ -148,15 +148,16 @@ if (!empty($_SESSION['uEmpError']))
                     
                     <!-- Status -->
                     <label >Status</label>
-                    <select style="width: 165px" name="status" >
+                    <span id='sts'></span>
+                    <select style="width: 165px" name="status">
                         <option value="Open" <?php echo($sts === "Open")?"selected":""; ?>>Open</option>
                         <option value="In Progress" <?php echo ($sts === "In Progress")?"selected":""; ?>>In Progress</option>
                         <option value="Completed" <?php echo ($sts === "Completed")?"selected":""; ?>>Completed</option>
                         <?php 
                         if ($sts === "Completed")
-                        	echo '<option value="Completetion Approved">Completetion Approved</option>';
-                        elseif ($sts === "Completetion Approved")
-                        	echo '<option value="Completetion Approved" selected >Completetion Approved</option>';
+                        	echo '<option value="Completion Approved">Completion Approved</option>';
+                        elseif ($sts === "Completion Approved")
+                        	echo '<option value="Completion Approved" selected >Completion Approved</option>';
                         	?>
                         <option value="Closed" <?php echo ($sts === "Closed")?"selected":""; ?>>Closed</option>
                     </select>
@@ -170,8 +171,8 @@ if (!empty($_SESSION['uEmpError']))
                     </select>
 
                     <label >Assignees</label>
-                    <input type="button" value="Edit Assignees" onclick="ShowNewPage()" class="btn btn-info">
-                    <div id="divShowChildWindowValues">
+                    <input type="button" value="Edit Assignees" onclick="ShowNewPage()">
+                    <span id="divShowChildWindowValues">
                         <dl id="empList">
                          <?php
 		if (!empty($_SESSION['uEmpId']))
@@ -209,12 +210,12 @@ if (!empty($_SESSION['uEmpError']))
 	    }
 ?>   
 
-                 </dl></div>
-                    <input type="submit" class="btn btn-info" value="Update Task" name="update">
-                    <input type="submit" class="btn btn-info" value="Delete Task" name="delete" 
+                 </dl></span>
+                    <input type="submit" class="btn btn-info1" value="Update Task" name="update" onclick='getTime()'>
+                    <input type="submit" class="btn btn-info2" value="Delete Task" name="delete"
                     		onclick='return confirm("You are about to delete the task. Do you want to continue?");'>
                     </br>
-					<a href="viewTasks.php"><input type="button" value="Cancel" /></a>
+					<a href="viewTasks.php"><input type="button" value="Cancel" class='btn btn-info'/></a>
                 </form>
             </div>
 

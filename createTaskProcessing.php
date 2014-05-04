@@ -18,8 +18,9 @@
 	
  	function isEmpty($data)   
    {
-      if (empty(trim($data)))
-          return true;
+       $data = trim($data);
+       if (empty($data))
+           return true;
       else
           return false;
    }

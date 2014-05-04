@@ -188,48 +188,44 @@ else
 <input name="userid" type="hidden" value="<?=$user_id?>">
 
 <label>First Name</label>
-<input name="fname" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$fname?>">
+<input name="fname" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$fname?>" maxlength = "30" required>
 <span class="error"><?php echo $Err1; ?></span>
 
 <label>Last Name</label>
-<input name="lname" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$lname?>">
+<input name="lname" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$lname?>" maxlength = "30" required>
 <span class="error"><?php echo $Err2; ?></span>
 
 <label>Email</label>
-<input name="email" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$email?>">
+<input name="email" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$email?>" maxlength = "30" required>
 <span class="error"><?php echo $Err3; ?></span>
 
-<!--<label>
-<input name="password" type="password" <?php //echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?//=$password?>">
-<span class="error"><?php //echo $Err4; ?></span>
--->
 <label>Address 1</label>
-<input name="address1" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$address1?>">
+<input name="address1" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$address1?>" maxlength = "50" required>
 <span class="error"><?php echo $Err5; ?></span>
 
 <label>Address 2</label>
-<input name="address2" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$address2?>">
+<input name="address2" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$address2?>" maxlength = "10" required>
 <!--<span class="error">/*<?php //echo $Err7; ?>*/</span>-->
 
 <label>City</label>
-<input name="city" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$city?>">
+<input name="city" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$city?>" maxlength = "50" required>
 <span class="error"><?php echo $Err7; ?></span>
 
 <label>Zip Code</label>
-<input name="zipcode" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$zipcode?>">
+<input name="zipcode" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$zipcode?>" maxlength = "10" required>
 <span class="error"><?php echo $Err8; ?></span>
 
 
 
 <label>State</label>
-<input name="state" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$state?>">
+<input name="state" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$state?>" maxlength = "30" required>
 <span class="error"><?php echo $Err9; ?></span>
 
 
 
 
 <label>Country</label>
-<input name="country" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$country?>">
+<input name="country" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$country?>" maxlength = "30" required>
 <span class="error"><?php echo $Err10; ?></span>
 
 
@@ -248,7 +244,7 @@ else
 
 
 <label>Phone</label>
-<input name="phone" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$phone?>">
+<input name="phone" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$phone?>" maxlength = "15" required>
 <span class="error"><?php echo $Err6; ?></span>
 
 
@@ -260,8 +256,8 @@ else
   <option value="Inactive" <?php echo ($status === "Inactive")?"selected":"";?>>Inactive</option>
 </select>
 <br></br>
-<input name="update" type="submit" value="Update User">
-<a href="viewUsers.php"><input type="button" value="Cancel" /></a>
+<input name="update" type="submit" value="Update User" class='btn btn-info1'>
+<a href="viewUsers.php"><input type="button" value="Cancel" class='btn btn-info2'/></a>
 </form>
 
                     </div>

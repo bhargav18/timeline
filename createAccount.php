@@ -134,39 +134,38 @@ if(!empty($_SESSION['cErole']))
 ?>
 <span class="error"><?php echo $AccountExist; ?></span>
 <label>First Name</label>
-<input name="fname" type="text"  value="<?=$fname?>">
+<input name="fname" type="text"  value="<?=$fname?>" maxlength = "30" required>
 <span class="error"><?php echo $Err1; ?></span>
 
 <label>Last Name</label>
-<input name="lname" type="text" value="<?=$lname?>">
+<input name="lname" type="text" value="<?=$lname?>" maxlength = "30" required>
 <span class="error"><?php echo $Err2; ?></span>
 
 <label>Email</label>
-<input name="email" type="text" value="<?=$email?>">
+<input name="email" type="text" value="<?=$email?>" maxlength = "30" required>
 <span class="error"><?php echo $Err3; ?></span>
 
 <label>Address 1</label>
-<input name="address1" type="text" value="<?=$address1?>">
+<input name="address1" type="text" value="<?=$address1?>" maxlength = "50" required>
 <span class="error"><?php echo $Err5; ?></span>
 
 <label>Address 2</label>
-<input name="address2" type="text" value="<?=$address2?>">
-<!--<span class="error">/*<?php //echo $Err7; ?>*/</span>-->
+<input name="address2" type="text" value="<?=$address2?>" maxlength = "10" >
 
 <label>City</label>
-<input name="city" type="text" maxlength = "10" value="<?=$city?>">
+<input name="city" type="text" value="<?=$city?>" maxlength = "30" required>
 <span class="error"><?php echo $Err7; ?></span>
 
 <label>State</label>
-<input name="state" type="text" value="<?=$state?>">
+<input name="state" type="text" value="<?=$state?>" maxlength = "30" required>
 <span class="error"><?php echo $Err9; ?></span>
 
 <label>Zip Code</label>
-<input name="zipcode" type="text" value="<?=$zipcode?>">
+<input name="zipcode" type="text" value="<?=$zipcode?>"maxlength = "10" required >
 <span class="error"><?php echo $Err8; ?></span>
 
 <label>Country</label>
-<input name="country" type="text" value="<?=$country?>">
+<input name="country" type="text" value="<?=$country?>" maxlength = "30" required>
 <span class="error"><?php echo $ErrCountry; ?></span>
 
 <label>Role</label>
@@ -183,12 +182,12 @@ if(!empty($_SESSION['cErole']))
 
 
 <label>Phone</label>
-<input name="phone" type="text" value="<?=$phone?>">
+<input name="phone" type="text" value="<?=$phone?>" maxlength = "20" required>
 <span class="error"><?php echo $Err6; ?></span>
 
 <br></br>
-<input name="create" type="submit" value="Create Account">
-<a href="viewUsers.php"><input type="button" value="Cancel" /></a>
+<input name="create" type="submit" value="Create Account" class='btn btn-info1'>
+<a href="viewUsers.php"><input type="button" value="Cancel" class='btn btn-info2'/></a>
 </form>
 
                     </div>

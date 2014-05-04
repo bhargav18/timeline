@@ -15,8 +15,9 @@ function test_input($data)   // to test input!!
 
 function isEmpty($data)   // to test input!!
    {
-      if (empty(trim($data)))
-          return true;
+       $data = trim($data);
+       if (empty($data))
+           return true;
       else
           return false;
    }

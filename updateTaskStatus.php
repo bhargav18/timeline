@@ -16,7 +16,7 @@ $header->out();
 ?>
 
 <!-- content-wrap -->
-<div id="content-wrap"
+<div id="content-wrap">
 
     <!-- content -->
     <div id="content" class="clearfix">
@@ -122,9 +122,9 @@ $header->out();
 	    }
 ?>
 				</table>              
-                    <input type="submit" value="Update Status" name="submit" class='btn btn-info btn-info1'
+                    <input type="submit" value="Update Status" name="submit" class='btn btn-info1'
                     	<?php echo ($sts === "Completed" || $sts === "Closed")? "disabled":""?>>
-                    <a href="viewTasks.php"><input type="button" value="Cancel" class='btn btn-info btn-info2'/></a>
+                    <a href="viewTasks.php"><input type="button" value="Cancel" class='btn btn-info2'/></a>
                 </form>
             </div>
 

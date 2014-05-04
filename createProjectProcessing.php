@@ -18,7 +18,8 @@
 	
  	function isEmpty($data)   // to test input!!
    {
-      if (empty(trim($data)))
+       $data = trim($data);
+       if (empty($data))
           return true;
       else
           return false;

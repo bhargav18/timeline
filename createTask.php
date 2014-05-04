@@ -84,7 +84,7 @@ $header->out();
                 <form method='post' action='createTaskProcessing.php' id='mainForm'>
 
                         <label for='exampleInputEmail1'>Task Name</label>
-                        <input type='text' class='form-control' name='taskname' id='exampleInputEmail1' 
+                        <input type='text' name='taskname' maxlength = "30" 
                                value='<?php echo isset($tName) ? $tName : ""; ?>' placeholder='Enter task name'  required/>
                         <span class="err"><?php echo isset($nameErr) ? $nameErr : ""; ?></span>
                     
@@ -93,7 +93,7 @@ $header->out();
                     <!-- Description -->
 
                         <label>Task Description</label>
-                        <textarea rows='10' cols='50' name='descr' ><?php echo isset($tDesc) ? $tDesc : ""; ?></textarea>
+                        <textarea rows='10' cols='50' name='descr' maxlength = "20000" required><?php echo isset($tDesc) ? $tDesc : ""; ?></textarea>
                         <span class="err"><?php echo $descErr; ?></span>                    
 
                     <!-- Linking task to a project -->
@@ -167,9 +167,9 @@ $header->out();
 
                     <!-- Employees names -->
 
-                        <label for='exampleInputEmail1'>Assignees</label> 
+                        <label>Assignees</label>
 
-                        <input type="button" class="btn btn-info" onclick="ShowNewPage()" value="Assign Employees" />
+                        <input type="button"  onclick="ShowNewPage()" value="Assign Employees" />
                         <span id="divShowChildWindowValues">
                             <dl id='empList'>
 
@@ -200,8 +200,8 @@ $header->out();
 
                     <!-- Buttons -->
 
-                    <input type='reset'  name= 'cancel' value='Cancel' class='btn btn-info'>
-                    <input type='submit' name= 'submit' value='Create Task' onclick='getTime()' class='btn btn-info'>
+                    <input type='reset'  name= 'cancel' value='Cancel' class='btn btn-info1'>
+                    <input type='submit' name= 'submit' value='Create Task' onclick='getTime()' class='btn btn-info2'>
                     
 
                     

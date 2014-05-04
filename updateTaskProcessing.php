@@ -6,8 +6,9 @@
  	
  		//Check for correctness
 	if(!empty($_POST))
-	{
-	if ($_POST['update']) 
+	{$update = (!empty($_POST['update']))?$_POST['update']:0;
+    if ($update)
+
  	{
  		$error = 0;
  		$holdDesc = $holdSD = $holdED = $holdEmpNames = "";
@@ -18,8 +19,16 @@
 	   $data = htmlspecialchars($data);
 	   return $data;
 	}
-	
-    if(empty($_POST['descr'])){
+		function isEmpty($data)
+        {
+            $data = trim($data);
+            if (empty($data))
+                return true;
+            else
+                return false;
+        }
+        
+    if(isEmpty($_POST['descr'])){
     	$_SESSION['uTDescErr'] = "Task description is required"; $error=1;}
      else
      {
