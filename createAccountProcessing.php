@@ -1,6 +1,7 @@
 <?php
 
 SESSION_START();
+date_default_timezone_set('America/Los_Angeles');
 include './DBConfig.php';
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
