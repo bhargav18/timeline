@@ -1,6 +1,7 @@
 <?php
 session_start();
 error_reporting(E_ERROR | E_PARSE);
+date_default_timezone_set('America/Los_Angeles');
 $return_url = "/";
 if (!$_SESSION['userLoggedin']) {
     if (isset($this)) {                
