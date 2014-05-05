@@ -7,7 +7,11 @@ $head='<script src="js/comment.js"></script>';
 $header = new Template("./header.php", array('head' => $head, 'title' => "Title"));
 $header->out();
 if($_SESSION['access_level'] == 2){
+    if($_GET['project'] == 0){
+        $tasks = $db->query('select * from tasks where ISNULL(project_uid)');
+    }else{
     $tasks = $db->query('select * from tasks where project_uid='.$_GET['project'].'');
+    }
 }else{
     $tasks = $db->query('select * from tasks where uid in(select task_uid from user_tasks where user_uid='.$_SESSION['user_uid'].')');   
 }
