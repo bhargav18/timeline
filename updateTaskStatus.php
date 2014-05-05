@@ -2,6 +2,7 @@
 SESSION_START();
 if (!empty($_POST)):
 include './Template.php';
+date_default_timezone_set('America/Los_Angeles');
 include './DBConfig.php';
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
@@ -13,6 +14,9 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
 
 $header = new Template("./header.php", array('head' => $head, 'title' => "Update Task status", 'return'=>"updateTaskStatus.php", 'current_page'=>3));
 $header->out();
+if(!isset($_POST['radio'])){
+    header("Location: viewTasks.php");
+}
 ?>
 
 <!-- content-wrap -->
