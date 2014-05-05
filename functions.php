@@ -154,7 +154,7 @@ if ($_SESSION['userLoggedin']) {
        
 $count = 0;
 if($_SESSION['access_level'] == 2){
-    $sqlquery = "select * from tasks where project_uid=".$_GET['project'] ;
+    $sqlquery = "select t1.*,t2.name as project_name from tasks t1, project t2 where t2.uid=t1.project_uid and t1.project_uid=".$_GET['project'] ;
 }else{
     $sqlquery = "select * from tasks where uid in(select task_uid from user_tasks where user_uid=".$_SESSION['user_uid'].")" ;
 }
