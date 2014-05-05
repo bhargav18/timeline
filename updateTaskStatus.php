@@ -14,7 +14,7 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
 
 $header = new Template("./header.php", array('head' => $head, 'title' => "Update Task status", 'return'=>"updateTaskStatus.php", 'current_page'=>3));
 $header->out();
-if(!isset($_POST['radio'])){
+if($_POST['radio'] == NULL){
     header("Location: viewTasks.php");
 }
 ?>
