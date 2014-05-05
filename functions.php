@@ -77,7 +77,7 @@ if ($_SESSION['userLoggedin']) {
             $json_data.='"title":"' . $row['name'] . '",';
             $json_data.='"description":"' . $row['last_name'] . ''
                     . '<br/>Task status: ' . $row['status']
-                    . '<br/><span>Comment to this task:</span><br/><textarea id=\"reply_box\" style=\"height:40px;width:300px;\"></textarea><input type=\"button\" value=\"Comment\" onclick=\"reply_this('.$row[uid].')\"/><a href="comments.php?project=0">See comments</a>' . '",';
+                    . '<br/><span>Comment to this task:</span><br/><textarea id=\"reply_box\" style=\"height:40px;width:300px;\"></textarea><input type=\"button\" value=\"Comment\" onclick=\"reply_this('.$row[uid].')\"/><a href=\"comments.php?project=0\"></a>' . '",';
             $json_data.='"isDuration":false';
             $json_data.='}';
             }
