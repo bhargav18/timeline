@@ -75,7 +75,7 @@ if($_SESSION['access_level'] == 1){
                                 }                            
                         }
                         ?>><a href="Timeline.php">Timeline</a><span></span>
-                            <?php if(!$this->comment_deactive){ ?>
+                            <?php if($this->comment_deactive){ ?>
                             <ul>                                
                                 <li><a href='functions.php?action=download_tasks<?php if($_SESSION['access_level'] == 2){echo '&project='.$this->project;}?>'>Download</a></li>                                
                             </ul>
