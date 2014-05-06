@@ -48,7 +48,7 @@
      	$_SESSION['uTEDateError'] = "End Date is required"; $error = 1;}
  	else if ($_POST['enddate'] < $_POST['startdate']){
         $_SESSION['uTEDateError'] = "End Date can not be before the start date"; $error = 1;}
-    elseif (!empty($_POST['projED']) &&  $_POST['projED']< $_POST['enddate']){
+    elseif (!empty($_POST['projED']) && strtotime ($_POST['projED'])< strtotime ($_POST['enddate'])){
             $_SESSION['uTEDateError'] = "Task cannot end after the project"; $error = 1;}
     else
     {

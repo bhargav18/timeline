@@ -71,7 +71,7 @@
 		$error = 1;}
 	else
 	{
-		$_SESSION['pCostErr'] = "";
+		$_SESSION['costErr'] = "";
 		$holdCost = $_POST['cost'];
 	}
 	

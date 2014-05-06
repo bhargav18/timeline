@@ -141,8 +141,19 @@ if (!empty($_POST))
 		$role = $_POST['userrole'];
 		$_SESSION['cEroleErr'] = "";
 		}
-	
-	if(	$error == 1)
+		$exist = 0;
+		$sql= "SELECT email, role FROM users WHERE email like '".$email."'";
+     	$result= $db->query($sql);
+  		$row= mysqli_fetch_row($result);
+  		if(mysqli_num_rows($result) > 0) 
+		{ if ($role === $row[1]){
+			$_SESSION['AccountExist_error'] = 1;
+			$exist = 1;}
+		}
+		else
+		{$_SESSION['AccountExist_error'] = 0;
+		$exist = 0;}
+	if(	$error == 1 || $exist == 1)
 	{
 		$_SESSION['cEid']= $_POST['userid'];
 		$_SESSION['cEfname']= $fName;
