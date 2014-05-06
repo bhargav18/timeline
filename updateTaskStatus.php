@@ -50,6 +50,12 @@ $header->out();
 			 $date = DateTime::createFromFormat('Y-m-d', $row[6]);
     		 $eDate = $date->format('m/d/Y');
 			 $proj = $row[7];
+                         
+                         $today = date("Y-m-d");
+$expire = DateTime::createFromFormat('Y-m-d', $row[5]); //from db
+
+$today_time = strtotime($today);
+$expire_time = strtotime($expire);
 ?>
 <table class="empTask">
                     <tr>
@@ -84,8 +90,8 @@ $header->out();
                     
     <label  class="bold">Status</label>
 	<select class='form-control' name='status' style='width: 165px'>
-		<option value='Open' <?php echo($sts === "Open")?"selected":"" ?>>Open</option>
-		<option value='In Progress' <?php echo ($sts === "In Progress")?"selected":""; ?>>In Progress</option>
+                <option value='Open' <?php if($today<=$expire_time){echo 'disabled="disabled" ';} echo($sts === "Open")?"selected":"" ?>>Open</option>
+		<option value='In Progress' <?php if($today<=$expire_time){echo 'disabled="disabled" ';} echo ($sts === "In Progress")?"selected":""; ?>>In Progress</option>
   </select>
 
   		
@@ -98,8 +104,8 @@ $header->out();
         
     <label class="bold">Status</label>
 	<select name='status' style='width: 165px'>
-		<option value='In Progress' <?php  echo($sts === "In Progress")?"selected":"" ?>>In Progress</option>
-		<option value='Completed' <?php echo ($sts === "Completed")?"selected":""; ?>>Completed</option>
+		<option value='In Progress' <?php if($today<=$expire_time){echo 'disabled="disabled" ';} echo($sts === "In Progress")?"selected":"" ?>>In Progress</option>
+		<option value='Completed' <?php if($today<=$expire_time){echo 'disabled="disabled" ';} echo ($sts === "Completed")?"selected":""; ?>>Completed</option>
   </select>
     <?php
 		}
