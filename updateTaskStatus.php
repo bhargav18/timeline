@@ -98,7 +98,7 @@ $header->out();
         
     <label class="bold">Status</label>
 	<select name='status' style='width: 165px'>
-		<option value='In Progress' <?php echo($sts === "In Progress")?"selected":"" ?>>In Progress</option>
+		<option value='In Progress' <?php  echo($sts === "In Progress")?"selected":"" ?>>In Progress</option>
 		<option value='Completed' <?php echo ($sts === "Completed")?"selected":""; ?>>Completed</option>
   </select>
     <?php
