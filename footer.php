@@ -5,8 +5,7 @@
         Design by <a href="http://www.styleshout.com/">styleshout</a>
     </p>
 
-    <p class="footer-right">        
-        <a href="index.html">Sitemap</a> |        
+    <p class="footer-right">            
         <a href="#top" class="back-to-top">Back to Top</a>
     </p>
 
