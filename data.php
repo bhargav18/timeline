@@ -7,23 +7,23 @@
     $afterr = 0;
     $total = 0;
     $result= $db->query($query);
-    $r = mysqli_fetch_array($result);
-    while($r = mysqli_fetch_array($result)) {
+	if (mysqli_num_rows($result) > 0) 
+        while($r = mysqli_fetch_array($result)) {
             $onTime++;
         $total++;
     }
     $query = "SELECT est_end_date, end_date FROM tasks WHERE est_end_date > end_date";
     $result= $db->query($query);
-    $r = mysqli_fetch_array($result);
-    while($r = mysqli_fetch_array($result)) {
+	if (mysqli_num_rows($result) > 0) 
+        while($r = mysqli_fetch_array($result)) {
             $before++;
             $total++;
     }
     
     $query = "SELECT est_end_date, end_date FROM tasks WHERE est_end_date < end_date";
     $result= $db->query($query);
-    $r = mysqli_fetch_array($result);
-    while($r = mysqli_fetch_array($result)) {
+	if (mysqli_num_rows($result) > 0) 
+        while($r = mysqli_fetch_array($result)) {
         $afterr++;
         $total++;
     }
