@@ -5,7 +5,8 @@
     include './DBConfig.php';
     $mysql = new DBConfig();
     $db = $mysql->getDBConfig();
-    
+if ((!empty($_POST) && !empty($_POST['radio'])) || !empty($_SESSION['pId']))
+{    
     $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
   
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -13,8 +14,7 @@
 ';
     $header = new Template("./header.php", array("current_page"=>2,"head" => $head, "title" => "Update Project"));
     $header->out();
-if ((!empty($_POST) && !empty($_POST['radio'])) || !empty($_SESSION['pId']))
-{
+
 $id = $descErr = $edateErr ="";
 
 //Get error messages if any
