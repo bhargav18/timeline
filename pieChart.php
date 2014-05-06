@@ -7,6 +7,7 @@ include './data.php';
 $head='    <style>
         #highcharts-0{
             overflow: initial !important;
+            position: initial !important;
         }
     </style>
 <script src="http://code.highcharts.com/highcharts.js"></script>
@@ -59,6 +60,9 @@ $(function () {
 	});
     </script>
 
+    <style>
+        
+    </style>
 
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 <?php 
