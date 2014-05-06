@@ -6,6 +6,9 @@ date_default_timezone_set('America/Los_Angeles');
 include './DBConfig.php';
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
+if($_POST['radio'] === NULL){
+    header("Location: viewTasks.php");
+}
 
 $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
   
@@ -14,10 +17,7 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
 
 $header = new Template("./header.php", array('head' => $head, 'title' => "Update Task status", 'return'=>"updateTaskStatus.php", 'current_page'=>3));
 $header->out();
-if($_POST['radio'] === NULL){
-    header("Location: viewTasks.php");
-    exit;
-}
+
 ?>
 
 <!-- content-wrap -->
