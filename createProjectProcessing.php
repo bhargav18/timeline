@@ -64,7 +64,7 @@
     	$holdED = $_POST['enddate'];
     }
 	if (empty($_POST['cost']))
-	{	$_SESSION['pCostErr'] = "Project budget is required"; $error = 1;}
+	{	$_SESSION['costErr'] = "Project budget is required"; $error = 1;}
 	elseif (!preg_match("/^[,.0-9]*$/",$_POST['cost']))
 	{	$_SESSION['costErr'] = "Please enter a valid cost"; 
 		$holdCost = $_POST['cost'];
