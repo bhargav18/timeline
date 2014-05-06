@@ -4,16 +4,18 @@ include './DBConfig.php';
 $mysql = new DBConfig();
 $db = $mysql->getDBConfig();
 include './data.php';
-$head='<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"       type="text/javascript"></script> 
+$head='    <style>
+        #highcharts-0{
+            overflow: initial !important;
+        }
+    </style>
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>';
 $header = new Template("./header.php", array(head => $head, title => "Title"));
 $header->out();
 ?>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"       type="text/javascript"></script> 
-<script src="http://code.highcharts.com/highcharts.js"></script>
-<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
 <script type="text/javascript"> 
 $(function () {
 	  var chart;
@@ -56,8 +58,6 @@ $(function () {
 
 	});
     </script>
-
-
 
 
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
