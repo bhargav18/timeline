@@ -89,9 +89,9 @@ $expire_time = strtotime($expire);
 ?>
                     
     <label  class="bold">Status</label>
-	<select class='form-control' name='status' style='width: 165px'>
-                <option value='Open' <?php if($today<=$expire_time){echo 'disabled="disabled" ';} echo($sts === "Open")?"selected":"" ?>>Open</option>
-		<option value='In Progress' <?php if($today<=$expire_time){echo 'disabled="disabled" ';} echo ($sts === "In Progress")?"selected":""; ?>>In Progress</option>
+	<select class='form-control' name='status' style='width: 165px' <?php if($today<=$expire_time){echo 'disabled="disabled" ';} ?>>
+                <option value='Open' <?php echo($sts === "Open")?"selected":"" ?>>Open</option>
+		<option value='In Progress' <?php echo ($sts === "In Progress")?"selected":""; ?>>In Progress</option>
   </select>
 
   		
@@ -103,9 +103,9 @@ $expire_time = strtotime($expire);
 ?>
         
     <label class="bold">Status</label>
-	<select name='status' style='width: 165px'>
-		<option value='In Progress' <?php if($today<=$expire_time){echo 'disabled="disabled" ';} echo($sts === "In Progress")?"selected":"" ?>>In Progress</option>
-		<option value='Completed' <?php if($today<=$expire_time){echo 'disabled="disabled" ';} echo ($sts === "Completed")?"selected":""; ?>>Completed</option>
+	<select name='status' style='width: 165px'<?php if($today<=$expire_time){echo 'disabled="disabled" ';} ?>>
+		<option value='In Progress' <?php echo($sts === "In Progress")?"selected":"" ?>>In Progress</option>
+		<option value='Completed' <?php echo ($sts === "Completed")?"selected":""; ?>>Completed</option>
   </select>
     <?php
 		}
