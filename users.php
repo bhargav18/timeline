@@ -32,7 +32,7 @@ class users {
     }
 
     function isUser($username) {
-        $result = $this->db->query('select * from users where username="' . $username . '"');
+        $result = $this->db->query('select * from users where employee_status="Active" and username="' . $username . '"');
         //echo 'select * from users where username="'.$user.'"';
         if ($row = mysqli_fetch_array($result)) {
             return 1;
@@ -43,7 +43,7 @@ class users {
     }
 
     function getUser($username, $password) {
-        $result = $this->db->query('select * from users where username="' . $username . '"');
+        $result = $this->db->query('select * from users where employee_status="Active" and username="' . $username . '"');
         if ($row = mysqli_fetch_array($result)) {
             if ($password == $row['password']) {
                 $this->isLoggedin = 1;
