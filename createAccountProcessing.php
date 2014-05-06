@@ -219,7 +219,7 @@ function randomPassword() {
         $n = rand(0, strlen($alphabet) - 1);
         $pass .= $alphabet[$n];
     }
-    $speChar = "!@#$%^&*()?/'{}][|\;:_-=+";
+    $speChar = "!@#$%_-";
     $n = rand(0, strlen($speChar) - 1);
     $pass .= $speChar[$n];
     return $pass;

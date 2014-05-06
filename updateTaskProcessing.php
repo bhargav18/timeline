@@ -217,8 +217,7 @@
 	}
 	elseif ($_POST['delete']) 
 	{
-		$query1 = "DELETE FROM tasks WHERE uid like '".$_POST['taskId']."'";
-			$db->query($query1);
+		
 		$query6 = "SELECT users.email FROM users
 					LEFT JOIN user_tasks ON users.uid = user_tasks.user_uid
 					WHERE user_tasks.task_uid = '".$_POST['taskId']."'";
@@ -237,6 +236,8 @@
 		
 		        mail($to, $subject, $message, $headers);
 			}}
+		$query1 = "DELETE FROM tasks WHERE uid like '".$_POST['taskId']."'";
+		$db->query($query1);
 		$query2 = "DELETE FROM user_tasks WHERE task_uid like '".$_POST['taskId']."'";
 			$db->query($query2);
 		$msg = 'The task has been deleted';

@@ -43,7 +43,7 @@ $nextForm = "";
 					
 						 echo '<option  value="'.$row[0].'">'.$row[1].'</option>';
 					}   
-					
+					echo '<option value="individual">Individual Tasks</option>';
 					echo'</select>';
 										
 ?>     
@@ -55,18 +55,22 @@ $nextForm = "";
 if ('POST' === $_SERVER['REQUEST_METHOD']){?>
                 <form method="post" action="updateTask.php">
                 <table class="view" >
-                <tr>
-                <td  class="bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Task ID</td>
-                <td class="bold">Task Name</td>
-                <td class="bold">Task Status</td>
+                
                 </tr>
                 
                             <?php 
+                            if ($_POST['proj'] === "individual")
+                                $query = "SELECT uid, name, status FROM tasks WHERE deleted = 'N' AND ISNULL(project_uid) ORDER BY uid";
+                            else
                                 $query = "SELECT uid, name, status FROM tasks WHERE deleted = 'N' AND project_uid ='".$_POST['proj']."' ORDER BY uid";
                             
                             $result = $db->query($query);
-                            if(mysqli_num_rows($result) != 0)
+                            if(mysqli_num_rows($result) > 0)
                             {
+                            echo '<tr>
+                <td  class="bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Task ID</td>
+                <td class="bold">Task Name</td>
+                <td class="bold">Task Status</td>';
                             while ($row = mysqli_fetch_row($result)) {
 
                                 $id = $row[0];
