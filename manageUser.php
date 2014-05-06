@@ -1,7 +1,7 @@
 <?php
 SESSION_START();
 
-if (!empty($_POST) || !empty($_SESSION['Eid']))
+if ((!empty($_POST) &&!empty($_POST['radio'])) || !empty($_SESSION['Eid']))
 {
 include './Template.php';
 include './DBConfig.php';
@@ -43,7 +43,7 @@ if(!empty($_SESSION['Errstate'])){
 	$_SESSION['Errstate']="";}
     if(!empty($_SESSION['Errcountry'])){
         $Err10 = $_SESSION['Errcountry'];
-        $_SESSION['Errstate']="";}
+        $_SESSION['Errcountry']="";}
 if(!empty($_SESSION['Errphone'])){
 	$Err6 = $_SESSION['Errphone'];
     $_SESSION['Errphone']="";	
@@ -204,7 +204,7 @@ else
 <span class="error"><?php echo $Err5; ?></span>
 
 <label>Address 2</label>
-<input name="address2" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$address2?>" maxlength = "10" required>
+<input name="address2" type="text" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> value="<?=$address2?>" maxlength = "10" >
 <!--<span class="error">/*<?php //echo $Err7; ?>*/</span>-->
 
 <label>City</label>
@@ -249,14 +249,18 @@ else
 
 
 <label>Status</label>
+<input type='hidden' name='orgSts' value='<?php echo $status;?>'/>
 <select name="userstatus" id="userstatus"  
-		onchange="if(this.selectedIndex==0) {if(confirm('Do you want to activate the account?')){myFunction(this.selectedIndex);}
-			else { this.selectedIndex=1; }}else{$('input').prop('disabled',true);$('select').prop('disabled',true);}">
+		onchange="if(this.selectedIndex==0) 
+			{if(confirm('Do you want to activate the account?')){myFunction(this.selectedIndex);
+			document.getElementById('up').removeAttribute('disabled');}
+			else { this.selectedIndex=1; }}
+			">
   <option value="Active" <?php echo ($status === "Active")?"selected":"";?>>Active</option>
   <option value="Inactive" <?php echo ($status === "Inactive")?"selected":"";?>>Inactive</option>
 </select>
 <br></br>
-<input name="update" type="submit" value="Update User" class='btn btn-info1'>
+<input name="update" type="submit" <?php echo ($status == "Inactive")? 'disabled="disabled"':"";?> id ="up" value="Update User" class='btn btn-info1'>
 <a href="viewUsers.php"><input type="button" value="Cancel" class='btn btn-info2'/></a>
 </form>
 

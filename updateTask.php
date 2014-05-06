@@ -1,5 +1,6 @@
 <?php
 session_start();
+date_default_timezone_set('America/Los_Angeles');
 if ((!empty($_POST)&&!empty($_POST['radio'])) || !empty($_SESSION['tId'])):
 include './Template.php';
 include './DBConfig.php';
@@ -9,12 +10,11 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
   
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script src="ModalPopupWindow.js" type="text/javascript"></script>
-    <script src="js/updateProject.js"> type="text/javascript"> </script>
   
-  <script src="js/updateTask.js" type="text/javascript"></script>
+  <script src="js/updateTask3.js" type="text/javascript"></script>
   ';
 
-$header = new Template("./header.php", array('head' => $head, 'title' => "Update Task",'return'=>"updateTask.php",'current_page'=>3));
+$header = new Template("./header.php", array(head => $head, title => "Update Task"));
 $header->out();
 
 $id = $descErr = $sdateErr = $edateErr = $empErr = "";
@@ -97,7 +97,7 @@ if (!empty($_SESSION['uEmpError']))
 		/* Start date
 		if (!empty($_SESSION['uTSDate']))
 		{
-			$sDate = $_SESSION['uTSDate'];
+			 = $_SESSION['uTSDate'];
 			$_SESSION['uTSDate'] = "";			
 			
 		}
@@ -124,7 +124,7 @@ if (!empty($_SESSION['uEmpError']))
 
                     <label >Description</label>
                     <textarea name="descr" cols="50" rows="10" maxlength = "20000" required><?php echo $desc; ?></textarea>
-                    <span class="err"><?php echo $descErr; ?></span>
+                    <span class="error"><?php echo $descErr; ?></span>
                     
                     <label>Project: <?php echo empty($proj)?"None":$proj ?></label> 
                     <?php 
@@ -144,7 +144,7 @@ if (!empty($_SESSION['uEmpError']))
                     <!--  Start date <span class="error"--><?php //echo $sdateErr;?><!--  /span>--> <!--id="from"-->
                     <label >End Date</label>
                     <input  readonly="true" value="<?php echo $eDate; ?>" id="to" name="enddate" >
-                    <span class="err"><?php echo $edateErr;?></span>
+                    <span class="error"><?php echo $edateErr;?></span>
                     
                     <!-- Status -->
                     <label >Status</label>

@@ -86,13 +86,13 @@ $header->out();
                     <!-- Name -->
                         <label >Project Name</label>
                         <input type='text' class='form-control' name='projname'  
-                               value='<?php echo $pName; ?>' placeholder='Enter project name'  required/>
+                               value='<?php echo $pName; ?>' placeholder='Enter project name'  maxlength = "100" required/>
                         <span class="error"><?php echo $nameErr ?></span>
  
                     <!-- Description -->
                         <label >Project Description</label>
-                        <textarea rows='10' cols='50' name='descr' ><?php echo $pDesc; ?></textarea>
-                        <span class="err"><?php echo $descErr; ?></span>
+                        <textarea rows='10' cols='50' name='descr' maxlength = "20000" required><?php echo $pDesc; ?></textarea>
+                        <span class="error"><?php echo $descErr; ?></span>
 
                     <!-- Set dates -->
                         <label for="exampleInputEmail1">Start Date</label>
@@ -123,15 +123,13 @@ $header->out();
                     <!-- Cost -->
                         <label >Project Budget</label>
                         <input type='text' class='form-control' name='cost' 
-                               value='<?php echo $pCost; ?>' placeholder='Enter project budget'  required/>
+                               value='<?php echo $pCost; ?>' placeholder='Enter project budget'  maxlength = "15" required/>
                         <span class="error"><?php echo isset($costErr) ? $costErr : ""; ?></span>                    
 
                     <!-- Buttons -->
-                    <div style ="text-align: right;">
-                    <input type='reset'  name= 'cancel' value='Cancel' class='btn btn-info'>
-                    <input type='submit' name= 'submit' value='Create Project' onclick='getTime()' class='btn btn-info'>
-                    </div>
-
+                    </br>
+                    <input type='reset'  name= 'cancel' value='Cancel' class='btn btn-info1'>
+                    <input type='submit' name= 'submit' value='Create Project' onclick='getTime()' class='btn btn-info2'>
                     
                     </div>
                 </form>

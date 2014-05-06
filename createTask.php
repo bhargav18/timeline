@@ -63,13 +63,16 @@ $head = '<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothn
   
   <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
   <script src="ModalPopupWindow.js" type="text/javascript"></script>
+  <script src="js/updateTask4.js"> </script>
     <script src="js/updateTask3.js" type="text/javascript"></script>
-  
+      
+    
   ';
 
 $header = new Template("./header.php", array('head' => $head, 'title' => "Create a task",'return'=>"createTask.php",'current_page'=>"3"));
 $header->out();
 ?>
+    
 
 <!-- content-wrap -->
 <div id="content-wrap">
@@ -86,7 +89,7 @@ $header->out();
                         <label for='exampleInputEmail1'>Task Name</label>
                         <input type='text' name='taskname' maxlength = "30" 
                                value='<?php echo isset($tName) ? $tName : ""; ?>' placeholder='Enter task name'  required/>
-                        <span class="err"><?php echo isset($nameErr) ? $nameErr : ""; ?></span>
+                        <span class="error"><?php echo isset($nameErr) ? $nameErr : ""; ?></span>
                     
 
 
@@ -94,7 +97,7 @@ $header->out();
 
                         <label>Task Description</label>
                         <textarea rows='10' cols='50' name='descr' maxlength = "20000" required><?php echo isset($tDesc) ? $tDesc : ""; ?></textarea>
-                        <span class="err"><?php echo $descErr; ?></span>                    
+                        <span class="error"><?php echo $descErr; ?></span>                    
 
                     <!-- Linking task to a project -->
 
@@ -142,7 +145,7 @@ $header->out();
                         <label>End Date</label>
                         <input name="enddate" id="to" value='<?php echo $tEDate; ?>'
                                placeholder="MM/DD/YYYY" readonly="true">
-                        <span class="err"><?php echo $edateErr; ?></span>
+                        <span class="error"><?php echo $edateErr; ?></span>
                     
 
 
@@ -195,11 +198,11 @@ $header->out();
                                 }
                                 ?>
                             </dl></span>
-                        <span class="err"><?php echo $empErr; ?></span>
+                        <span class="error"><?php echo $empErr; ?></span>
                     
 
                     <!-- Buttons -->
-
+					</br>
                     <input type='reset'  name= 'cancel' value='Cancel' class='btn btn-info1'>
                     <input type='submit' name= 'submit' value='Create Task' onclick='getTime()' class='btn btn-info2'>
                     

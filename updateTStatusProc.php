@@ -1,5 +1,6 @@
 <?php
 SESSION_START();
+        date_default_timezone_set('America/Los_Angeles');
     include './DBConfig.php';
     $mysql = new DBConfig();
     $db = $mysql->getDBConfig();
@@ -12,9 +13,8 @@ SESSION_START();
 		{
 			$query = "UPDATE tasks SET status='$_POST[status]' WHERE uid like '".$_POST['taskId']."'";
 			$db->query($query);
-		}
 		
-		$query6 = "SELECT email FROM users WHERE access_level = '2'";
+			$query6 = "SELECT email FROM users WHERE access_level = '2'";
 			$result= $db->query($query6);
 			if (mysqli_num_rows($result) > 0) 
 			{
@@ -34,7 +34,8 @@ SESSION_START();
 			
 		$msg = 'Tasks status has been updated';
         echo '<script type="text/javascript">alert("' . $msg . '");</script>';
-        echo "<script>setTimeout(\"location.href = 'viewTasks.php';\",500);</script>";
+		}
+        echo "<script>setTimeout(\"location.href = 'viewTasks.php';\",50);</script>";
 		exit;
  	}
  	else

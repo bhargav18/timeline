@@ -27,6 +27,11 @@ if (!empty($_POST))
 {
 	if ($_POST['update']) 
 	{
+	/*if ($_POST['orgSts'] == 'Inactive' && $_POST['userstatus'] == 'Inactive' )
+	{
+		echo "<script>setTimeout(\"location.href = 'viewUsers.php';\",50);</script>";
+		exit;
+	}*/
 	$error = 0;
 	
     if(isEmpty($_POST['fname'])){
@@ -185,15 +190,16 @@ if (isEmpty($_POST['email']))
   		
         $t=$row[0];
         
-	if ($email != $row[1] || $fname != $row[1] || $lname == $row[3] || $role == $row[4] || $status == $row[13] || $phone == $row[12])
+	if ($email != $row[7] || $fname != $row[3] || $lname != $row[4] || $role != $row[8] 
+			|| $status != $row[9] || $phone != $row[6])
 		{
 			$stmt = $db->prepare("UPDATE users SET email = ?, first_name = ?, last_name = ?, role = ?,employee_status = ?,phone = ? WHERE uid like '$uid'"); 
 			$stmt->bind_param('ssssss', $email, $fname, $lname, $role, $status, $phone);
 			$stmt->execute();
 			$updated = 1;
 		}
-     	if ($address1 != $row[5] || $address2 != $row[6] || $city != $row[7] || $zipcode != $row[8] || $state != $row[9] 
-     			|| $country != $row[10] )
+     	if ($address1 != $row[11] || $address2 != $row[12] || $city != $row[13] || $zipcode != $row[14] || $state != $row[15] 
+     			|| $country != $row[16] )
 		{
 			$stmt = $db->prepare("UPDATE address SET address1 = ?, address2 = ?, city = ?, zipcode = ?, state = ? WHERE user_uid like '$uid'"); 
 			$stmt->bind_param('sssss', $address1, $address2, $city, $zipcode, $state);
@@ -201,73 +207,12 @@ if (isEmpty($_POST['email']))
 			$updated = 1;
 			
 		}
-		/*
-		if (!($email == $row[1]))
-		{
-			$query1 = "UPDATE users SET email='$email' where uid like '$uid'";
-			$db->query($query1);
-		}
-		if (!($fname == $row[2]))
-		{
-			$query2 = "UPDATE users SET first_name='$fname' where uid like '$uid'";
-			$db->query($query2);
-		}
-		if (!($lname == $row[3]))
-		{
-			$query3 = "UPDATE users SET last_name='$lname' where uid like '$uid'";
-			$db->query($query3);
-		}
-		if (!($role == $row[4]))
-		{
-			$query4 = "UPDATE users SET role='$role' where uid like '$uid'";
-			$db->query($query4);
-		}
-     	if (!($address1 == $row[5]))
-		{
-			$query5 = "UPDATE address SET address1='$address1' where user_uid like '$uid'";
-			$db->query($query5);
-		}
-		if (!($address2 == $row[6]))
-		{
-			$query6 = "UPDATE address SET address2='$address2' where user_uid like '$uid'";
-			$db->query($query6);
-		}
-		if (!($city == $row[7]))
-		{
-			$query7 = "UPDATE address SET city='$city' where user_uid like '$uid'";
-			$db->query($query7);
-		}
-		if (!($zipcode == $row[8]))
-		{
-			$query8 = "UPDATE address SET zipcode='$zipcode' where address.user_uid like '$uid'";
-			$db->query($query8);
-		}
-		if (!($state == $row[9]))
-		{
-			$query9 = "UPDATE address SET state='$state' where user_uid like '$uid'";
-			$db->query($query9);
-		}
-		if (!($country == $row[10]))
-		{
-			$query10 = "UPDATE address SET country='$country' where user_uid like '$uid'";
-			$db->query($query10);
-		}
-		if (!($phone == $row[12]))
-		{
-			$query12 = "UPDATE users SET phone='$phone' where uid like '$uid'";
-			$db->query($query12);
-		}
-		if (!($status == $row[13]))
-		{
-			$query13 = "UPDATE users SET employee_status='$status' where uid like '$uid'";
-			$db->query($query13);
-		}*/
 		if ( $updated == 1){
-        $msg = ' Account has been updated';
-        echo '<script type="text/javascript">alert("' . $msg . '");</script>';
+        	$msg = ' Account has been updated';
+        	echo '<script type="text/javascript">alert("' . $msg . '");</script>';
 		}
 	}
-        echo "<script>setTimeout(\"location.href = 'viewUsers.php';\",500);</script>";
+        echo "<script>setTimeout(\"location.href = 'viewUsers.php';\",100);</script>";
 		exit;
 	}
 		

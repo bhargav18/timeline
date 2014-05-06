@@ -1,5 +1,6 @@
 <?php
  	SESSION_START();
+ 	        date_default_timezone_set('America/Los_Angeles');
     include './DBConfig.php';
     $mysql = new DBConfig();
     $db = $mysql->getDBConfig();
@@ -109,7 +110,7 @@
 		$msg = 'The project has been updated';
         echo '<script type="text/javascript">alert("' . $msg . '");</script>';
      }
-        echo "<script>setTimeout(\"location.href = 'viewProjects.php';\",500);</script>";
+        echo "<script>setTimeout(\"location.href = 'viewProjects.php';\",50);</script>";
 		exit;
     }
 	}
@@ -150,7 +151,7 @@
 		}
 		$msg = 'The project has been deleted';
         echo '<script type="text/javascript">alert("' . $msg . '");</script>';
-        echo "<script>setTimeout(\"location.href = 'viewProjects.php';\",1500);</script>";
+        echo "<script>setTimeout(\"location.href = 'viewProjects.php';\",50);</script>";
 		exit;
 	}
 	}

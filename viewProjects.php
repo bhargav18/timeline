@@ -23,11 +23,15 @@ session_start();
 
 <div class="main-content">
 <form action= "updateProject.php" method= "post">
-<table class="table">
+<table class="view">
+<tr><td class="bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Project ID</td>
+<td class="bold">Project Name</td>
+<td class="bold">Project Status</td>
+</tr>
 
 <?php
 
-	$query= "SELECT uid, name FROM project WHERE deleted='N' ORDER BY name";   
+	$query= "SELECT uid, name, status FROM project WHERE deleted='N' ORDER BY uid";   
 	$result= $db->query($query);
 	if(mysqli_num_rows($result) != 0) 
 	{
@@ -37,13 +41,15 @@ session_start();
 			$n = $row[1];
 			echo'<tr><td>';
 			echo "<input type='radio' name='radio' value= '$id' >  " ;
-			echo $id . " " . $n;
+			echo "&nbsp;&nbsp;&nbsp;". $id . " </td><td>" . $n. "</td><td>" . $row[2];
+			
 			echo '</td></tr>';
 		}        
 ?>
+</table><table>
 <tr>
 <td><input type="submit" class="btn btn-info" value="Select Project" name="submit"></td>
-</tr>
+</tr></table>
 
 <?php 
 	}

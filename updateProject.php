@@ -1,4 +1,6 @@
 <?php
+	        date_default_timezone_set('America/Los_Angeles');
+
     include './Template.php';
     include './DBConfig.php';
     $mysql = new DBConfig();
@@ -11,7 +13,7 @@
 ';
     $header = new Template("./header.php", array("current_page"=>2,"head" => $head, "title" => "Update Project"));
     $header->out();
-if (!empty($_POST) || !empty($_SESSION['pId']))
+if ((!empty($_POST) && !empty($_POST['radio'])) || !empty($_SESSION['pId']))
 {
 $id = $descErr = $edateErr ="";
 
@@ -126,7 +128,7 @@ if (!empty($_SESSION['uPCostErr'])) {
 	<div>
 	  <label for="exampleInputEmail1">End Date</label>
       <input class="form-control" name="enddate" id="to" value='<?php echo date("m/d/Y", strtotime($eDate)); ?>' readonly="true"></input>
-      <span class="err"><?php echo $edateErr;?></span>
+      <span class="error"><?php echo $edateErr;?></span>
      </div>
 
     

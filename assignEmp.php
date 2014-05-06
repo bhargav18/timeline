@@ -1,10 +1,5 @@
 <?php
 SESSION_START();
-/*		
- 	$_SESSION['current_page'] = "addTask.php";
-	$user= $_SESSION[usr];
-	$pass= $_SESSION[pwd];	
-	*/
 
 include './DBConfig.php';
 $mysql = new DBConfig();
@@ -53,9 +48,9 @@ $db = $mysql->getDBConfig();
 if ('POST' === $_SERVER['REQUEST_METHOD']){
 //Populiting the list from DB
 if ($_POST['assignees'] === "all")
-	$sql= "SELECT first_name, last_name, uid FROM users";   
+	$sql= "SELECT first_name, last_name, uid FROM users WHERE employee_status='Active'";   
 else
-	$sql= "SELECT first_name, last_name, uid FROM users WHERE role = '" . $_POST['assignees'] ."' ORDER BY last_name";
+	$sql= "SELECT first_name, last_name, uid FROM users WHERE role = '" . $_POST['assignees'] ."' AND employee_status='Active' ORDER BY last_name";
     error_log($sql);
 
 $result= $db->query($sql);
@@ -86,9 +81,9 @@ echo '</td></tr>';
         <tr>
             <td align="center">
                 <input type="button" onclick="AssignClick()" value="Assign Employees" style="height: 30px;
-                    width: 100px;"/>
+                    width: 120px;"/>
                 <input type="button" onclick="CancelClick()" value="Cancel" style="height: 30px;
-                    width: 100px;"/>
+                    width: 120px;"/>
             </td>
         </tr>
     </table>

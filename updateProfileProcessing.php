@@ -56,7 +56,7 @@ if (!empty($_POST)){
     	$_SESSION['Errpassword'] = "Password is required"; 
 		$error = 1;}
  // check if Password have a minimal length of 8 characters and contains numeric characters
-    elseif (!preg_match("/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%]{8,30}$/",$_POST['password']))
+    elseif (!preg_match("/^(?=.*\d)(?=.*[A-Za-z])[0-9A-Za-z!@#$%_-]{8,30}$/",$_POST['password']))
        {
        $_SESSION['Errpassword'] = "Password should have a minimal length of 8 characters and contains alphanumeric characters"; 
 	   $error = 1;

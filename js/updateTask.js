@@ -16,7 +16,19 @@
       }
     });
   });
-  
+
+function getTime(){
+var now = new Date();
+var years = now.getFullYear();
+var months = now.getMonth()+1;
+var days = now.getDate();
+var newElm = document.createElement("input");
+newElm.setAttribute("type", "hidden");
+newElm.setAttribute("name",'clientTime');
+newElm.setAttribute("value", months+"/"+days+"/"+years);
+document.getElementById('sts').appendChild(newElm);
+}
+
  var modalWin = new CreateModalPopUpObject();
  modalWin.SetLoadingImagePath("images/loading.gif");
  modalWin.SetCloseButtonImagePath("images/remove.gif");

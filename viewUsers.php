@@ -22,11 +22,12 @@ session_start();
 
 <div class="main-content">
 <form action= "manageUser.php" method= "post">
-<table class="table">
+<table class="view">
+<tr><td class="bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Employee ID</td><td class="bold">Employee Name</td></tr>
 
 <?php
 
-	$query= "SELECT first_name, last_name, uid FROM users WHERE access_level = '1' ORDER BY last_name";   
+	$query= "SELECT first_name, last_name, uid FROM users WHERE access_level = '1' ORDER BY employee_status ASC, last_name ASC";   
 
     $result = $db->query($query);
 	if(mysqli_num_rows($result) != 0)
@@ -37,13 +38,14 @@ session_start();
 		$id = $row[2];
 		echo'<tr><td>';
 		echo "<input type='radio' name='radio' value= '$id' >  " ;
-		echo $n . " " . $id;
+		echo "&nbsp;&nbsp;&nbsp;" . $id . "</td><td> " . $n;
 		echo '</td></tr>'; 
 	}      
 ?>
+</table><table>
 <tr>
 <td><input type="submit" class="btn btn-info" value="Select User" name="submit"></td>
-</tr>
+</tr></table>
 
 <?php 
 	}
