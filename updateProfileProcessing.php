@@ -173,8 +173,8 @@ if (!empty($_POST)){
      	if ($address1 != $row[5] || $address2 != $row[6] || $city != $row[7] || $zipcode != $row[8] || $state != $row[9] 
      			|| $country != $row[10] )
 		{
-			$stmt = $db->prepare("UPDATE address SET address1 = ?, address2 = ?, city = ?, zipcode = ?, state = ? WHERE user_uid like '$uid'"); 
-			$stmt->bind_param('sssss', $address1, $address2, $city, $zipcode, $state);
+			$stmt = $db->prepare("UPDATE address SET country=?, address1 = ?, address2 = ?, city = ?, zipcode = ?, state = ? WHERE user_uid like '$uid'"); 
+			$stmt->bind_param('ssssss', $country,$address1, $address2, $city, $zipcode, $state);
 			$stmt->execute();
 			$updated = 1;
 			
